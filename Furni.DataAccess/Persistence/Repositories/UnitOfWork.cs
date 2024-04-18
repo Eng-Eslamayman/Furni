@@ -11,7 +11,9 @@ namespace Furni.DataAccess.Persistence.Repositories
 			_context = context;
 		}
 
-		public int Complete()
+        public ICategoryRepository Categories => new CategoryRepository(_context);
+
+        public int Complete()
 		{
 			return _context.SaveChanges();
 		}

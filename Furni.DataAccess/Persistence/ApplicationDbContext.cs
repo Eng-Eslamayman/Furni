@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
+using Furni.DataAccess.Persistence.Seeds;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 
 namespace Furni.DataAccess.Persistence
 {
@@ -17,7 +17,9 @@ namespace Furni.DataAccess.Persistence
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             //Seed Data
-           
+
+            // Seed Categories Data 
+            builder.Entity<Category>().HasData(CategoriesData.Seed());
 
             var cascadeFKs = builder.Model.GetEntityTypes()
                                           .SelectMany(t => t.GetForeignKeys())
@@ -28,7 +30,7 @@ namespace Furni.DataAccess.Persistence
             base.OnModelCreating(builder);
         }
 
-
+        public DbSet<Category> Categories { get; set; }
 
     }
 }
