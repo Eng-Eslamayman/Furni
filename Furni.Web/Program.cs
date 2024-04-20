@@ -1,4 +1,6 @@
 using Furni.DataAccess;
+using Furni.DataAccess.Persistence;
+using Microsoft.EntityFrameworkCore;
 namespace Furni.Web
 {
 	public class Program
@@ -9,8 +11,6 @@ namespace Furni.Web
 
             // Add services to the container.
             builder.Services.AddDataAccessServices(builder.Configuration).AddWebServices(builder);
-            
-			
 
 			var app = builder.Build();
 
