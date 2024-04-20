@@ -8,17 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\Admin\**" />
-    <Compile Remove="Controllers\**" />
-    <Content Remove="Areas\Admin\**" />
-    <Content Remove="Controllers\**" />
-    <EmbeddedResource Remove="Areas\Admin\**" />
-    <EmbeddedResource Remove="Controllers\**" />
-    <None Remove="Areas\Admin\**" />
-    <None Remove="Controllers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
@@ -32,11 +21,6 @@
     <ProjectReference Include="..\Furni.DataAccess\Furni.DataAccess.csproj" />
     <ProjectReference Include="..\Furni.Models\Furni.Models.csproj" />
     <ProjectReference Include="..\Furni.Utility\Furni.Utility.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Controllers\" />
-    <Folder Include="Areas\Admin\Views\" />
   </ItemGroup>
 
   <ItemGroup>

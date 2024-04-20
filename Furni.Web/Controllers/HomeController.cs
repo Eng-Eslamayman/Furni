@@ -2,9 +2,8 @@ using Furni.Web.Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Furni.Web.Areas.Customer.Controllers
+namespace Furni.Web.Controllers
 {
-    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

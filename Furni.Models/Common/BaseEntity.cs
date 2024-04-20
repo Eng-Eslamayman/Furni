@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Furni.Models.Common
 {
-    public class Base
+    public class BaseEntity
     {
         public bool IsDeleted { get; set; }
         public string? CreatedById { get; set; }

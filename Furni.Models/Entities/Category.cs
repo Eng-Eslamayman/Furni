@@ -2,7 +2,7 @@
 
 namespace Furni.Models.Entities
 {
-    public class Category : Base
+    public class Category : BaseEntity
     { 
         public int Id { get; set; }
         public string Name { get; set; } = null!;
