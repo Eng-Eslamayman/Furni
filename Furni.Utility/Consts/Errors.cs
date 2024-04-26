@@ -14,7 +14,7 @@ namespace Furni.Utility.Consts
         public const string MaxRange = "Max Range is between {1} and {2}.";
         public const string MaxMinLength = "The {0} must be at least {2} and at max {1} characters long.";
         public const string Duplicated = "Another record with the same {0} is already exists!";
-        public const string DuplicatedBook = "Book with the same title is already exists with the same author!";
+        public const string DuplicatedProduct = "Product with the same title is already exists!";
         public const string NotAllowedExtension = "Only .png, .jpg, .jpeg files are allowed!";
         public const string MaxSize = "File cannot be more than 2MB!";
         public const string NotAllowFutureDates = "Date cannot be in the future!";

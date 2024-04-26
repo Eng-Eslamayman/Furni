@@ -40,4 +40,8 @@
     <None Include="wwwroot\assets\css\fonts\line-awesome\la-solid-900.woff2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\products\thumb\" />
+  </ItemGroup>
+
 </Project>

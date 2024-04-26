@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Furni.Web.Core.Mapping
 {
@@ -6,7 +7,11 @@ namespace Furni.Web.Core.Mapping
     {
         public MappingProfile()
         {
-            
+            // Categories
+
+            // Products
+            CreateMap<Product, ProductViewModel>();
+            CreateMap<ProductFormViewModel, Product>().ReverseMap();
         }
     }
 }

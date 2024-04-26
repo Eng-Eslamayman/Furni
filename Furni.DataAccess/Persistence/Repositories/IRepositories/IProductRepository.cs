@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 {
-    public interface IUnitOfWork
+    public interface IProductRepository : IBaseRepository<Product>
     {
-        ICategoryRepository Categories { get; }
-        IProductRepository Products { get; }
-        int Complete();
+        IQueryable<Product> GetDetails();
     }
 }
