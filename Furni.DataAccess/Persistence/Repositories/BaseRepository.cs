@@ -1,16 +1,10 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Furni.DataAccess.Persistence.Repositories
 {
-	public class BaseRepository<T>: IBaseRepository<T> where T : class
+    public class BaseRepository<T>: IBaseRepository<T> where T : class
 	{
 		protected readonly ApplicationDbContext _context;
 

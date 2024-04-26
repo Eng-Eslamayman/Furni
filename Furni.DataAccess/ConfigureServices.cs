@@ -1,4 +1,6 @@
 ﻿using Furni.DataAccess.Persistence;
+using Furni.DataAccess.Persistence.Repositories;
+using Furni.DataAccess.Persistence.Repositories.IRepositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +16,9 @@ namespace Furni.DataAccess
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                                  builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-           
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             return services;
         }
 

@@ -10,7 +10,8 @@ namespace Furni.Web
 			var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDataAccessServices(builder.Configuration).AddWebServices(builder);
+            builder.Services.AddDataAccessServices(builder.Configuration)
+				.AddWebServices(builder);
 
 			var app = builder.Build();
 
