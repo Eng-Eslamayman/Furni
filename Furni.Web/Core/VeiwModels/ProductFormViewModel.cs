@@ -21,7 +21,7 @@ namespace Furni.Web.Core.VeiwModels
         public string? ImageThumbnailUrl { get; set; }
         public string? ImagePublicID { get; set; }
         [Display(Name = "Categories")]
-        public int CategoryID { get; set; }
-        public Category? Category { get; set; }
+        public int CategoryID { get; set; } // IList => index
+        public IEnumerable<SelectListItem>? Categories { get; set; }
     }
 }

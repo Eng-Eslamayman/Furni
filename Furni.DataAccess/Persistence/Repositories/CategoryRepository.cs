@@ -12,5 +12,8 @@ namespace Furni.DataAccess.Persistence.Repositories
         public CategoryRepository(ApplicationDbContext context) : base(context)
         {
         }
+        public IEnumerable<Category> GetActiveCategories() =>
+            _context.Categories.Where(a => !a.IsDeleted).OrderBy(a => a.Name).ToList();
+
     }
 }

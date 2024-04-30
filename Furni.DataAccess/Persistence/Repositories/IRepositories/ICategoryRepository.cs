@@ -2,5 +2,6 @@
 {
     public interface ICategoryRepository : IBaseRepository<Category>
     {
+        IEnumerable<Category> GetActiveCategories();
     }
 }
