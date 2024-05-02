@@ -16,10 +16,10 @@ namespace Furni.Models.Entities
         public float Price { get; set; }
         [Range(1, 1000, ErrorMessage = Errors.MaxRange)]
         public float DiscountValue { get; set; } 
-        public string? ImageUrl { get; set; }
-        public string? ImageThumbnailUrl { get; set; }
-        public string? ImagePublicID { get; set; }
-        public int CategoryID { get; set; }
+        public string ImageUrl { get; set; } = null!;
+        public string ImageThumbnailUrl { get; set; } = null!;
+        public string? ImagePublicId { get; set; }
+        public int CategoryId{ get; set; }
         public Category? Category { get; set; }
     }
 }

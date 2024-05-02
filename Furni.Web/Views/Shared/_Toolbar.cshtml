@@ -1,0 +1,63 @@
+﻿<!--begin::Toolbar-->
+<div class="toolbar d-flex flex-stack py-3 py-lg-5" id="kt_toolbar">
+	<!--begin::Container-->
+	<div id="kt_toolbar_container" class="container-xxl d-flex flex-stack flex-wrap">
+		<!--begin::Page title-->
+		<div class="page-title d-flex flex-column me-3">
+			@if (ViewBag.ControllerName == "Products" && (ViewBag.ActionName == "Create" || ViewBag.ActionName == "Edit"))
+			{
+				<!--begin::Title-->
+				<h1 class="d-flex text-gray-900 fw-bold my-1 fs-3">Product Form</h1>
+				<!--end::Title-->
+			}
+			else if (ViewBag.ControllerName == "Products" && ViewBag.ActionName == "Index")
+			{
+				<!--begin::Title-->
+				<h1 class="d-flex text-gray-900 fw-bold my-1 fs-3">Products</h1>
+				<!--end::Title-->
+			}
+			<!--begin::Breadcrumb-->
+			<ul class="breadcrumb breadcrumb-dot fw-semibold text-gray-600 fs-7 my-1">
+				@if (ViewBag.ControllerName == "Products" && ViewBag.ActionName == "Create")
+				{
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-gray-500">Add Product</li>
+					<!--end::Item-->
+				}
+				else if (ViewBag.ControllerName == "Products" && ViewBag.ActionName == "Edit")
+				{
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-gray-500">Edit Product</li>
+					<!--end::Item-->
+				}
+				else if (ViewBag.ControllerName == "Products" && ViewBag.ActionName == "Index")
+				{
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-gray-500">Products</li>
+					<!--end::Item-->
+				}
+
+			</ul>
+			<!--end::Breadcrumb-->
+		</div>
+		<!--end::Page title-->
+		<!--begin::Actions-->
+		<div class="d-flex align-items-center py-2">
+			@if (ViewBag.ControllerName == "Products" && ViewBag.ActionName == "Index")
+			{
+				<!--begin::Button-->
+				<a class="btn btn-sm btn-primary" asp-action="Create">Create</a>
+				<!--end::Button-->
+			}
+			else if (ViewBag.ControllerName == "Products" && (ViewBag.ActionName == "Create" || ViewBag.ActionName == "Edit"))
+			{
+				<!--begin::Button-->
+				<a class="btn btn-sm btn-primary" asp-action="Index">Back</a>
+				<!--end::Button-->
+			}
+		</div>
+		<!--end::Actions-->
+	</div>
+	<!--end::Container-->
+</div>
+<!--end::Toolbar-->

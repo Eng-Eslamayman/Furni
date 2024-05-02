@@ -1,4 +1,5 @@
 ﻿using Furni.DataAccess.Persistence;
+using Furni.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Reflection;
 
@@ -18,6 +19,10 @@ namespace Furni.Web
 
             // Add AutoMapper
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
+
+
+            // Services
+            services.AddTransient<IImageService, ImageService>();
 
             return services;
         }

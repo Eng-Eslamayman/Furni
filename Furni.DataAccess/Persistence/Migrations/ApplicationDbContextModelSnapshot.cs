@@ -68,7 +68,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2024, 4, 20, 22, 39, 58, 561, DateTimeKind.Local).AddTicks(3303),
+                            CreatedOn = new DateTime(2024, 5, 2, 3, 10, 0, 361, DateTimeKind.Local).AddTicks(5370),
                             DisplayOrder = 1,
                             IsDeleted = false,
                             Name = "Cheers"
@@ -76,7 +76,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2024, 4, 20, 22, 39, 58, 561, DateTimeKind.Local).AddTicks(3354),
+                            CreatedOn = new DateTime(2024, 5, 2, 3, 10, 0, 361, DateTimeKind.Local).AddTicks(5446),
                             DisplayOrder = 2,
                             IsDeleted = false,
                             Name = "Couches"
@@ -84,7 +84,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2024, 4, 20, 22, 39, 58, 561, DateTimeKind.Local).AddTicks(3358),
+                            CreatedOn = new DateTime(2024, 5, 2, 3, 10, 0, 361, DateTimeKind.Local).AddTicks(5454),
                             DisplayOrder = 3,
                             IsDeleted = false,
                             Name = "Beds"
@@ -92,7 +92,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2024, 4, 20, 22, 39, 58, 561, DateTimeKind.Local).AddTicks(3361),
+                            CreatedOn = new DateTime(2024, 5, 2, 3, 10, 0, 361, DateTimeKind.Local).AddTicks(5459),
                             DisplayOrder = 4,
                             IsDeleted = false,
                             Name = "Tables"
@@ -100,7 +100,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedOn = new DateTime(2024, 4, 20, 22, 39, 58, 561, DateTimeKind.Local).AddTicks(3363),
+                            CreatedOn = new DateTime(2024, 5, 2, 3, 10, 0, 361, DateTimeKind.Local).AddTicks(5464),
                             DisplayOrder = 5,
                             IsDeleted = false,
                             Name = "Bed Rooms"
@@ -108,7 +108,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedOn = new DateTime(2024, 4, 20, 22, 39, 58, 561, DateTimeKind.Local).AddTicks(3368),
+                            CreatedOn = new DateTime(2024, 5, 2, 3, 10, 0, 361, DateTimeKind.Local).AddTicks(5475),
                             DisplayOrder = 6,
                             IsDeleted = false,
                             Name = "Children's Bedrooms"
@@ -116,7 +116,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedOn = new DateTime(2024, 4, 20, 22, 39, 58, 561, DateTimeKind.Local).AddTicks(3371),
+                            CreatedOn = new DateTime(2024, 5, 2, 3, 10, 0, 361, DateTimeKind.Local).AddTicks(5480),
                             DisplayOrder = 7,
                             IsDeleted = false,
                             Name = "Wordrobe"
@@ -131,7 +131,7 @@ namespace Furni.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryID")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedById")
@@ -150,13 +150,15 @@ namespace Furni.DataAccess.Migrations
                     b.Property<float>("DiscountValue")
                         .HasColumnType("real");
 
-                    b.Property<string>("ImagePublicID")
+                    b.Property<string>("ImagePublicId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageThumbnailUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -186,7 +188,7 @@ namespace Furni.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("Title")
                         .IsUnique();
@@ -400,7 +402,7 @@ namespace Furni.DataAccess.Migrations
                 {
                     b.HasOne("Furni.Models.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryID")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

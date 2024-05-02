@@ -1,1 +1,314 @@
-﻿
+﻿@model ProductFormViewModel
+
+@{
+    ViewData["Title"] = "Product Form";
+}
+
+<partial name="_Toolbar" />
+
+<!--begin::Container-->
+<div class="d-flex flex-column-fluid align-items-start container-xxl">
+    <!--begin::Post-->
+    <div class="content flex-row-fluid">
+        <!--begin::Form-->
+        <form class="form d-flex flex-column flex-lg-row" method="post" asp-controller="Products" enctype="multipart/form-data" id="Form">
+            @if (Model.Id > 0)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+            <!--begin::Aside column-->
+            <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+                <!--begin::Thumbnail settings-->
+                <div class="card card-flush py-4">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <!--begin::Card title-->
+                        <div class="card-title">
+                            <h2>Product Image</h2>
+                        </div>
+                        <!--end::Card title-->
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body text-center pt-0">
+                        <!--begin::Image input-->
+                        @if (string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <!--begin::Image input placeholder-->
+                            <style>
+                                .image-input-placeholder {
+                                background-image: url('images/blank-image.svg');
+                                }
+
+                                [data-bs-theme="dark"] .image-input-placeholder {
+                                background-image: url('images/blank-image-dark.svg');
+                                }
+                            </style>
+                            <!--end::Image input placeholder-->
+                        }
+                        else
+                        {
+                            <style>
+                                .image-input-placeholder {
+                                background-image: url('@Model.ImageThumbnailUrl');
+                                }
+                            </style>
+                        }
+
+                        <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
+                            <!--begin::Preview existing avatar-->
+                            <div class="image-input-wrapper w-150px h-150px"></div>
+                            <!--end::Preview existing avatar-->
+                            <!--begin::Label-->
+                            <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                <i class="ki-duotone ki-pencil fs-7">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                                <!--begin::Inputs-->
+                                <input type="file" asp-for="Image" accept=".png, .jpg, .jpeg" />
+                                <input type="hidden" name="avatar_remove" />
+                                <!--end::Inputs-->
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Cancel-->
+                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                <i class="ki-duotone ki-cross fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </span>
+                            <!--end::Cancel-->
+                            <!--begin::Remove-->
+                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                <i class="ki-duotone ki-cross fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </span>
+                            <!--end::Remove-->
+                        </div>
+                        <!--end::Image input-->
+                        <!--begin::Description-->
+                        <div class="text-muted fs-7">Set the product image. Only *.png, *.jpg and *.jpeg image files are accepted  and cannot be more than 2MB.</div>
+                        <!--end::Description-->
+                        <span asp-validation-for="Image" class="text-danger d-block"></span>
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Product Image settings-->
+                <!--begin::Category & tags-->
+                <div class="card card-flush py-4">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <!--begin::Card title-->
+                        <div class="card-title">
+                            <h2>Product Categories</h2>
+                        </div>
+                        <!--end::Card title-->
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <!--begin::Input group-->
+                        <!--begin::Label-->
+                        <label class="form-label">Categories</label>
+                        <!--end::Label-->
+                        <!--begin::Category-->
+                        <div class="form-floating mb-2">
+                            <select class="form-select form-select-solid" data-placeholder="Select an category" asp-for="CategoryId" asp-items="@Model.Categories">
+                                <option value="">Select a category</option>
+                            </select>
+                            <label asp-for="CategoryId"></label>
+                        </div>
+                        <span asp-validation-for="CategoryId" class="text-danger d-block"></span>
+                        <!--end::Category-->
+                        <!--begin::Description-->
+                        <div class="text-muted fs-7 mb-7">Add product to a category.</div>
+                        <!--end::Description-->
+                        <!--end::Input group-->
+                        <!--begin::Button-->
+                        <a class="btn btn-light-primary btn-sm mb-10" asp-action="Index" asp-controller="Categories">
+                            <i class="ki-duotone ki-plus fs-2"></i>Create new category
+                        </a>
+                        <!--end::Button-->
+                        <!--end::Input group-->
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Category & tags-->
+            </div>
+            <!--end::Aside column-->
+            <!--begin::Main column-->
+            <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+                <!--begin::Tab content-->
+                <div class="tab-content">
+                    <!--begin::Tab pane-->
+                    <div class="tab-pane fade show active">
+                        <div class="d-flex flex-column gap-7 gap-lg-10">
+                            <!--begin::General options-->
+                            <div class="card card-flush py-4">
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h2>General</h2>
+                                    </div>
+                                </div>
+                                <!--end::Card header-->
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <div class="form-floating mb-2">
+                                            <!--begin::Input-->
+                                            <input type="text" class="form-control form-control-solid mb-2" asp-for="Title" placeholder="Product title" />
+                                            <!--end::Input-->
+                                            <!--begin::Label-->
+                                            <label asp-for="Title"></label>
+                                            <!--end::Label-->
+                                            <!--begin::Description-->
+                                            <div class="text-muted fs-7">A product title is required and recommended to be unique.</div>
+                                            <!--end::Description-->
+                                        </div>
+                                        <span asp-validation-for="Title" class="text-danger d-block"></span>
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <div class="form-floating mb-2">
+                                            <!--begin::Input-->
+                                            <input type="text" class="form-control form-control-solid js-datepicker" placeholder="Publishing Date" asp-for="PublishingDate" />
+                                            <!--end::Input-->
+                                            <!--begin::Label-->
+                                            <label asp-for="PublishingDate"></label>
+                                            <!--end::Label-->
+                                            <!--begin::Description-->
+                                            <div class="text-muted fs-7">A product title is required and recommended to be unique.</div>
+                                            <!--end::Description-->
+                                        </div>
+                                        <span asp-validation-for="PublishingDate" class="text-danger d-block"></span>
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <div class="form-floating mb-2">
+                                            <textarea class="form-control form-control-solid js-tinymce" placeholder="Description" asp-for="Description"></textarea>
+                                            <label asp-for="Description"></label>
+                                            <!--begin::Description-->
+                                            <div class="text-muted fs-7">Set a description to the product for better visibility.</div>
+                                            <!--end::Description-->
+                                        </div>
+                                        <span asp-validation-for="Description" class="text-danger d-block"></span>
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <div class="form-floating mb-2">
+                                            <textarea class="form-control form-control-solid js-tinymce" placeholder="Summary" asp-for="Summary"></textarea>
+                                            <label asp-for="Summary"></label>
+                                            <!--begin::Summary-->
+                                            <div class="text-muted fs-7">Set a summary to the product for better visibility.</div>
+                                            <!--end::Summary-->
+                                        </div>
+                                        <span asp-validation-for="Summary" class="text-danger d-block"></span>
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+                                <!--end::Card header-->
+                            </div>
+                            <!--end::General options-->
+                        </div>
+                    </div>
+                    <!--end::Tab pane-->
+                </div>
+                <!--end::Tab content-->
+                <!--begin::Pricing-->
+                <div class="card card-flush py-4">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2>Pricing</h2>
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <!--begin::Input group-->
+                        <div class="mb-10 fv-row">
+                            <div class="form-floating mb-2">
+                                <!--begin::Input-->
+                                <input type="number" class="required form-control form-control-solid mb-2" asp-for="Price" placeholder="Product Price" />
+                                <!--end::Input-->
+                                <!--begin::Label-->
+                                <label asp-for="Price"></label>
+                                <!--end::Label-->
+                                <!--begin::Description-->
+                                <div class="text-muted fs-7">Set the product price.</div>
+                                <!--end::Description-->
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger d-block"></span>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="mb-10 fv-row">
+                            <div class="form-floating mb-2">
+                                <!--begin::Input-->
+                                <input type="number" class="required form-control form-control-solid mb-2" asp-for="DiscountValue" placeholder="Discount" />
+                                <!--end::Input-->
+                                <!--begin::Label-->
+                                <label asp-for="DiscountValue"></label>
+                                <!--end::Label-->
+                                <!--begin::Description-->
+                                <div class="text-muted fs-7">Set the product discount.</div>
+                                <!--end::Description-->
+                            </div>
+                            <span asp-validation-for="DiscountValue" class="text-danger d-block"></span>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="mb-10 fv-row">
+                            <div class="form-floating mb-2">
+                                <!--begin::Input-->
+                                <input type="number" class="required form-control form-control-solid mb-2" asp-for="Quantity" placeholder="Quantity" />
+                                <!--end::Input-->
+                                <!--begin::Label-->
+                                <label asp-for="Quantity"></label>
+                                <!--end::Label-->
+                                <!--begin::Description-->
+                                <div class="text-muted fs-7">Set the product quantity.</div>
+                                <!--end::Description-->
+                            </div>
+                            <span asp-validation-for="Quantity" class="text-danger d-block"></span>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <!--end::Card header-->
+                </div>
+                <!--end::Pricing-->
+                <div class="d-flex justify-content-end">
+                    <!--begin::Button-->
+                    <a class="btn btn-light me-5" asp-action="Index">Cancel</a>
+                    <!--end::Button-->
+                    <!--begin::Button-->
+                    <button type="submit" class="btn btn-primary" form="Form">
+                        <span class="indicator-label">Save Changes</span>
+                        <span class="indicator-progress">
+                            Please wait...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                    <!--end::Button-->
+                </div>
+            </div>
+            <!--end::Main column-->
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Post-->
+</div>
+<!--end::Container-->
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

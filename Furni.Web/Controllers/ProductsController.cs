@@ -22,9 +22,10 @@ namespace Furni.Web.Controllers
 
         public IActionResult Index()
         {
-            var productList = _unitOfWork.Products.GetAll();
+			var productList = _unitOfWork.Products.GetAll();
             var viewModel = _mapper.Map<IEnumerable<ProductViewModel>>(productList);
-            return View(viewModel);
+			PopulateAction();
+			return View(viewModel);
         }
 
 
@@ -43,8 +44,8 @@ namespace Furni.Web.Controllers
 
         public IActionResult Create()
         {
-
-            return View("Form", PopulateViewModel());
+			PopulateAction();
+			return View("Form", PopulateViewModel());
         }
 
         [HttpPost]
@@ -60,7 +61,7 @@ namespace Furni.Web.Controllers
             {
                 var imageName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
                 var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(model.Image, imageName, "/images/products", hasThumbnail: true);
-                if (isUploaded)
+                if (!isUploaded)
                 {
                     ModelState.AddModelError(nameof(Image), errorMessage!);
                     return View("Form", PopulateViewModel(model));
@@ -88,9 +89,9 @@ namespace Furni.Web.Controllers
 
             var model = _mapper.Map<ProductFormViewModel>(product);
             var viewModel = PopulateViewModel(model);
+            PopulateAction();
 
-
-            return View("Form", viewModel);
+			return View("Form", viewModel);
         }
 
         [HttpPost]
@@ -174,6 +175,12 @@ namespace Furni.Web.Controllers
 
             return viewModel;
         }
+
+        private void PopulateAction()
+        {
+			ViewBag.ControllerName = RouteData.Values["controller"]!.ToString();
+			ViewBag.ActionName = RouteData.Values["action"]!.ToString();
+		}
 
     }
 }
