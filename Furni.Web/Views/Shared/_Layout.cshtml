@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/assets/css/plugins.bundle.css" type="text/css" />
     <link rel="stylesheet" href="~/assets/css/style.bundle.css" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
+	<link rel="stylesheet" href="~/lib/animate.css/animate.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Furni.Web.styles.css" asp-append-version="true" />
 </head>
@@ -58,7 +59,8 @@
 			<span class="path2"></span>
 		</i>
 	</div>
-
+	<span id="Message" class="d-none">@TempData["Message"]</span>
+	<partial name="_Modal"/>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="~/assets/js/plugins.bundle.js"></script>
     <script src="~/assets/js/scripts.bundle.js"></script>
