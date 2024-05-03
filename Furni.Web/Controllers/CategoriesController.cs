@@ -22,7 +22,7 @@ namespace Furni.Web.Controllers
         public IActionResult Index()
         {
             var categories = _unitOfWork.Categories.GetAll();
-
+            PopulateAction();
             return View(_mapper.Map<IEnumerable<CategoryViewModel>>(categories));
         }
         [AjaxOnly]
@@ -106,5 +106,13 @@ namespace Furni.Web.Controllers
 
             return Json(isAllowed);
         }
+
+
+        private void PopulateAction()
+        {
+            ViewBag.ControllerName = RouteData.Values["controller"]!.ToString();
+            ViewBag.ActionName = RouteData.Values["action"]!.ToString();
+        }
+
     }
 }

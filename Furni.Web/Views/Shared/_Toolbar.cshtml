@@ -16,6 +16,13 @@
 				<h1 class="d-flex text-gray-900 fw-bold my-1 fs-3">Products</h1>
 				<!--end::Title-->
 			}
+
+			@if (ViewBag.ControllerName == "Categories" && ViewBag.ActionName == "Index")
+			{
+				<!--begin::Title-->
+				<h1 class="d-flex text-gray-900 fw-bold my-1 fs-3">Categories</h1>
+				<!--end::Title-->
+			}
 			<!--begin::Breadcrumb-->
 			<ul class="breadcrumb breadcrumb-dot fw-semibold text-gray-600 fs-7 my-1">
 				@if (ViewBag.ControllerName == "Products" && ViewBag.ActionName == "Create")
@@ -37,6 +44,21 @@
 					<!--end::Item-->
 				}
 
+				@if (ViewBag.ControllerName == "Categories" && ViewBag.ActionName == "Index")
+				{
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-gray-600">
+						<a asp-action="Index" asp-controller="Home" class="text-gray-600 text-hover-primary">Home</a>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-gray-600">Dashboard</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-gray-500">Categories</li>
+					<!--end::Item-->
+				}
+
 			</ul>
 			<!--end::Breadcrumb-->
 		</div>
@@ -53,6 +75,13 @@
 			{
 				<!--begin::Button-->
 				<a class="btn btn-sm btn-primary" asp-action="Index">Back</a>
+				<!--end::Button-->
+			}
+
+			@if (ViewBag.ControllerName == "Categories" && ViewBag.ActionName == "Index")
+			{
+				<!--begin::Button-->
+				<a href="javascript:;" class="btn btn-sm btn-primary js-render-modal" data-title="Add Category" data-url="/Categories/Create" data-bs-toggle="modal" id="kt_toolbar_primary_button">Create</a>
 				<!--end::Button-->
 			}
 		</div>
