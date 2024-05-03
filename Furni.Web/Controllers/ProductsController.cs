@@ -53,7 +53,7 @@ namespace Furni.Web.Controllers
         public async Task<IActionResult> Create(ProductFormViewModel model)
         {
             if (!ModelState.IsValid)
-                View("Form", PopulateViewModel(model));
+                return View("Form", PopulateViewModel(model));
 
             var product = _mapper.Map<Product>(model);
 
