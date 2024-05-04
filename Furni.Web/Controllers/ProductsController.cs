@@ -98,9 +98,14 @@ namespace Furni.Web.Controllers
         public async Task<IActionResult> Edit(ProductFormViewModel model)
         {
             if (!ModelState.IsValid)
-                View("Form", PopulateViewModel(model));
+                return View("Form", PopulateViewModel(model));
 
-            var product = _mapper.Map<Product>(model);
+
+            var product = _unitOfWork.Products.Find(b => b.Id == model.Id);
+
+
+            if (product is null)
+                return NotFound();
 
 
             if (model.Image is not null)
@@ -111,7 +116,7 @@ namespace Furni.Web.Controllers
                 }
 
                 var imageName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
-                var imagePath = "/images/books";
+                var imagePath = "/images/products";
 
                 var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(model.Image, imageName, "/images/products", hasThumbnail: true);
 

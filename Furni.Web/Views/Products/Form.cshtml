@@ -50,7 +50,7 @@
                         {
                             <style>
                                 .image-input-placeholder {
-                                background-image: url('@Model.ImageThumbnailUrl');
+                                background-image: url('@Model.ImageUrl');
                                 }
                             </style>
                         }
@@ -191,7 +191,7 @@
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="mb-10 fv-row">
-                                        <div class="form-floating mb-2">
+                                        <div class="form-floating mb-8">
                                             <textarea class="form-control form-control-solid js-tinymce" placeholder="Description" asp-for="Description"></textarea>
                                             <label asp-for="Description"></label>
                                             <!--begin::Description-->
