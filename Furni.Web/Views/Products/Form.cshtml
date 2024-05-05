@@ -191,9 +191,8 @@
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="mb-10 fv-row">
-                                        <div class="form-floating mb-8">
+                                        <div class="form-floating mb-2">
                                             <textarea class="form-control form-control-solid js-tinymce" placeholder="Description" asp-for="Description"></textarea>
-                                            <label asp-for="Description"></label>
                                             <!--begin::Description-->
                                             <div class="text-muted fs-7">Set a description to the product for better visibility.</div>
                                             <!--end::Description-->
@@ -204,7 +203,7 @@
                                     <!--begin::Input group-->
                                     <div class="mb-10 fv-row">
                                         <div class="form-floating mb-2">
-                                            <textarea class="form-control form-control-solid js-tinymce" placeholder="Summary" asp-for="Summary"></textarea>
+                                            <textarea class="form-control form-control-solid" placeholder="Summary" asp-for="Summary"></textarea>
                                             <label asp-for="Summary"></label>
                                             <!--begin::Summary-->
                                             <div class="text-muted fs-7">Set a summary to the product for better visibility.</div>
@@ -310,5 +309,6 @@
 
 @section Scripts
 {
+    <script src="~/assets/plugins/tinymce/tinymce.bundle.js"></script>
     <partial name="_ValidationScriptsPartial" />
 }

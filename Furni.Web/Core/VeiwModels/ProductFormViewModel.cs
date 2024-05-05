@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Framework;
 using System.Text.Json.Serialization;
 
 namespace Furni.Web.Core.VeiwModels
@@ -14,10 +15,13 @@ namespace Furni.Web.Core.VeiwModels
         public string Description { get; set; } = null!;
         [MaxLength(250, ErrorMessage = Errors.MaxLength)]
         public string Summary { get; set; } = null!;
-        public int Quantity { get; set; }
-        public float Price { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public int? Quantity { get; set; } = null;
+        [System.ComponentModel.DataAnnotations.Required]
+        public float? Price { get; set; } = null;
         [Range(1, 1000, ErrorMessage = Errors.MaxRange)]
-        public float DiscountValue { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public float? DiscountValue { get; set; } = null;
         [Display(Name = "Publishing Date")]
         public DateTime PublishingDate { get; set; } = DateTime.Now;
         public IFormFile Image { get; set; } = null!;

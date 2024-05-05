@@ -110,10 +110,7 @@ namespace Furni.Web.Controllers
 
             if (model.Image is not null)
             {
-                if (!string.IsNullOrEmpty(product.ImageUrl))
-                {
-                    _imageService.Delete(product.ImageUrl, product.ImageThumbnailUrl);
-                }
+                _imageService.Delete(product.ImageUrl, product.ImageThumbnailUrl);
 
                 var imageName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
                 var imagePath = "/images/products";
@@ -130,7 +127,7 @@ namespace Furni.Web.Controllers
                 model.ImageUrl = $"{imagePath}/{imageName}";
                 model.ImageThumbnailUrl = $"{imagePath}/thumb/{imageName}";
             }
-            else if (!string.IsNullOrEmpty(product.ImageUrl))
+            else
             {
                 model.ImageUrl = product.ImageUrl;
                 model.ImageThumbnailUrl = product.ImageThumbnailUrl;

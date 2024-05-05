@@ -174,7 +174,7 @@ $(document).ready(function () {
 
         if ($('.js-tinymce').length > 0) {
             $('.js-tinymce').each(function () {
-                var input = $(this);
+                var input = $(this); // element that come from foreach
 
                 var content = tinyMCE.get(input.attr('id')).getContent();
                 input.val(content);
