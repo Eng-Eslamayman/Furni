@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ExpressiveAnnotations.Attributes;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Build.Framework;
 using System.Text.Json.Serialization;
@@ -15,18 +16,17 @@ namespace Furni.Web.Core.VeiwModels
         public string Description { get; set; } = null!;
         [MaxLength(250, ErrorMessage = Errors.MaxLength)]
         public string Summary { get; set; } = null!;
-        [System.ComponentModel.DataAnnotations.Required]
         public int? Quantity { get; set; } = null;
-        [System.ComponentModel.DataAnnotations.Required]
         public float? Price { get; set; } = null;
         [Range(1, 1000, ErrorMessage = Errors.MaxRange)]
-        [System.ComponentModel.DataAnnotations.Required]
         public float? DiscountValue { get; set; } = null;
         [Display(Name = "Publishing Date")]
         public DateTime PublishingDate { get; set; } = DateTime.Now;
-        public IFormFile Image { get; set; } = null!;
+        //[AssertThat("IsNewProduct ? Image != null : true", ErrorMessage = "Image is required.")]
+        [RequiredIf("Id == 0", ErrorMessage = Errors.EmptyImage)]
+        public IFormFile? Image { get; set; } = null!;
         public string? ImageUrl { get; set; }
-        public string? ImageThumbnailUrl { get; set; } 
+        public string? ImageThumbnailUrl { get; set; }
         public string? ImagePublicId { get; set; }
         [Display(Name = "Categories")]
         public int CategoryId { get; set; } // IList => index
