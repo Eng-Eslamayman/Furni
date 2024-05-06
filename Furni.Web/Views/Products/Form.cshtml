@@ -12,10 +12,8 @@
     <div class="content flex-row-fluid">
         <!--begin::Form-->
         <form class="form d-flex flex-column flex-lg-row" method="post" asp-controller="Products" enctype="multipart/form-data" id="Form">
-            @if (Model.Id > 0)
-            {
-                <input type="hidden" asp-for="Id" />
-            }
+            
+            <input type="hidden" asp-for="Id" />
             <!--begin::Aside column-->
             <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
                 <!--begin::Thumbnail settings-->
@@ -308,4 +306,11 @@
 {
     <script src="~/assets/plugins/tinymce/tinymce.bundle.js"></script>
     <partial name="_ValidationScriptsPartial" />
+
+    <script src="~/lib/expressive-annotations-validate/expressive.annotations.validate.min.js"></script>
+    <script>
+        $.validator.setDefaults({
+            ignore: []
+        });
+    </script>
 }

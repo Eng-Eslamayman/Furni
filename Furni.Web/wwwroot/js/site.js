@@ -170,7 +170,7 @@ $(document).ready(function () {
 
     // Disabled Submit button
     $('form').not('#SignOut').not('.js-excluded-validation').on('submit', function () {
-        //disabledSubmitButton($('#Modal').find(':submit'));
+        //disableSubmitButton($('#Modal').find(':submit'));
 
         if ($('.js-tinymce').length > 0) {
             $('.js-tinymce').each(function () {
@@ -182,7 +182,7 @@ $(document).ready(function () {
         }
 
         var isValid = $(this).valid();
-        if (isValid) disabledSubmitButton($(this).find(':submit'));
+        if (isValid) disableSubmitButton($(this).find(':submit'));
     });
 
     //TinyMCE
