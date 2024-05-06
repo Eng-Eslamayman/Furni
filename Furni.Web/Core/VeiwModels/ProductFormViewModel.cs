@@ -1,8 +1,6 @@
-﻿using ExpressiveAnnotations.Attributes;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Build.Framework;
-using System.Text.Json.Serialization;
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace Furni.Web.Core.VeiwModels
 {
@@ -22,9 +20,8 @@ namespace Furni.Web.Core.VeiwModels
         public float? DiscountValue { get; set; } = null;
         [Display(Name = "Publishing Date")]
         public DateTime PublishingDate { get; set; } = DateTime.Now;
-        //[AssertThat("IsNewProduct ? Image != null : true", ErrorMessage = "Image is required.")]
         [RequiredIf("Id == 0", ErrorMessage = Errors.EmptyImage)]
-        public IFormFile? Image { get; set; } = null!;
+        public IFormFile? Image { get; set; }
         public string? ImageUrl { get; set; }
         public string? ImageThumbnailUrl { get; set; }
         public string? ImagePublicId { get; set; }

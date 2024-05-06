@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.1.0 (2022-06-29)
  */
 
 (function () {
@@ -48,8 +48,6 @@
   };
   const isType = type => value => typeOf(value) === type;
   const isString = isType('string');
-  const isNullable = a => a === null || a === undefined;
-  const isNonNullable = a => !isNullable(a);
 
   const checkRange = (str, substr, start) => substr === '' || str.length >= substr.length && str.substr(start, start + substr.length) === substr;
   const contains = (str, substr) => {
@@ -62,6 +60,9 @@
   const rangeEqualsBracketOrSpace = rangeString => /^[(\[{ \u00a0]$/.test(rangeString);
   const isTextNode = node => node.nodeType === 3;
   const isElement = node => node.nodeType === 1;
+  const handleBracket = editor => parseCurrentLine(editor, -1);
+  const handleSpacebar = editor => parseCurrentLine(editor, 0);
+  const handleEnter = editor => parseCurrentLine(editor, -1);
   const scopeIndex = (container, index) => {
     if (index < 0) {
       index = 0;
@@ -91,8 +92,9 @@
   const hasProtocol = url => /^([A-Za-z][A-Za-z\d.+-]*:\/\/)|mailto:/.test(url);
   const isPunctuation = char => /[?!,.;:]/.test(char);
   const parseCurrentLine = (editor, endOffset) => {
-    let end, endContainer, text, prev, len, rngText;
+    let end, endContainer, bookmark, text, prev, len, rngText;
     const autoLinkPattern = getAutoLinkPattern(editor);
+    const defaultLinkTarget = getDefaultLinkTarget(editor);
     if (editor.dom.getParent(editor.selection.getNode(), 'a[href]') !== null) {
       return;
     }
@@ -162,60 +164,30 @@
       } else if (contains(url, '@') && !hasProtocol(url)) {
         url = 'mailto:' + url;
       }
-      return {
-        rng,
-        url
-      };
-    } else {
-      return null;
-    }
-  };
-  const convertToLink = (editor, result) => {
-    const defaultLinkTarget = getDefaultLinkTarget(editor);
-    const {rng, url} = result;
-    const bookmark = editor.selection.getBookmark();
-    editor.selection.setRng(rng);
-    const command = 'createlink';
-    const args = {
-      command,
-      ui: false,
-      value: url
-    };
-    const beforeExecEvent = editor.dispatch('BeforeExecCommand', args);
-    if (!beforeExecEvent.isDefaultPrevented()) {
-      editor.getDoc().execCommand(command, false, url);
-      editor.dispatch('ExecCommand', args);
+      bookmark = editor.selection.getBookmark();
+      editor.selection.setRng(rng);
+      editor.getDoc().execCommand('createlink', false, url);
       if (isString(defaultLinkTarget)) {
         editor.dom.setAttrib(editor.selection.getNode(), 'target', defaultLinkTarget);
       }
-    }
-    editor.selection.moveToBookmark(bookmark);
-    editor.nodeChanged();
-  };
-  const handleSpacebar = editor => {
-    const result = parseCurrentLine(editor, 0);
-    if (isNonNullable(result)) {
-      convertToLink(editor, result);
-    }
-  };
-  const handleBracket = handleSpacebar;
-  const handleEnter = editor => {
-    const result = parseCurrentLine(editor, -1);
-    if (isNonNullable(result)) {
-      convertToLink(editor, result);
+      editor.selection.moveToBookmark(bookmark);
+      editor.nodeChanged();
     }
   };
   const setup = editor => {
     editor.on('keydown', e => {
-      if (e.keyCode === 13 && !e.isDefaultPrevented()) {
-        handleEnter(editor);
+      if (e.keyCode === 13) {
+        return handleEnter(editor);
+      }
+    });
+    editor.on('keypress', e => {
+      if (e.keyCode === 41 || e.keyCode === 93 || e.keyCode === 125) {
+        return handleBracket(editor);
       }
     });
     editor.on('keyup', e => {
       if (e.keyCode === 32) {
-        handleSpacebar(editor);
-      } else if (e.keyCode === 48 && e.shiftKey || e.keyCode === 221) {
-        handleBracket(editor);
+        return handleSpacebar(editor);
       }
     });
   };

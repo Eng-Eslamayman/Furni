@@ -61,10 +61,7 @@
                             <!--end::Preview existing avatar-->
                             <!--begin::Label-->
                             <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-                                <i class="ki-duotone ki-pencil fs-7">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
+                                <i class="bi bi-pencil-fill fs-7"></i>
                                 <!--begin::Inputs-->
                                 <input type="file" asp-for="Image" accept=".png, .jpg, .jpeg" />
                                 <input type="hidden" name="avatar_remove" />
@@ -188,18 +185,7 @@
                                         </div>
                                         <span asp-validation-for="PublishingDate" class="text-danger d-block"></span>
                                     </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="mb-10 fv-row">
-                                        <div class="form-floating mb-2">
-                                            <textarea class="form-control form-control-solid js-tinymce" placeholder="Description" asp-for="Description"></textarea>
-                                            <!--begin::Description-->
-                                            <div class="text-muted fs-7">Set a description to the product for better visibility.</div>
-                                            <!--end::Description-->
-                                        </div>
-                                        <span asp-validation-for="Description" class="text-danger d-block"></span>
-                                    </div>
-                                    <!--end::Input group-->
+                                    <!--end::Input group--> 
                                     <!--begin::Input group-->
                                     <div class="mb-10 fv-row">
                                         <div class="form-floating mb-2">
@@ -210,6 +196,17 @@
                                             <!--end::Summary-->
                                         </div>
                                         <span asp-validation-for="Summary" class="text-danger d-block"></span>
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <div class="form-floating mb-2">
+                                            <textarea class="form-control form-control-solid js-tinymce" placeholder="Description" asp-for="Description"></textarea>
+                                            <!--begin::Description-->
+                                            <div class="text-muted fs-7">Set a description to the product for better visibility.</div>
+                                            <!--end::Description-->
+                                        </div>
+                                        <span asp-validation-for="Description" class="text-danger d-block"></span>
                                     </div>
                                     <!--end::Input group-->
                                 </div>

@@ -47,6 +47,10 @@
     {
       "library": "tinymce@6.1.0",
       "destination": "wwwroot/lib/tinymce/"
+    },
+    {
+      "library": "expressive-annotations-validate@2.7.0",
+      "destination": "wwwroot/lib/expressive-annotations-validate/"
     }
   ]
 }

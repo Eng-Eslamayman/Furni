@@ -2,6 +2,7 @@
 using Furni.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Reflection;
+using UoN.ExpressiveAnnotations.NetCore.DependencyInjection;
 
 namespace Furni.Web
 {
@@ -20,7 +21,8 @@ namespace Furni.Web
             // Add AutoMapper
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 
-
+            // Add Expressive Annotation
+            services.AddExpressiveAnnotations();
             // Services
             services.AddTransient<IImageService, ImageService>();
 

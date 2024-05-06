@@ -185,6 +185,18 @@ $(document).ready(function () {
         if (isValid) disabledSubmitButton($(this).find(':submit'));
     });
 
+    //TinyMCE
+    if ($('.js-tinymce').length > 0) {
+        var options = { selector: ".js-tinymce", height: "430" };
+
+        if (KTThemeMode.getMode() === "dark") {
+            options["skin"] = "oxide-dark";
+            options["content_css"] = "dark";
+        }
+
+        tinymce.init(options);
+    }
+
     //DataTables
     KTUtil.onDOMContentLoaded(function () {
         KTDatatables.init();
