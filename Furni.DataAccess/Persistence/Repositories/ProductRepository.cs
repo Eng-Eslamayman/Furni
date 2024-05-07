@@ -20,10 +20,7 @@ namespace Furni.DataAccess.Persistence.Repositories
             if (!string.IsNullOrEmpty(dto.SearchValue))
                 products = products.Where(b => b.Title.Contains(dto.SearchValue!) || b.Category!.Name.Contains(dto.SearchValue!));
 
-            products = products
-                .OrderBy($"{dto.SortColumn} {dto.SortColumnDirection}")
-                .Skip(dto.Skip)
-                .Take(dto.PageSize);
+            products = products.OrderBy($"{dto.SortColumn} {dto.SortColumnDirection}");
 
             var recordsTotal = _context.Products.Count(); // All Records in Database
 

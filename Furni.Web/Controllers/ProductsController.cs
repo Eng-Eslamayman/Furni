@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Furni.Web.Extensions;
 using Furni.Web.Services;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -37,8 +38,10 @@ namespace Furni.Web.Controllers
 
             var (products, recordsTotal) = _unitOfWork.Products.GetFiltered(filterDto);
 
+            // Data that i want in the page
+            var data = products.GetDataPage(filterDto);
 
-            var mappedData = _mapper.ProjectTo<ProductViewModel>(products).ToList();
+            var mappedData = _mapper.ProjectTo<ProductViewModel>(data).ToList();
 
             var recordsFiltered = products.Count(); // Records After Filter
 

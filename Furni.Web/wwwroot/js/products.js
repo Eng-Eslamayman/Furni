@@ -9,7 +9,7 @@
         serverSide: true,
         processing: true,
         stateSave: true,
-        lengthMenu: [2, 4, 5, 10, 20, 40],
+        lengthMenu: [2, 5, 10, 20, 40],
         ajax: {
             url: '/Products/GetProducts', 
             type: 'POST'
