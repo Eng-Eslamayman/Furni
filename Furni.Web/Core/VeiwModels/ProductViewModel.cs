@@ -1,7 +1,7 @@
 ﻿
 namespace Furni.Web.Core.VeiwModels
 {
-    public class ProductViewModel
+    public class ProductViewModel : BaseViewModel
     {
         public int Id { get; set; }
         public string Title { get; set; } = null!;
@@ -11,10 +11,9 @@ namespace Furni.Web.Core.VeiwModels
         public float Price { get; set; }
         [Range(1, 1000, ErrorMessage = Errors.MaxRange)]
         public float DiscountValue { get; set; }
-        public string? ImageUrl { get; set; }
-        public string? ImageThumbnailUrl { get; set; }
+        public string ImageUrl { get; set; } = null!;
+        public string ImageThumbnailUrl { get; set; } = null!;
         public string? ImagePublicID { get; set; }
-        public int CategoryID { get; set; }
-        public Category? Category { get; set; }
+        public string Category { get; set; } = null!;
     }
 }

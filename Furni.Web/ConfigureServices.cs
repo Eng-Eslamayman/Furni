@@ -1,6 +1,7 @@
 ﻿using Furni.DataAccess.Persistence;
 using Furni.Web.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using UoN.ExpressiveAnnotations.NetCore.DependencyInjection;
 
@@ -25,6 +26,11 @@ namespace Furni.Web
             services.AddExpressiveAnnotations();
             // Services
             services.AddTransient<IImageService, ImageService>();
+
+            // Auto Validate to AntiForgeryToken
+            services.AddMvc(options =>
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
+            );
 
             return services;
         }

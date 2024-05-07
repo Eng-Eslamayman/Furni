@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Furni.Web.Extensions;
 using Furni.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,6 +27,24 @@ namespace Furni.Web.Controllers
             var viewModel = _mapper.Map<IEnumerable<ProductViewModel>>(productList);
 			PopulateAction();
 			return View(viewModel);
+        }
+
+
+        [HttpPost, IgnoreAntiforgeryToken]
+        public IActionResult GetProducts()
+        {
+            var filterDto = Request.Form.GetFilters();
+
+            var (products, recordsTotal) = _unitOfWork.Products.GetFiltered(filterDto);
+
+
+            var mappedData = _mapper.ProjectTo<ProductViewModel>(products).ToList();
+
+            var recordsFiltered = products.Count(); // Records After Filter
+
+            var jsonData = new { recordsFiltered, recordsTotal, data = mappedData }; // recordsTotal => All records in database
+
+            return Ok(jsonData);
         }
 
 

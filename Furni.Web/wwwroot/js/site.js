@@ -302,7 +302,7 @@ $(document).ready(function () {
                         success: function (lastUpdatedOn) {
                             var row = btn.parents('tr');
                             var status = row.find('.js-status');
-                            var newStatus = status.text().trim() === 'Deleted' ? 'Available' : 'Deleted';
+                            var newStatus = status.text().trim() === 'InActive' ? 'Published' : 'InActive';
                             status.text(newStatus).toggleClass('badge-light-success badge-light-danger');
                             row.find('.js-updated-on').html(lastUpdatedOn);
                             row.addClass('animate__animated animate__flash');
