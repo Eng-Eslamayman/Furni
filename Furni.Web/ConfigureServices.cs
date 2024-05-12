@@ -16,11 +16,14 @@ namespace Furni.Web
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+			services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+				.AddEntityFrameworkStores<ApplicationDbContext>()
+				.AddDefaultUI()
+				.AddDefaultTokenProviders()
+				.AddSignInManager<SignInManager<ApplicationUser>>();
 
-            // Add AutoMapper
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
+			// Add AutoMapper
+			services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 
             // Add Expressive Annotation
             services.AddExpressiveAnnotations();

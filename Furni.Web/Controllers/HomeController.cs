@@ -1,9 +1,11 @@
 using Furni.Web.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Furni.Web.Controllers
 {
+    [Authorize(Roles =AppRoles.Admin)]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

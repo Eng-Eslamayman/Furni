@@ -1,16 +1,21 @@
 using Furni.DataAccess;
 using Furni.DataAccess.Persistence;
+using Furni.Web.Seeds;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace Furni.Web
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public async static Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
-            // Add services to the container.
-            builder.Services.AddDataAccessServices(builder.Configuration)
+			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+			// Add services to the container.
+			builder.Services.AddDataAccessServices(builder.Configuration)
 				.AddWebServices(builder);
 
 			var app = builder.Build();
@@ -32,7 +37,18 @@ namespace Furni.Web
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
+
+			var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+
+			using var scope = scopeFactory.CreateScope();
+
+			var roleManger = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+			var userManger = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+			await DefaultRoles.SeedAsync(roleManger);
+			await DefaultUsers.SeedAdminUserAsync(userManger);
 
 			app.MapControllerRoute(
 				name: "default",
