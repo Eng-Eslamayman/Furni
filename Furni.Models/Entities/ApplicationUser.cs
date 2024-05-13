@@ -16,5 +16,8 @@ namespace Furni.Models.Entities
 		public DateTime CreatedOn { get; set; } = DateTime.Now;
 		public string? LastUpdatedById { get; set; }
 		public DateTime? LastUpdatedOn { get; set; }
-	}
+        public string? ImageUrl { get; set; }
+        public string? ImageThumbnailUrl { get; set; }
+        public string? ImagePublicId { get; set; }
+    }
 }

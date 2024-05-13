@@ -57,6 +57,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\products\thumb\" />
+    <Folder Include="wwwroot\images\Users\thumb\" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ namespace Furni.DataAccess.Persistence.Seeds
             if (!roleManager.Roles.Any())
             {
                 await roleManager.CreateAsync(new IdentityRole(AppRoles.Admin));
-                await roleManager.CreateAsync(new IdentityRole(AppRoles.User));
+                await roleManager.CreateAsync(new IdentityRole(AppRoles.Customer));
             }
         }
     }

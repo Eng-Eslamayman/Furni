@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Furni.Web.Controllers
 {
-    [Authorize(Roles =AppRoles.Admin)]
+    [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Customer}")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
