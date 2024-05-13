@@ -1,0 +1,59 @@
+﻿@model IEnumerable<UserViewModel>
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery
+
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/assets/plugins/datatables/datatables.bundle.css" />
+}
+
+<partial name="_Toolbar" />
+
+<div class="card shadow-sm">
+    @* begin card header *@
+    <partial name="_DataTablesCardHeader" />
+    @* end card header *@
+
+    @* begin card body *@
+    <div class="card-body pt-0">
+        <div class="table-responsive">
+            <table class="table table-row-dashed table-row-gray-300 gy-2 align-middle js-datatables" data-document-title="Users">
+                <thead>
+                    <tr class="fw-bold fs-6 text-gray-800">
+                        <th>Full Name</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Created On</th>
+                        <th>Last Updated On</th>
+                        <th class="text-end js-no-export">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <partial name="_UserRow" model="@user" />
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<input type="hidden" name="__RequestVerificationToken" value="@antiforgery.GetAndStoreTokens(Context).RequestToken" />
+
+
+@section Plugins {
+    <script src="~/assets/plugins/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/plugins/datatables/vfs_fonts.js"></script>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

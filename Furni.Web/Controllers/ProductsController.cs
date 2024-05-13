@@ -26,7 +26,7 @@ namespace Furni.Web.Controllers
         {
 			var productList = _unitOfWork.Products.GetAll();
             var viewModel = _mapper.Map<IEnumerable<ProductViewModel>>(productList);
-			PopulateAction();
+			ActionName();
 			return View(viewModel);
         }
 
@@ -66,7 +66,7 @@ namespace Furni.Web.Controllers
 
         public IActionResult Create()
         {
-			PopulateAction();
+			ActionName();
 			return View("Form", PopulateViewModel());
         }
 
@@ -111,7 +111,7 @@ namespace Furni.Web.Controllers
 
             var model = _mapper.Map<ProductFormViewModel>(product);
             var viewModel = PopulateViewModel(model);
-            PopulateAction();
+			ActionName();
 
 			return View("Form", viewModel);
         }
@@ -200,7 +200,7 @@ namespace Furni.Web.Controllers
             return viewModel;
         }
 
-        private void PopulateAction()
+        private void ActionName()
         {
 			ViewBag.ControllerName = RouteData.Values["controller"]!.ToString();
 			ViewBag.ActionName = RouteData.Values["action"]!.ToString();

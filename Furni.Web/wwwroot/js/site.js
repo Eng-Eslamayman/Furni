@@ -66,6 +66,22 @@ $.each(headers, function (i) {
         exportedCols.push(i);
 });
 
+
+
+
+// Select2
+function applySelect2() {
+    $('.js-select2').select2();
+    $('.js-select2').on('select2:select', function (e) {
+        var select = $(this);
+        $('form').not('#SignOut').validate().element('#' + select.attr('id'));
+        //$('form').validate().getElementById('forTest');
+    });
+}
+
+
+
+
 // Class definition
 var KTDatatables = function () {
     // Private functions
@@ -169,6 +185,7 @@ var KTDatatables = function () {
 $(document).ready(function () {
 
     // Disabled Submit button
+    // .not('#SignOut') to handle signOut
     $('form').not('#SignOut').not('.js-excluded-validation').on('submit', function () {
         //disableSubmitButton($('#Modal').find(':submit'));
 
@@ -218,7 +235,7 @@ $(document).ready(function () {
             success: function (form) {
                 modal.find('.modal-body').html(form);
                 $.validator.unobtrusive.parse(modal);
-                //applySelect2();
+                applySelect2();
             },
             error: function () {
                 showErrorMessage();
@@ -267,6 +284,9 @@ $(document).ready(function () {
         $('#SignOut').submit();
         //$(this).parent().submit();
     });
+
+    // Select2
+    applySelect2();
 
     //SweetAlert
     var message = $('#Message').text();
