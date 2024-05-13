@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Seeds\**" />
+    <Content Remove="Seeds\**" />
+    <EmbeddedResource Remove="Seeds\**" />
+    <None Remove="Seeds\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\js\products.js" />
   </ItemGroup>
 

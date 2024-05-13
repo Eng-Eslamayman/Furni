@@ -1,6 +1,6 @@
 using Furni.DataAccess;
 using Furni.DataAccess.Persistence;
-using Furni.Web.Seeds;
+using Furni.DataAccess.Persistence.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace Furni.Web

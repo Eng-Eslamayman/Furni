@@ -12,11 +12,12 @@ namespace Furni.DataAccess
     {
         public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
         {
+            // Connect with Database
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                                  builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-
+            // Inject UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
