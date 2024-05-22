@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using Furni.Web.Extensions;
 
 namespace Furni.Web.Controllers
 {
@@ -72,12 +73,12 @@ namespace Furni.Web.Controllers
 
             if(model.SelectedRoles.Contains(AppRoles.Customer)) return BadRequest();
 
-            ApplicationUser user = new()
+            ApplicationUser user = new() // Initail Id to new GUID
             {
                 FullName = model.FullName,
                 UserName = model.UserName,
                 Email = model.Email,
-                CreatedById = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+                CreatedById = User.GetUserId()
             };
             var identityResult = await _userManager.CreateAsync(user, model.Password!);
 
@@ -141,13 +142,14 @@ namespace Furni.Web.Controllers
             if (user is null)
                 return NotFound();
 
+            // If password not valid then return to the old password 
             var currentPasswordHash = user.PasswordHash;
-            await _userManager.RemovePasswordAsync(user);
+            await _userManager.RemovePasswordAsync(user); // Here remove the password from database
 
             var identityResult = await _userManager.AddPasswordAsync(user, model.Password);
             if (identityResult.Succeeded)
             {
-                user.LastUpdatedById = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                user.LastUpdatedById = User.GetUserId();
                 user.LastUpdatedOn = DateTime.Now;
 
                 await _userManager.UpdateAsync(user);
@@ -156,6 +158,7 @@ namespace Furni.Web.Controllers
                 return PartialView("_UserRow", viewModel);
             }
 
+            // If password not valid then return to the old password because we remove the passord
             user.PasswordHash = currentPasswordHash;
             await _userManager.UpdateAsync(user);
 
@@ -200,7 +203,7 @@ namespace Furni.Web.Controllers
                 return NotFound();
 
             user = _mapper.Map(model, user);
-            user.LastUpdatedById = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            user.LastUpdatedById = User.GetUserId();
             user.LastUpdatedOn = DateTime.Now;
 
             var identityResult = await _userManager.UpdateAsync(user);
@@ -209,7 +212,7 @@ namespace Furni.Web.Controllers
             {
                 var currentRoles = await _userManager.GetRolesAsync(user);
 
-                var rolesUpdated = !currentRoles.SequenceEqual(model.SelectedRoles);
+                var rolesUpdated = !currentRoles.SequenceEqual(model.SelectedRoles); // If old roles == newRoles => it will not go to database
 
                 if (rolesUpdated)
                 {
@@ -239,7 +242,7 @@ namespace Furni.Web.Controllers
                 return NotFound();
 
             user.IsDeleted = !user.IsDeleted;
-            user.LastUpdatedById = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            user.LastUpdatedById = User.GetUserId();
             user.LastUpdatedOn = DateTime.Now;
 
             await _userManager.UpdateAsync(user);

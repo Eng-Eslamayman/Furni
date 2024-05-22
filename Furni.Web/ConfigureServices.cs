@@ -23,13 +23,30 @@ namespace Furni.Web
 				.AddDefaultTokenProviders()
 				.AddSignInManager<SignInManager<ApplicationUser>>();
 
-			// Add AutoMapper
-			services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
+            services.Configure<IdentityOptions>(options =>
+            {
+                //options.Password.RequireNonAlphanumeric = true;
+                //options.Password.RequireLowercase = true;
+                //options.Password.RequireUppercase = true;
+                //options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                //options.Password.RequiredUniqueChars = 1;
+                options.User.RequireUniqueEmail = true;
+                //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                //options.Lockout.MaxFailedAccessAttempts = 3;
+            });
+
+            // Add AutoMapper
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 
             // Add Expressive Annotation
             services.AddExpressiveAnnotations();
             // Services
             services.AddTransient<IImageService, ImageService>();
+            // Settings
+            //services.Configure<STMPSetting>(builder.Configuration.GetSection(nameof(STMPSetting)));
+            //services.Configure<FacebookSetting>(builder.Configuration.GetSection(nameof(FacebookSetting)));
+            //services.Configure<GoogleSetting>(builder.Configuration.GetSection(nameof(GoogleSetting)));
 
             // Auto Validate to AntiForgeryToken
             services.AddMvc(options =>
