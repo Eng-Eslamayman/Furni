@@ -36,8 +36,8 @@ namespace Furni.Web.Core.VeiwModels
         public string? ConfirmPassword { get; set; } = null!;
 
         [Display(Name = "Roles")]
-        public IList<string> SelectedRoles { get; set; } = new List<string>();
+        public IList<string> SelectedRoles { get; set; } = new List<string>(); // Edit
 
-        public IEnumerable<SelectListItem>? Roles { get; set; }
+        public IEnumerable<SelectListItem>? Roles { get; set; } // Create
     }
 }

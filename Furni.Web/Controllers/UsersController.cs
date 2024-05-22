@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace Furni.Web.Controllers
 {
@@ -69,6 +70,8 @@ namespace Furni.Web.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
+            if(model.SelectedRoles.Contains(AppRoles.Customer)) return BadRequest();
+
             ApplicationUser user = new()
             {
                 FullName = model.FullName,
@@ -76,7 +79,7 @@ namespace Furni.Web.Controllers
                 Email = model.Email,
                 CreatedById = User.FindFirst(ClaimTypes.NameIdentifier)!.Value
             };
-            var identityResult = await _userManager.CreateAsync(user, model.Password);
+            var identityResult = await _userManager.CreateAsync(user, model.Password!);
 
             if (identityResult.Succeeded)
             {
@@ -189,7 +192,9 @@ namespace Furni.Web.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var user = await _userManager.FindByIdAsync(model.Id);
+            if (model.SelectedRoles.Contains(AppRoles.Customer)) return BadRequest();
+
+            var user = await _userManager.FindByIdAsync(model.Id!);
 
             if (user is null)
                 return NotFound();
