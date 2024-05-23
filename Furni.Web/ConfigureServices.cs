@@ -1,4 +1,5 @@
 ﻿using Furni.DataAccess.Persistence;
+using Furni.Web.Helpers;
 using Furni.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,13 +44,15 @@ namespace Furni.Web
             services.AddExpressiveAnnotations();
             // Services
             services.AddTransient<IImageService, ImageService>();
-            // Settings
-            //services.Configure<STMPSetting>(builder.Configuration.GetSection(nameof(STMPSetting)));
-            //services.Configure<FacebookSetting>(builder.Configuration.GetSection(nameof(FacebookSetting)));
-            //services.Configure<GoogleSetting>(builder.Configuration.GetSection(nameof(GoogleSetting)));
+			services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
-            // Auto Validate to AntiForgeryToken
-            services.AddMvc(options =>
+			// Settings
+			//services.Configure<STMPSetting>(builder.Configuration.GetSection(nameof(STMPSetting)));
+			//services.Configure<FacebookSetting>(builder.Configuration.GetSection(nameof(FacebookSetting)));
+			//services.Configure<GoogleSetting>(builder.Configuration.GetSection(nameof(GoogleSetting)));
+
+			// Auto Validate to AntiForgeryToken
+			services.AddMvc(options =>
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
             );
 

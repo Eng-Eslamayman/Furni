@@ -56,7 +56,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Settings\" />
     <Folder Include="wwwroot\images\products\thumb\" />
     <Folder Include="wwwroot\images\Users\thumb\" />
   </ItemGroup>

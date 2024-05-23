@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Furni.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,13 +17,16 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IImageService _imageService;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IImageService imageService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _imageService = imageService;
         }
 
         /// <summary>
@@ -55,9 +59,16 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            [Required, MaxLength(100, ErrorMessage = Errors.MaxLength), Display(Name = "Full Name")]
+            [RegularExpression(RegexPatterns.CharactersOnly_Eng, ErrorMessage = Errors.OnlyEnglishLetters)]
+            public string FullName { get; set; } = null!;
+
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Phone number"), MaxLength(11, ErrorMessage = Errors.MaxLength)]
+            [RegularExpression(RegexPatterns.MobileNumber, ErrorMessage = Errors.InvalidMobileNumber)]
             public string PhoneNumber { get; set; }
+            public IFormFile Avatar { get; set; }
+            public bool ImageRemoved { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -69,6 +80,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                FullName = user.FullName,
                 PhoneNumber = phoneNumber
             };
         }
@@ -99,6 +111,18 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+
+            if (Input.FullName != user.FullName)
+            {
+                user.FullName = Input.FullName;
+                var setFullName = await _userManager.UpdateAsync(user);
+                if (!setFullName.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set full name.";
+                    return RedirectToPage();
+                }
+            }
+
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -109,6 +133,21 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+
+
+            if (Input.Avatar is not null)
+            {
+                _imageService.Delete($"/images/users/{user.Id}.png");
+                var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(Input.Avatar, $"{user.Id}.png", "/images/users", hasThumbnail: false);
+                if (!isUploaded)
+                {
+                    ModelState.AddModelError("Input.Avata", errorMessage);
+                    await LoadAsync(user);
+                    return Page();
+                }
+            }
+            else if (Input.ImageRemoved)
+                _imageService.Delete($"/images/users/{user.Id}.png");
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
