@@ -70,7 +70,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
             [Required]
             //[EmailAddress]
             [Display(Name = "Username/Email")]
-            public string username { get; set; }
+            public string Username { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -115,7 +115,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var userName = Input.username.ToUpper();
+                var userName = Input.Username.ToUpper();
                 var user = await _userManager.Users
                     .SingleOrDefaultAsync(u => (u.NormalizedUserName == userName || u.NormalizedEmail == userName) && !u.IsDeleted);
 
@@ -142,7 +142,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                 }
                 if (result.IsNotAllowed)
                 {
-                    return RedirectToPage("./ResendEmailConfirmation", new { username = Input.username });
+                    return RedirectToPage("./ResendEmailConfirmation", new { username = Input.Username });
                 }
                 else
                 {

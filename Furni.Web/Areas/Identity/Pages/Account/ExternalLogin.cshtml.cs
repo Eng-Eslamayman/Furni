@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Net.Mail;
 
 namespace Furni.Web.Areas.Identity.Pages.Account
 {
@@ -85,7 +86,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
         }
-        
+
         public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
@@ -152,7 +153,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
+                user.FullName = new MailAddress(Input.Email).User;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
