@@ -250,12 +250,7 @@ $(document).ready(function () {
         singleDatePicker: true,
         autoApply: true,
         drops: 'up',
-        showDropdowns: true,
-        minYear: 1901,
-        locale: {
-            format: 'DD/MM/YYYY'
-        },
-        maxDate: new Date()
+        maxDate: new Date(),
     });
 
 

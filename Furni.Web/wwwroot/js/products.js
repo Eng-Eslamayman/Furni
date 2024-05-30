@@ -8,8 +8,8 @@
     datatable = $('#Products').DataTable({
         serverSide: true,
         processing: true,
-        stateSave: true,
-        lengthMenu: [2, 5, 10, 20, 40],
+        stateSave: false,
+        lengthMenu: [10, 20, 40],
         ajax: {
             url: '/Products/GetProducts', 
             type: 'POST'
