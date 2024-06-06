@@ -52,17 +52,24 @@ namespace Furni.Web
             //services.Configure<FacebookSetting>(builder.Configuration.GetSection(nameof(FacebookSetting)));
             //services.Configure<GoogleSetting>(builder.Configuration.GetSection(nameof(GoogleSetting)));
 
+
+            // Add External Login Configuration to Facebook
             services.AddAuthentication().AddFacebook(options =>
             {
                 options.AppId = builder.Configuration["Authentication:Facebook:AppId"] ?? string.Empty;
                 options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"] ?? string.Empty;
             });
 
+            // Add External Login Configuration to Google
             services.AddAuthentication().AddGoogle(options =>
             {
                 options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? string.Empty;
                 options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? string.Empty;
             });
+
+            // Add Log Out User when needed 
+            //services.Configure<SecurityStampValidatorOptions>(options => 
+            //                            options.ValidationInterval = TimeSpan.Zero);
 
 
             // Auto Validate to AntiForgeryToken
