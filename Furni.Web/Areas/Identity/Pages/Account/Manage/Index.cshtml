@@ -71,7 +71,7 @@
     <!--begin::Content-->
     <div id="kt_account_settings_profile_details" class="collapse show">
         <!--begin::Form-->
-        <form id="kt_account_profile_details_form" class="form" method="post">
+        <form class="form" method="post" enctype="multipart/form-data">
             <!--begin::Card body-->
             <div class="card-body border-top p-9">
                 <input type="hidden" />
@@ -110,7 +110,7 @@
                             </span>
                             <!--end::Cancel-->
                             <!--begin::Remove-->
-                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow js-remove-avatar" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
                                 <i class="ki-duotone ki-cross fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
@@ -166,7 +166,15 @@
             <!--begin::Actions-->
             <div class="card-footer d-flex justify-content-end py-6 px-9">
                 <button type="reset" class="btn btn-light btn-active-light-primary me-2">Discard</button>
-                <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">Save Changes</button>
+                <!--begin::Button-->
+                <button type="submit" class="btn btn-primary">
+                    <span class="indicator-label">Save Changes</span>
+                    <span class="indicator-progress">
+                        Please wait...
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+                <!--end::Button-->
             </div>
             <!--end::Actions-->
         </form>
@@ -281,4 +289,12 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            $('.js-remove-avatar').on('click', function(){
+                $('#Input_ImageRemoved').val(true);
+            })
+        });
+    </script>
 }

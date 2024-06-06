@@ -141,7 +141,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
                 var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(Input.Avatar, $"{user.Id}.png", "/images/users", hasThumbnail: false);
                 if (!isUploaded)
                 {
-                    ModelState.AddModelError("Input.Avata", errorMessage);
+                    ModelState.AddModelError("Input.Avatar", errorMessage);
                     await LoadAsync(user);
                     return Page();
                 }
