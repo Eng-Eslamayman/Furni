@@ -45,12 +45,14 @@ namespace Furni.Web
             services.AddExpressiveAnnotations();
             // Services
             services.AddTransient<IImageService, ImageService>();
-			services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailBodyBuilder, EmailBodyBuilder>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
             // Settings
-            //services.Configure<STMPSetting>(builder.Configuration.GetSection(nameof(STMPSetting)));
             //services.Configure<FacebookSetting>(builder.Configuration.GetSection(nameof(FacebookSetting)));
             //services.Configure<GoogleSetting>(builder.Configuration.GetSection(nameof(GoogleSetting)));
+            services.Configure<STMPSetting>(builder.Configuration.GetSection(nameof(STMPSetting)));
 
 
             // Add External Login Configuration to Facebook

@@ -30,27 +30,31 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 		private readonly IUserEmailStore<ApplicationUser> _emailStore;
 		private readonly ILogger<RegisterModel> _logger;
 		private readonly IEmailSender _emailSender;
+        private readonly IEmailBodyBuilder _emailBodyBuilder;
 
-		public RegisterModel(
-			UserManager<ApplicationUser> userManager,
-			IUserStore<ApplicationUser> userStore,
-			SignInManager<ApplicationUser> signInManager,
-			ILogger<RegisterModel> logger,
-			IEmailSender emailSender)
-		{
-			_userManager = userManager;
-			_userStore = userStore;
-			_emailStore = GetEmailStore();
-			_signInManager = signInManager;
-			_logger = logger;
-			_emailSender = emailSender;
-		}
 
-		/// <summary>
-		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-		///     directly from your code. This API may change or be removed in future releases.
-		/// </summary>
-		[BindProperty]
+        public RegisterModel(
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<RegisterModel> logger,
+            IEmailSender emailSender,
+            IEmailBodyBuilder emailBodyBuilder)
+        {
+            _userManager = userManager;
+            _userStore = userStore;
+            _emailStore = GetEmailStore();
+            _signInManager = signInManager;
+            _logger = logger;
+            _emailSender = emailSender;
+            _emailBodyBuilder = emailBodyBuilder;
+        }
+
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
+        [BindProperty]
 		public InputModel Input { get; set; }
 
 		/// <summary>
@@ -127,18 +131,43 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 					_logger.LogInformation("User created a new account with password.");
 
 					var userId = await _userManager.GetUserIdAsync(user);
-					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-					var callbackUrl = Url.Page(
-						"/Account/ConfirmEmail",
-						pageHandler: null,
-						values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-						protocol: Request.Scheme);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    //var callbackUrl = Url.Page(
+                    //	"/Account/ConfirmEmail",
+                    //	pageHandler: null,
+                    //	values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    //	protocol: Request.Scheme);
 
-					await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-						$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //	$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-					if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = code },
+                        protocol: Request.Scheme);
+
+                    // Set place holders to send it to email Body Builder to replace holders in html file
+                    var placeHolders = new Dictionary<string, string>()
+					{
+						{ "imageUrl", "https://res.cloudinary.com/dzqc5nfai/image/upload/v1717798788/qkp9tphwwlqkrmkdukpx.svg" },
+						{ "header", $"Hey {user.FullName}, thanks for joining up!" },
+						{ "body", "Please confirm your email" },
+						{ "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
+						{ "linkTitle", "Active Account" }
+					};
+
+                    // Email Body
+                    var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
+
+                    // Send the email
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email", body);
+
+
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
 					{
 						return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
 					}

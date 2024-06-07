@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using Furni.Web.Extensions;
+using System.Text.Encodings.Web;
 
 namespace Furni.Web.Controllers
 {
@@ -17,24 +18,24 @@ namespace Furni.Web.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        //private readonly IEmailBodyBuilder _emailBodyBuilder;
-        //private readonly IEmailSender _emailSender;
+        private readonly IEmailBodyBuilder _emailBodyBuilder;
+        private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
         public UsersController(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            //IEmailSender emailSender,
+            IEmailSender emailSender,
             IMapper mapper,
             IWebHostEnvironment webHostEnvironment
-            //,IEmailBodyBuilder emailBodyBuilder
+            , IEmailBodyBuilder emailBodyBuilder
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            //_emailSender = emailSender;
+            _emailSender = emailSender;
             _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
-            //_emailBodyBuilder = emailBodyBuilder;
+            _emailBodyBuilder = emailBodyBuilder;
         }
 
 
@@ -94,19 +95,21 @@ namespace Furni.Web.Controllers
                     values: new { area = "Identity", userId = user.Id, code = code },
                     protocol: Request.Scheme);
 
-                //var placeHolders = new Dictionary<string, string>()
-                //{
-                //    { "imageUrl", "https://res.cloudinary.com/devcreed/image/upload/v1668732314/icon-positive-vote-1_rdexez.svg" },
-                //    { "header", $"Hey {user.FullName}, thanks for joining up!" },
-                //    { "body", "Please confirm your email" },
-                //    { "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
-                //    { "linkTitle", "Active Account" }
-                //};
+                // Set place holders to send it to email Body Builder to replace holders in html file
+                var placeHolders = new Dictionary<string, string>()
+                {
+                    { "imageUrl", "https://res.cloudinary.com/dzqc5nfai/image/upload/v1717798788/qkp9tphwwlqkrmkdukpx.svg" },
+                    { "header", $"Hey {user.FullName}, thanks for joining up!" },
+                    { "body", "Please confirm your email" },
+                    { "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
+                    { "linkTitle", "Active Account" }
+                };
 
-                //var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
+                // Email Body
+                var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
 
-
-                //await _emailSender.SendEmailAsync(user.Email, "Confirm your email", body);
+                // Send the email
+                await _emailSender.SendEmailAsync(user.Email, "Confirm your email", body);
 
                 var viewModel = _mapper.Map<UserViewModel>(user);
                 return PartialView("_UserRow", viewModel);

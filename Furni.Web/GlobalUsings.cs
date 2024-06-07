@@ -6,3 +6,7 @@ global using Furni.Utility.Consts;
 global using System.ComponentModel.DataAnnotations;
 global using Furni.Models.DTOs;
 global using Microsoft.EntityFrameworkCore;
+global using Furni.Models.Common;
+global using Microsoft.AspNetCore.Identity.UI.Services;
+global using Furni.Web.Services;
+
