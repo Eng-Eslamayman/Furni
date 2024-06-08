@@ -29,9 +29,9 @@
 						<!--begin::Input group=-->
 						<div class="fv-row mb-8">
 							<!--begin::Email-->
-							<input type="text" placeholder="Email" asp-for="Input.Email" autocomplete="off" class="form-control bg-transparent" />
+							<input type="text" id="email" placeholder="Email" asp-for="Input.Email" autocomplete="off" class="form-control bg-transparent" />
 							<span asp-validation-for="Input.Email" class="text-danger"></span>
-
+							<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 							<!--end::Email-->
 						</div>
 						<!--begin::Input group-->
@@ -112,4 +112,6 @@
 
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
+
+    @* <script src="~/js/register.js" asp-append-version="true"></script> *@
 }

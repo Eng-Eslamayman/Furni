@@ -211,5 +211,13 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 			}
 			return (IUserEmailStore<ApplicationUser>)_userStore;
 		}
-	}
+
+        //public async Task<IActionResult> OnPostAllowEmailAsync(string email)
+        //{
+        //    var userByEmail = await _userManager.FindByEmailAsync(email);
+        //    var userByUsername = await _userManager.FindByNameAsync(email.Split('@')[0]);
+        //    var isAllowed = userByEmail == null && userByUsername == null;
+        //    return new JsonResult(isAllowed);
+        //}
+    }
 }

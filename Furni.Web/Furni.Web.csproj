@@ -16,6 +16,11 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\js\products.js" />
+    <Content Remove="wwwroot\js\register.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\register.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +60,7 @@
     <None Include="wwwroot\assets\css\fonts\line-awesome\la-solid-900.woff2" />
     <None Include="wwwroot\assets\plugins\fslightbox\fslightbox.bundle.js" />
     <None Include="wwwroot\js\products.js" />
+    <None Include="wwwroot\js\register.js" />
   </ItemGroup>
 
   <ItemGroup>
