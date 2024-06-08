@@ -19,19 +19,21 @@ namespace Furni.Web.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
+		private readonly IEmailBodyBuilder _emailBodyBuilder;
+		private readonly IEmailSender _emailSender;
 
-        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
-        {
-            _userManager = userManager;
-            _emailSender = emailSender;
-        }
+		public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailBodyBuilder emailBodyBuilder, IEmailSender emailSender)
+		{
+			_userManager = userManager;
+			_emailBodyBuilder = emailBodyBuilder;
+			_emailSender = emailSender;
+		}
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        [BindProperty]
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
+		[BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
@@ -70,12 +72,23 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+				// Set place holders to send it to email Body Builder to replace holders in html file
+				var placeHolders = new Dictionary<string, string>()
+				{
+					{ "imageUrl", "https://res.cloudinary.com/dzqc5nfai/image/upload/v1717874871/icon-positive-vote-2_ayuqhh.svg" },
+					{ "header", $"Hey {user.FullName}," },
+					{ "body", "Please click the below reset your password" },
+					{ "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
+					{ "linkTitle", "Reset Password" }
+				};
 
-                return RedirectToPage("./ForgotPasswordConfirmation");
+				// Email Body
+				var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
+
+				// Send the email
+				await _emailSender.SendEmailAsync(Input.Email, "Reset Password", body);
+
+				return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
             return Page();

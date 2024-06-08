@@ -90,10 +90,22 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
-            if (User.Identity!.IsAuthenticated)
-                return LocalRedirect(returnUrl);
+			// Check if the user is already authenticated
+			if (User.Identity!.IsAuthenticated)
+			{
+				// Redirect authenticated users to the return URL if provided
+				if (!string.IsNullOrEmpty(returnUrl))
+				{
+					return LocalRedirect(returnUrl);
+				}
+				else
+				{
+					// Redirect authenticated users to the home page or another default page
+					return RedirectToPage("/Index"); // Adjust the redirect target as needed
+				}
+			}
 
-            if (!string.IsNullOrEmpty(ErrorMessage))
+			if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
