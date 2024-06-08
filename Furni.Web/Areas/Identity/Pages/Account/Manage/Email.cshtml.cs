@@ -19,15 +19,18 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailBodyBuilder _emailBodyBuilder;
         private readonly IEmailSender _emailSender;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            IEmailBodyBuilder emailBodyBuilder,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailBodyBuilder = emailBodyBuilder;
             _emailSender = emailSender;
         }
 
@@ -123,10 +126,22 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                // Set place holders to send it to email Body Builder to replace holders in html file
+                var placeHolders = new Dictionary<string, string>()
+                {
+                    { "imageUrl", "https://res.cloudinary.com/dzqc5nfai/image/upload/v1717798788/qkp9tphwwlqkrmkdukpx.svg" },
+                    { "header", $"Hey {user.FullName}," },
+                    { "body", "Please confirm your email" },
+                    { "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
+                    { "linkTitle", "Confirm Email" }
+                };
+
+                // Email Body
+                var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
+
+                // Send the email
+                await _emailSender.SendEmailAsync(Input.NewEmail, "Confirm your email", body);
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
                 return RedirectToPage();
@@ -159,10 +174,22 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            // Set place holders to send it to email Body Builder to replace holders in html file
+            var placeHolders = new Dictionary<string, string>()
+                {
+                    { "imageUrl", "https://res.cloudinary.com/dzqc5nfai/image/upload/v1717798788/qkp9tphwwlqkrmkdukpx.svg" },
+                    { "header", $"Hey {user.FullName}," },
+                    { "body", "Please confirm your email" },
+                    { "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
+                    { "linkTitle", "Active Account" }
+                };
+
+            // Email Body
+            var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
+
+            // Send the email
+            await _emailSender.SendEmailAsync(email, "Confirm your email", body);
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
