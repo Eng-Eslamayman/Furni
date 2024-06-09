@@ -5,11 +5,11 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Furni.Web", "Furni.Web\Furni.Web.csproj", "{02E9200B-2E29-4485-9213-49F5F718CC5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Furni.DataAccess", "Furni.DataAccess\Furni.DataAccess.csproj", "{E24393C3-B2D3-4AAA-8501-495E88587967}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Furni.DataAccess", "Furni.DataAccess\Furni.DataAccess.csproj", "{E24393C3-B2D3-4AAA-8501-495E88587967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Furni.Models", "Furni.Models\Furni.Models.csproj", "{F51505D1-35AF-46D8-9E6B-D3EE6A77FFA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Furni.Models", "Furni.Models\Furni.Models.csproj", "{F51505D1-35AF-46D8-9E6B-D3EE6A77FFA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Furni.Utility", "Furni.Utility\Furni.Utility.csproj", "{F3863210-93C6-455D-8B08-DF4BE7543A7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Furni.Utility", "Furni.Utility\Furni.Utility.csproj", "{F3863210-93C6-455D-8B08-DF4BE7543A7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

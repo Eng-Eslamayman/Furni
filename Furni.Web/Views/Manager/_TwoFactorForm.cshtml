@@ -1,0 +1,87 @@
+﻿@model TwoFactorViewModel
+
+<!--begin::Apps-->
+<div class="">
+    <!--begin::Heading-->
+    <h3 class="text-gray-900 fw-bold mb-7">Authenticator Apps</h3>
+    <!--end::Heading-->
+    <!--begin::Description-->
+    <div class="text-gray-500 fw-semibold fs-6 mb-10">
+        Using an authenticator app like
+        <a href="https://support.google.com/accounts/answer/1066447?hl=en" target="_blank">Google Authenticator</a>,
+        <a href="https://www.microsoft.com/en-us/account/authenticator" target="_blank">Microsoft Authenticator</a>,
+        <a href="https://authy.com/download/" target="_blank">Authy</a>, or
+        <a href="https://support.1password.com/one-time-passwords/" target="_blank">1Password</a>, scan the QR code. It will generate a 6 digit code for you to enter below.
+        <!--begin::QR code image-->
+        <div class="pt-5 text-center">
+            @if (Model.QRCodeBytes != null)
+            {
+                <img src="@string.Format("data:image/png;base64,{0}",
+                Convert.ToBase64String(Model.QRCodeBytes))" width="150" height="150" />
+            } 
+        </div>
+        <!--end::QR code image-->
+    </div>
+    <!--end::Description-->
+    <!--begin::Notice-->
+    <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-10 p-6">
+        <!--begin::Icon-->
+        <i class="ki-duotone ki-information fs-2tx text-warning me-4">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+        </i>
+        <!--end::Icon-->
+        <!--begin::Wrapper-->
+        <div class="d-flex flex-stack flex-grow-1">
+            <!--begin::Content-->
+            <div class="fw-semibold">
+                <div class="fs-6 text-gray-700">
+                    If you having trouble using the QR code, select manual entry on your app, and enter your username and the code:
+                    <div class="fw-bold text-gray-900 pt-2">@Model.SharedKey</div>
+                </div>
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Wrapper-->
+    </div>
+    <!--end::Notice-->
+    <!--begin::Form-->
+    <form asp-action="TwoFactorAuthentication"
+          data-ajax-method="post"
+          data-ajax="true"
+          data-ajax-begin="onModalTwoFactorBegin"
+          data-ajax-success="onModalTwoFactorSuccess"
+          data-ajax-failure="showErrorMessageTwoFactor"
+          data-ajax-complete="onModalComplete">
+
+        <input type="hidden" asp-for="@Model.SharedKey" />
+        <input type="hidden" asp-for="@Model.QRCodeBytes" />
+        <input type="hidden" asp-for="@Model.RecoveryCodes" />
+
+        <!--begin::Input group-->
+        <div class="mb-10 fv-row">
+            <input asp-for="@Model.Code" class="form-control form-control-lg form-control-solid" placeholder="Enter authentication code" />
+            <span asp-validation-for="@Model.Code" class="text-danger"></span>
+        </div>
+        <!--end::Input group-->
+
+
+
+        <!--begin::Actions-->
+        <div class="d-flex flex-center">
+            <button type="reset" data-kt-element="apps-cancel" class="btn btn-light me-3">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+                <span class="indicator-label">Verify</span>
+                <span class="indicator-progress">
+                    Please wait...
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                </span>
+            </button>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        </div>
+        <!--end::Actions-->
+    </form>
+    <!--end::Form-->
+</div>
+<!--end::Options-->
