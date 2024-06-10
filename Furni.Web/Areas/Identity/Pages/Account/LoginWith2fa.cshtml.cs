@@ -60,10 +60,10 @@ namespace Furni.Web.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            //[StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Authenticator code")]
-            public string TwoFactorCode { get; set; }
+            public string[] TwoFactorCode { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -104,7 +104,9 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                 throw new InvalidOperationException($"Unable to load two-factor authentication user.");
             }
 
-            var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
+            //var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
+            var authenticatorCode = string.Join("", Input.TwoFactorCode); 
+
 
             var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
 
