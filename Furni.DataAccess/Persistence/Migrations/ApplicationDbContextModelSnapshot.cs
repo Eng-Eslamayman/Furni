@@ -176,7 +176,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2024, 5, 13, 23, 3, 45, 761, DateTimeKind.Local).AddTicks(1377),
+                            CreatedOn = new DateTime(2024, 6, 12, 23, 23, 43, 685, DateTimeKind.Local).AddTicks(4637),
                             DisplayOrder = 1,
                             IsDeleted = false,
                             Name = "Cheers"
@@ -184,7 +184,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2024, 5, 13, 23, 3, 45, 761, DateTimeKind.Local).AddTicks(1429),
+                            CreatedOn = new DateTime(2024, 6, 12, 23, 23, 43, 685, DateTimeKind.Local).AddTicks(4688),
                             DisplayOrder = 2,
                             IsDeleted = false,
                             Name = "Couches"
@@ -192,7 +192,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2024, 5, 13, 23, 3, 45, 761, DateTimeKind.Local).AddTicks(1432),
+                            CreatedOn = new DateTime(2024, 6, 12, 23, 23, 43, 685, DateTimeKind.Local).AddTicks(4691),
                             DisplayOrder = 3,
                             IsDeleted = false,
                             Name = "Beds"
@@ -200,7 +200,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2024, 5, 13, 23, 3, 45, 761, DateTimeKind.Local).AddTicks(1435),
+                            CreatedOn = new DateTime(2024, 6, 12, 23, 23, 43, 685, DateTimeKind.Local).AddTicks(4694),
                             DisplayOrder = 4,
                             IsDeleted = false,
                             Name = "Tables"
@@ -208,7 +208,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedOn = new DateTime(2024, 5, 13, 23, 3, 45, 761, DateTimeKind.Local).AddTicks(1437),
+                            CreatedOn = new DateTime(2024, 6, 12, 23, 23, 43, 685, DateTimeKind.Local).AddTicks(4697),
                             DisplayOrder = 5,
                             IsDeleted = false,
                             Name = "Bed Rooms"
@@ -216,7 +216,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedOn = new DateTime(2024, 5, 13, 23, 3, 45, 761, DateTimeKind.Local).AddTicks(1442),
+                            CreatedOn = new DateTime(2024, 6, 12, 23, 23, 43, 685, DateTimeKind.Local).AddTicks(4701),
                             DisplayOrder = 6,
                             IsDeleted = false,
                             Name = "Children's Bedrooms"
@@ -224,7 +224,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedOn = new DateTime(2024, 5, 13, 23, 3, 45, 761, DateTimeKind.Local).AddTicks(1444),
+                            CreatedOn = new DateTime(2024, 6, 12, 23, 23, 43, 685, DateTimeKind.Local).AddTicks(4753),
                             DisplayOrder = 7,
                             IsDeleted = false,
                             Name = "Wordrobe"
@@ -306,6 +306,54 @@ namespace Furni.DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Furni.Models.Entities.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastUpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("LastUpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("LastUpdatedById");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -477,6 +525,37 @@ namespace Furni.DataAccess.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("LastUpdatedBy");
+                });
+
+            modelBuilder.Entity("Furni.Models.Entities.ShoppingCart", b =>
+                {
+                    b.HasOne("Furni.Models.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Furni.Models.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Furni.Models.Entities.ApplicationUser", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById");
+
+                    b.HasOne("Furni.Models.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("LastUpdatedBy");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -11,7 +11,7 @@
         stateSave: false,
         lengthMenu: [10, 20, 40],
         ajax: {
-            url: '/Products/GetProducts', 
+            url: '/Admin/Products/GetProducts', 
             type: 'POST'
         },
         order: [[1, 'asc']],
@@ -30,13 +30,13 @@
                 "render": function (data, type, row) {
                     return `<div class="d-flex align-items-center">
 								<!--begin::Thumbnail-->
-								<a href="/Products/Details/${row.id}" class="symbol symbol-50px">
+								<a href="/Admin/Products/Details/${row.id}" class="symbol symbol-50px">
 									<span class="symbol-label" style="background-image:url(${row.imageThumbnailUrl});"></span>
 								</a>
 								<!--end::Thumbnail-->
 								<div class="ms-5 d-flex flex-column">
 									<!--begin::Title-->
-									<a href="/Products/Details/${row.id}" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">${row.title}</a>
+									<a href="/Admin/Products/Details/${row.id}" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">${row.title}</a>
                                     <span>${row.category}</span>
 									<!--end::Title-->
 								</div>
@@ -78,7 +78,7 @@
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="/Products/Edit/${row.id}" class="menu-link px-3">
+                                    <a href="/Admin/Products/Edit/${row.id}" class="menu-link px-3">
                                         Edit
                                     </a>
                                 </div>
@@ -86,7 +86,7 @@
 
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="javascript:;" class="menu-link flex-stack px-3 js-toggle-status" data-url="/Products/ToggleStatus/${row.id}">
+                                    <a href="javascript:;" class="menu-link flex-stack px-3 js-toggle-status" data-url="/Admin/Products/ToggleStatus/${row.id}">
                                         Toggle Status
                                     </a>
                                 </div>
