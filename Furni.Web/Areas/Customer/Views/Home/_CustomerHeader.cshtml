@@ -42,7 +42,7 @@
 							</a>
 						</li>
 						<li class="menu-item mega-menu mega-menu-full">
-							<a href="demo-furniture-products.html" class="menu-link"><div>Shop</div></a>
+							<a asp-area="Customer" asp-controller="Products" asp-action="Index" class="menu-link"><div>Shop</div></a>
 
 							<!-- Menu DropDown
 							============================================= -->
@@ -51,7 +51,8 @@
 									<div class="row">
 										<ul class="sub-menu-container mega-menu-column col-lg-auto">
 											<li class="menu-item">
-												<a class="menu-link" href="demo-furniture-products.html"><div>All Products</div></a>
+												<a class="menu-link" asp-area="Customer" asp-controller="Products" asp-action="Index">
+													<div>All Products</div></a>
 											</li>
 										</ul>
 										<ul class="sub-menu-container mega-menu-column col-lg-auto">
