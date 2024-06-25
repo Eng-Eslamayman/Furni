@@ -1,25 +1,30 @@
 ﻿using AutoMapper;
 using Furni.DataAccess.Persistence.Repositories.IRepositories;
+using Furni.Models.Entities;
 using Furni.Web.Core.ViewModels;
 using Furni.Web.Extensions;
 using Furni.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace Furni.Web.Areas.Admin.Controllers
 {
-	[Area(AppRoles.Admin)]
+    [Area(AppRoles.Admin)]
 	[Authorize(Roles = AppRoles.Admin)]
     public class CategoriesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
 
-        public CategoriesController(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public CategoriesController(IUnitOfWork unitOfWork, IMapper mapper, IImageService imageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _imageService = imageService;
         }
         [HttpGet]
         public IActionResult Index()
@@ -32,16 +37,37 @@ namespace Furni.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return PartialView("_Form");
+            var category = new CategoryFormViewModel();
+            return PartialView("_Form", category);
         }
 
         [HttpPost]
-        public IActionResult Create(CategoryFormViewModel model)
+        public async Task<IActionResult> Create(CategoryFormViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
             var category = _mapper.Map<Category>(model);
+
+
+            // Handle Image
+            if (model.Image is not null)
+            {
+                var imageName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
+                var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(model.Image, imageName, "/images/categories", hasThumbnail: true);
+                if (!isUploaded)
+                {
+                    ModelState.AddModelError(nameof(Image), errorMessage!);
+                    return View("Form", model);
+                }
+
+                category.ImageUrl = $"/images/categories/{imageName}";
+                category.ImageThumbnailUrl = $"/images/categories/thumb/{imageName}";
+
+            }
+
+
+
             category.CreatedById = User.GetUserId();
 
             _unitOfWork.Categories.Add(category);
@@ -66,7 +92,7 @@ namespace Furni.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(CategoryFormViewModel model)
+        public async Task<IActionResult> Edit(CategoryFormViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -75,6 +101,31 @@ namespace Furni.Web.Areas.Admin.Controllers
 
             if (category is null)
                 return NotFound();
+
+            if (model.Image is not null)
+            {
+                _imageService.Delete(category.ImageUrl, category.ImageThumbnailUrl);
+
+                var imageName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
+                var imagePath = "/images/categories";
+
+                var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(model.Image, imageName, "/images/categories", hasThumbnail: true);
+
+
+                if (!isUploaded)
+                {
+                    ModelState.AddModelError(nameof(Image), errorMessage!);
+                    return View("Form", model);
+                }
+
+                model.ImageUrl = $"{imagePath}/{imageName}";
+                model.ImageThumbnailUrl = $"{imagePath}/thumb/{imageName}";
+            }
+            else
+            {
+                model.ImageUrl = category.ImageUrl;
+                model.ImageThumbnailUrl = category.ImageThumbnailUrl;
+            }
 
             category = _mapper.Map(model, category);
             category.LastUpdatedById = User.GetUserId();

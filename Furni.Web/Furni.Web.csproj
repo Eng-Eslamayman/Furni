@@ -91,6 +91,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\categories\thumb\" />
     <Folder Include="wwwroot\images\products\thumb\" />
     <Folder Include="wwwroot\images\Users\thumb\" />
   </ItemGroup>

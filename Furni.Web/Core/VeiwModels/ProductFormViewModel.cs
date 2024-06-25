@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace Furni.Web.Core.VeiwModels
 {

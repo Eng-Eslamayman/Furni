@@ -22,3 +22,13 @@ body {
   margin-bottom: 60px;
 }
 
+
+
+/* Center Image */
+.image-input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+

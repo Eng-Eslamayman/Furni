@@ -82,6 +82,7 @@ namespace Furni.Web.Areas.Admin.Controllers
 
             var product = _mapper.Map<Product>(model);
 
+            // Handle Image
             if (model.Image is not null)
             {
                 var imageName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
@@ -132,7 +133,7 @@ namespace Furni.Web.Areas.Admin.Controllers
             if (product is null)
                 return NotFound();
 
-
+            // Handle Image
             if (model.Image is not null)
             {
                 _imageService.Delete(product.ImageUrl, product.ImageThumbnailUrl);

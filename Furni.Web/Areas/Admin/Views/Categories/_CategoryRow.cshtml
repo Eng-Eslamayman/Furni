@@ -1,6 +1,21 @@
 ﻿@model CategoryViewModel
 <tr>
-    <td>@Model.Name</td>
+    <td>
+
+        <div class="d-flex align-items-center">
+            <!--begin::Thumbnail-->
+            <a href="#" class="symbol symbol-50px">
+                <span class="symbol-label" style="background-image:url(@Model.ImageThumbnailUrl);"></span>
+            </a>
+            <!--end::Thumbnail-->
+            <div class="ms-5 d-flex flex-column">
+                <!--begin::Title-->
+                <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">@Model.Name</a>
+                <!--end::Title-->
+            </div>
+        </div>
+
+    </td>
     <td>
         <span class="badge badge-light-@(Model.IsDeleted ? "danger" : "success") js-status">
             @(Model.IsDeleted ? "InActive" : "Published")

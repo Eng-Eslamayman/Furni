@@ -9,4 +9,6 @@ global using Microsoft.EntityFrameworkCore;
 global using Furni.Models.Common;
 global using Microsoft.AspNetCore.Identity.UI.Services;
 global using Furni.Web.Services;
+global using UoN.ExpressiveAnnotations.NetCore.Attributes;
+
 
