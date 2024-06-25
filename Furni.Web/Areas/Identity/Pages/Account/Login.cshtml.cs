@@ -90,6 +90,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
+			ViewData["isInIdentityArea"] = "Identity";
 			// Check if the user is already authenticated
 			if (User.Identity!.IsAuthenticated)
 			{

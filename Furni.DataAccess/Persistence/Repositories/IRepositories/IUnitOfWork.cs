@@ -10,6 +10,7 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
     {
         ICategoryRepository Categories { get; }
         IProductRepository Products { get; }
+        IShoppingCartRepository ShoppingCarts {  get; }
         int Complete();
     }
 }

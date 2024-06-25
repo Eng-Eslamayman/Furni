@@ -107,6 +107,8 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 
 		public async Task OnGetAsync(string returnUrl = null)
 		{
+			ViewData["isInIdentityArea"] = "Identity";
+
 			ReturnUrl = returnUrl;
 			ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 		}

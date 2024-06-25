@@ -20,6 +20,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
         /// </summary>
         public void OnGet()
         {
-        }
-    }
+			ViewData["isInIdentityArea"] = "Identity";
+		}
+	}
 }

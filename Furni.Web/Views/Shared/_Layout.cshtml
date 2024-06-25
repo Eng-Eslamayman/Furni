@@ -1,4 +1,5 @@
 ﻿@inject SignInManager<ApplicationUser> SignInManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +17,19 @@
 		<link rel="stylesheet" href="~/assets/css/style.bundle.css" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<link rel="stylesheet" href="~/lib/animate.css/animate.min.css" />
+		@await RenderSectionAsync("Styles", required: false)
+		<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+		<link rel="stylesheet" href="~/Furni.Web.styles.css" asp-append-version="true" />
+	}
+	else if (ViewData["isInIdentityArea"] == "Identity")
+	{
+		<!--begin::Fonts(mandatory for all pages)-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap">
+		<!--end::Fonts-->
+		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+		<link rel="stylesheet" href="~/assets/css/plugins.bundle.css" type="text/css" />
+		<link rel="stylesheet" href="~/assets/css/style.bundle.css" type="text/css" />
 		@await RenderSectionAsync("Styles", required: false)
 		<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 		<link rel="stylesheet" href="~/Furni.Web.styles.css" asp-append-version="true" />
@@ -42,10 +56,9 @@
 		<!-- Custom CSS -->
 		<link rel="stylesheet" href="~/assets/customer/css/custom.css">
 
-
 	}
 </head>
-<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-enabled mb-0">
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-enabled mb-0 stretched">
     
 	<!--begin::Main-->
 	<!--begin::Root-->
@@ -103,14 +116,35 @@
 		@await RenderSectionAsync("Scripts", required: false)
 
 	}
+	else if (ViewData["isInIdentityArea"] == "Identity")
+	{
+		@RenderBody()
+
+		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
+		<script src="~/assets/js/plugins.bundle.js"></script>
+		<script src="~/assets/js/scripts.bundle.js"></script>
+		@await RenderSectionAsync("Plugins", required: false)
+
+		@await RenderSectionAsync("Scripts", required: false)
+
+	}
 	else
 	{
 		@RenderBody()
 
 
+		<!-- Scroll Top -->
+		<div id="gotoTop" class="bg-color op-07 h-op-1">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FFF" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polygon points="48 208 128 128 208 208 48 208" opacity="0.2"></polygon><polygon points="48 208 128 128 208 208 48 208" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polygon><polyline points="48 128 128 48 208 128" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline></svg>
+		</div>
+
+
 		<!-- JavaScripts -->
 		<script src="~/assets/customer/js/plugins.min.js"></script>
 		<script src="~/assets/customer/js/functions.bundle.js"></script>
+
+		@await RenderSectionAsync("Scripts", required: false)
+
 	}
 	<!--end::Root-->
 	<!--end::Main-->
