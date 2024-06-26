@@ -24,6 +24,10 @@ namespace Furni.Web.Services
             if (image.Length > _maxAllowedSize)
                 return (isUploaded: false, errorMessage: Errors.MaxSize);
 
+
+            if (!Directory.Exists($"{_webHostEnvironment.WebRootPath}{folderPath}"))
+                Directory.CreateDirectory($"{_webHostEnvironment.WebRootPath}{folderPath}");
+
             var path = Path.Combine($"{_webHostEnvironment.WebRootPath}{folderPath}", imageName);
 
             using var stream = File.Create(path);
@@ -32,6 +36,9 @@ namespace Furni.Web.Services
 
             if (hasThumbnail)
             {
+                if (!Directory.Exists($"{_webHostEnvironment.WebRootPath}{folderPath}/thumb"))
+                    Directory.CreateDirectory($"{_webHostEnvironment.WebRootPath}{folderPath}/thumb");
+
                 var thumbPath = Path.Combine($"{_webHostEnvironment.WebRootPath}{folderPath}/thumb", imageName);
 
                 using var loadedImage = Image.Load(image.OpenReadStream());

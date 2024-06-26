@@ -22,13 +22,15 @@ namespace Furni.Web.Core.VeiwModels
         public DateTime PublishingDate { get; set; } = DateTime.Now;
         [RequiredIf("Id == 0", ErrorMessage = Errors.EmptyImage)]
         public IFormFile? Image { get; set; }
-        public List<IFormFile> Images { get; set; }
+        //[RequiredIf("Id == 0", ErrorMessage = Errors.EmptyImage)]
+        //public List<IFormFile>? Images { get; set; }
         public string? MainImageUrl { get; set; }
         public string? MainImageThumbnailUrl { get; set; }
         public string? ImagePublicId { get; set; }
         [Display(Name = "Categories")]
         public int CategoryId { get; set; } // IList => index
         public IEnumerable<SelectListItem>? Categories { get; set; }
-        public List<string>? ExistingImageUrls { get; set; } = new List<string>();
+        public IList<string>? ExistingImageUrls { get; set; } = new List<string>();
+        public IList<string>? ExistingImageThumbnailUrls { get; set; } = new List<string>();
     }
 }

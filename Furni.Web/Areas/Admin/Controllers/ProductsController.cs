@@ -76,7 +76,7 @@ namespace Furni.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductFormViewModel model)
+        public async Task<IActionResult> Create(ProductFormViewModel model, List<IFormFile> images)
         {
             if (!ModelState.IsValid)
                 return View("Form", PopulateViewModel(model));
@@ -98,33 +98,43 @@ namespace Furni.Web.Areas.Admin.Controllers
                 product.MainImageThumbnailUrl = $"/images/products/thumb/{mainImageName}";
             }
 
+
+
+            product.CreatedById = User.GetUserId();
+
+            _unitOfWork.Products.Add(product);
+            _unitOfWork.Complete();
+
+
             // Handle Additional Images
-            if (model.Images is not null && model.Images.Count > 0)
+            if (images is not null && images.Count > 0)
             {
-                foreach (var image in model.Images)
+                foreach (var image in images)
                 {
+                    var imagePath = $"/images/products/{product.Id}/";
                     var imageName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
-                    var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(image, imageName, "/images/products", hasThumbnail: false);
+                    var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(image, imageName, imagePath, hasThumbnail: true);
                     if (!isUploaded)
                     {
-                        ModelState.AddModelError(nameof(model.Images), errorMessage!);
+                        ModelState.AddModelError(nameof(images), errorMessage!);
                         return View("Form", PopulateViewModel(model));
                     }
 
                     var productImage = new ProductImage
                     {
                         ProductId = product.Id,
-                        ImagePath = $"/images/products/{imageName}",
+                        ImageUrl = $"{imagePath}/{imageName}",
+                        ImageThumbnailUrl = $"{imagePath}/thumb/{imageName}",
                     };
+
+                    //if(product.ProductImages == null)
+                    //    product.ProductImages = new List<ProductImage>();
 
                     _unitOfWork.ProductImages.Add(productImage);
                 }
+                _unitOfWork.Complete();
             }
 
-            product.CreatedById = User.GetUserId();
-
-            _unitOfWork.Products.Add(product);
-            _unitOfWork.Complete();
 
             return RedirectToAction(nameof(Details), new { id = product.Id });
         }
@@ -138,7 +148,10 @@ namespace Furni.Web.Areas.Admin.Controllers
                 return NotFound();
 
             var model = _mapper.Map<ProductFormViewModel>(product);
-            model.ExistingImageUrls = _unitOfWork.ProductImages.GetImagesUrl(id);
+
+            var (imageUrls, imageThumbnailUrls) = _unitOfWork.ProductImages.GetImagesUrl(id);
+            model.ExistingImageUrls = imageUrls;
+            model.ExistingImageThumbnailUrls = imageThumbnailUrls;
 
             var viewModel = PopulateViewModel(model);
             ActionName();
@@ -147,7 +160,7 @@ namespace Furni.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductFormViewModel model)
+        public async Task<IActionResult> Edit(ProductFormViewModel model, List<IFormFile> images)
         {
             if (!ModelState.IsValid)
                 return View("Form", PopulateViewModel(model));
@@ -183,29 +196,32 @@ namespace Furni.Web.Areas.Admin.Controllers
             }
 
             // Handle Additional Images
-            if (model.Images is not null && model.Images.Count > 0)
+            if (images is not null && images.Count > 0)
             {
-                foreach (var image in model.Images)
+                foreach (var image in images)
                 {
+                    var imagePath = $"/images/products/{product.Id}/";
                     var imageName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
-                    var imagePath = "/images/products";
-
-                    var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(image, imageName, "/images/products", hasThumbnail: false);
-
+                    var (isUploaded, errorMessage) = await _imageService.UploadeAsynce(image, imageName, imagePath, hasThumbnail: true);
                     if (!isUploaded)
                     {
-                        ModelState.AddModelError(nameof(model.Images), errorMessage!);
+                        ModelState.AddModelError(nameof(images), errorMessage!);
                         return View("Form", PopulateViewModel(model));
                     }
 
                     var productImage = new ProductImage
                     {
                         ProductId = product.Id,
-                        ImagePath = $"{imagePath}/{imageName}"
+                        ImageUrl = $"{imagePath}/{imageName}",
+                        ImageThumbnailUrl = $"{imagePath}/thumb/{imageName}",
                     };
+
+                    //if(product.ProductImages == null)
+                    //    product.ProductImages = new List<ProductImage>();
 
                     _unitOfWork.ProductImages.Add(productImage);
                 }
+                _unitOfWork.Complete();
             }
 
             product = _mapper.Map(model, product);
