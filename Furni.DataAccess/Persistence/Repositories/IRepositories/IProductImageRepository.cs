@@ -10,5 +10,7 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 	public interface IProductImageRepository: IBaseRepository<ProductImage>
     {
 		(List<string>, List<string>) GetImagesUrl(int id);
-	}
+        void RemoveByThumbnailUrl(string thumbnailUrl);
+
+    }
 }

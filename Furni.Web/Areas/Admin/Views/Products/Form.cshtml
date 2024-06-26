@@ -108,43 +108,44 @@
                         <!--end::Card header-->
                         <!--begin::Card body-->
                         <div class="card-body text-center pt-0">
-                            <!--begin::Image inputs-->
-                            @foreach (var image in Model.ExistingImageThumbnailUrls)
+                            @if(Model.ExistingImageThumbnailUrls is not null)
                             {
-                                <!--begin::Image input-->
-                                <div class="image-input image-input-empty image-input-outline image-input-placeholders mb-3" data-kt-image-input="true">
-                                    <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-150px h-150px" style="background-image: url('@(string.IsNullOrEmpty(image) ? "/images/blank-image.svg" : image)')"></div>
-                                    <!--end::Preview existing avatar-->
-                                    <!--begin::Label-->
-                                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-                                        <i class="bi bi-pencil-fill fs-7"></i>
-                                        <!--begin::Inputs-->
-                                        <input type="file" asp-for="@image" accept=".png, .jpg, .jpeg" />
-                                        <input type="hidden" name="avatar_remove" />
-                                        <!--end::Inputs-->
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin::Cancel-->
-                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-                                        <i class="ki-duotone ki-cross fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                    <!--end::Cancel-->
-                                    <!--begin::Remove-->
-                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-                                        <i class="ki-duotone ki-cross fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                    <!--end::Remove-->
-                                </div>
-                                <!--end::Image input-->
+                                <!--begin::Image inputs-->
+                                foreach (var image in Model.ExistingImageThumbnailUrls)
+                                {
+                                    <!--begin::Image input-->
+                                    <div class="image-input image-input-outline mb-7" data-kt-image-input="true" style="background-image: url('/images/blank-image.svg')">
+                                        <!--begin::Preview existing avatar-->
+                                        <div class="image-input-wrapper w-125px h-125px" style="background-image: url(@image)"></div>
+                                        <!--end::Preview existing avatar-->
+
+
+
+                                        <input type="hidden" name="avatar_remove" multiple />
+
+
+
+                                        <!--begin::Cancel-->
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                            <i class="ki-duotone ki-cross fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <!--end::Cancel-->
+                                        <!--begin::Remove-->
+                                        <span onclick="removeImage('@image', this)" class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                            <i class="ki-duotone ki-cross fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <!--end::Remove-->
+                                    </div>
+                                    <!--end::Image input-->
+                                }
+                                <!--end::Image inputs-->
                             }
-                            <!--end::Image inputs-->
                             <!--begin::Input-->
                             <input type="file" name="images" class="form-control form-control-solid" accept=".png, .jpg, .jpeg" multiple />
                             <!--end::Input-->
@@ -381,4 +382,27 @@
             ignore: []
         });
     </script>
+
+    <script>
+        function removeImage(imageUrl, element) {
+            // Find the hidden input field for removed images
+            var hiddenInput = document.querySelector('input[name="avatar_remove"]');
+
+            // Get the current value and convert it to an array
+            var removedImages = hiddenInput.value ? hiddenInput.value.split(',') : [];
+
+            // Add the new image URL to the array
+            removedImages.push(imageUrl);
+
+            // Set the updated list back to the hidden input value
+            hiddenInput.value = removedImages.join(',');
+
+            // Optionally hide or remove the image preview element from the DOM
+            var imageElement = element.closest('.image-input');
+            if (imageElement) {
+                imageElement.remove();
+            }
+        }
+    </script>
+
 }

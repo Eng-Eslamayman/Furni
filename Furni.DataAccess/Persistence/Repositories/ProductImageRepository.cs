@@ -29,7 +29,18 @@ namespace Furni.DataAccess.Persistence.Repositories
             List<string> ImageThumbnailUrl = imageUrls.Select(pi => pi.ImageThumbnailUrl).ToList();
 
             return (ImageUrl, ImageThumbnailUrl);
-        } 
+        }
+
+        public void RemoveByThumbnailUrl(string thumbnailUrl)
+        {
+            var image = _context.ProductImages.FirstOrDefault(pi => pi.ImageThumbnailUrl == thumbnailUrl);
+            if (image != null)
+            {
+                _context.ProductImages.Remove(image);
+                _context.SaveChanges(); // Save changes to database
+            }
+            // Optionally, delete the image file from storage here
+        }
 
     }
 }

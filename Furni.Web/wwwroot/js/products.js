@@ -48,7 +48,7 @@
             { "data": "category", "name": "Category" },
             {
                 "name": "createdOn", "render": function (data, type, row) {
-                    return moment(row.publishingDate).format('ll');
+                    return moment(row.publishingDate).format('YYYY MMMM, DD');
                 }
             },
             {

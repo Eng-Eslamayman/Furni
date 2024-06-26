@@ -13,28 +13,16 @@
         <input type="hidden" asp-for="Id" />
     }
 
-
-    
-
     <div class="mb-5">
-
-        <!--begin::Thumbnail settings-->
         <div class="card card-flush py-4">
-            <!--begin::Card header-->
             <div class="card-header">
-                <!--begin::Card title-->
                 <div class="card-title">
                     <h2>Category Image</h2>
                 </div>
-                <!--end::Card title-->
             </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
             <div class="card-body text-center pt-0">
-                <!--begin::Image input-->
                 @if (string.IsNullOrEmpty(Model.ImageUrl))
                 {
-                    <!--begin::Image input placeholder-->
                     <style>
                         .image-input-placeholder {
                             background-image: url('/images/blank-image.svg');
@@ -44,7 +32,6 @@
                             background-image: url('/images/blank-image-dark.svg');
                         }
                     </style>
-                    <!--end::Image input placeholder-->
                 }
                 else
                 {
@@ -55,48 +42,31 @@
                     </style>
                 }
 
-                <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
-                    <!--begin::Preview existing avatar-->
+                <div id="image-preview" class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
                     <div class="image-input-wrapper w-150px h-150px"></div>
-                    <!--end::Preview existing avatar-->
-                    <!--begin::Label-->
                     <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
                         <i class="bi bi-pencil-fill fs-7"></i>
-                        <!--begin::Inputs-->
-                        <input type="file" asp-for="Image" accept=".png, .jpg, .jpeg"  />
+                        <input id="image-input" type="file" asp-for="Image" accept=".png, .jpg, .jpeg" />
                         <input type="hidden" name="avatar_remove" />
-                        <!--end::Inputs-->
                     </label>
-                    <!--end::Label-->
-                    <!--begin::Cancel-->
                     <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
                         <i class="ki-duotone ki-cross fs-2">
                             <span class="path1"></span>
                             <span class="path2"></span>
                         </i>
                     </span>
-                    <!--end::Cancel-->
-                    <!--begin::Remove-->
                     <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
                         <i class="ki-duotone ki-cross fs-2">
                             <span class="path1"></span>
                             <span class="path2"></span>
                         </i>
                     </span>
-                    <!--end::Remove-->
                 </div>
-                <!--end::Image input-->
-                <!--begin::Description-->
-                <div class="text-muted fs-7">Set the product image. Only *.png, *.jpg and *.jpeg image files are accepted  and cannot be more than 2MB.</div>
-                <!--end::Description-->
+                <div class="text-muted fs-7">Set the product image. Only *.png, *.jpg and *.jpeg image files are accepted and cannot be more than 2MB.</div>
                 <span asp-validation-for="Image" class="text-danger d-block"></span>
             </div>
-            <!--end::Card body-->
         </div>
-        <!--end::Product Image settings-->
-        
     </div>
-
 
     <div class="mb-5">
         <div class="form-floating mb-2">

@@ -144,6 +144,7 @@ namespace Furni.Web.Areas.Admin.Controllers
         public IActionResult Edit(int id)
         {
             var product = _unitOfWork.Products.Find(p => p.Id == id);
+            //var product = _unitOfWork.Products.Find(p => p.Id == id, include: p => (p.Include(pi => pi.ProductImages)));
             if (product is null)
                 return NotFound();
 
@@ -160,7 +161,7 @@ namespace Furni.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductFormViewModel model, List<IFormFile> images)
+        public async Task<IActionResult> Edit(ProductFormViewModel model, List<IFormFile> images, string[] avatar_remove)
         {
             if (!ModelState.IsValid)
                 return View("Form", PopulateViewModel(model));
@@ -195,6 +196,23 @@ namespace Furni.Web.Areas.Admin.Controllers
                 model.MainImageThumbnailUrl = product.MainImageThumbnailUrl;
             }
 
+
+            // Handle Removal of Images
+            if (avatar_remove[0] is not null)
+            {
+                var imageUrlsToRemove = avatar_remove[0].Split(',');
+                foreach (var imageThumbnailUrl in imageUrlsToRemove)
+                {
+                    if (imageThumbnailUrl != null)
+                    {
+                        // Construct the corresponding ImageUrl from ImageThumbnailUrl
+                        var imageUrl = imageThumbnailUrl.Replace("/thumb/", "/");
+                        _imageService.Delete(imageUrl, imageThumbnailUrl); 
+                        _unitOfWork.ProductImages.RemoveByThumbnailUrl(imageThumbnailUrl); 
+                    }
+                }
+            }
+
             // Handle Additional Images
             if (images is not null && images.Count > 0)
             {
@@ -216,7 +234,7 @@ namespace Furni.Web.Areas.Admin.Controllers
                         ImageThumbnailUrl = $"{imagePath}/thumb/{imageName}",
                     };
 
-                    //if(product.ProductImages == null)
+                    //if (product.ProductImages == null)
                     //    product.ProductImages = new List<ProductImage>();
 
                     _unitOfWork.ProductImages.Add(productImage);
@@ -224,6 +242,7 @@ namespace Furni.Web.Areas.Admin.Controllers
                 _unitOfWork.Complete();
             }
 
+            product.LastUpdatedById = User.GetUserId();
             product = _mapper.Map(model, product);
             _unitOfWork.Complete();
 
