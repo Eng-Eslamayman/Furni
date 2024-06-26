@@ -13,8 +13,8 @@
             <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
                 <!--begin::Image-->
                 <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-4">
-                    <a data-fslightbox href="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/blank-image.svg" : Model.ImageUrl)">
-                        <img class="mw-50px mw-lg-75px" src="@(string.IsNullOrEmpty(Model.ImageThumbnailUrl) ? "/images/blank-image.svg" : Model.ImageThumbnailUrl)" alt="@Model.Title" />
+                    <a data-fslightbox href="@(string.IsNullOrEmpty(Model.MainImageUrl) ? "/images/blank-image.svg" : Model.MainImageUrl)">
+                        <img class="mw-50px mw-lg-75px" src="@(string.IsNullOrEmpty(Model.MainImageThumbnailUrl) ? "/images/blank-image.svg" : Model.MainImageThumbnailUrl)" alt="@Model.Title" />
                     </a>
                 </div>
                 <!--end::Image-->

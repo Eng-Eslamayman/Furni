@@ -14,6 +14,7 @@ namespace Furni.DataAccess.Persistence.Repositories
         public ICategoryRepository Categories => new CategoryRepository(_context);
         public IProductRepository Products => new ProductRepository(_context);
         public IShoppingCartRepository ShoppingCarts => new ShoppingCartRepository(_context);
+        public IProductImageRepository ProductImages => new ProductImageRepository(_context);
 
         public int Complete()
 		{

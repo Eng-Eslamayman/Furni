@@ -11,8 +11,8 @@ namespace Furni.Web.Core.VeiwModels
         public float Price { get; set; }
         [Range(1, 1000, ErrorMessage = Errors.MaxRange)]
         public float DiscountValue { get; set; }
-        public string ImageUrl { get; set; } = null!;
-        public string ImageThumbnailUrl { get; set; } = null!;
+        public string MainImageUrl { get; set; } = null!;
+        public string MainImageThumbnailUrl { get; set; } = null!;
         public string? ImagePublicID { get; set; }
         public string Category { get; set; } = null!;
     }

@@ -31,7 +31,7 @@
                     return `<div class="d-flex align-items-center">
 								<!--begin::Thumbnail-->
 								<a href="/Admin/Products/Details/${row.id}" class="symbol symbol-50px">
-									<span class="symbol-label" style="background-image:url(${row.imageThumbnailUrl});"></span>
+									<span class="symbol-label" style="background-image:url(${row.mainImageThumbnailUrl});"></span>
 								</a>
 								<!--end::Thumbnail-->
 								<div class="ms-5 d-flex flex-column">
