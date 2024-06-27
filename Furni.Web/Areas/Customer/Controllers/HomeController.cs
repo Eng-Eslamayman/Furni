@@ -9,15 +9,18 @@ namespace Furni.Web.Areas.Customers.Controllers
     //[Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Customer}")]
     public class HomeController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
+            
             return View();
         }
 
