@@ -1,4 +1,5 @@
-﻿<!-- Content -->
+﻿@model IList<CustomCategoryViewModel>
+<!-- Content -->
 <section id="content">
 	<div class="content-wrap py-0">
 
@@ -62,37 +63,14 @@
 
 			<!-- Categories -->
 			<div class="row item-categories gutter-20">
-				<div class="col-lg-4 col-md-6">
-					<a href="demo-furniture-products.html" class="d-block h-op-09 op-ts" style="background: url('demos/furniture/images/categories/sofas.jpg') no-repeat center center; background-size: cover; height: 340px;">
-						<h5 class="text-uppercase ls-1 bg-white mb-0">Sofa</h5>
-					</a>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<a href="demo-furniture-products.html" class="d-block h-op-09 op-ts" style="background: url('demos/furniture/images/categories/tables.jpg') no-repeat center center; background-size: cover; height: 340px;">
-						<h5 class="text-uppercase ls-1 bg-white mb-0">Tables</h5>
-					</a>
-				</div>
-
-				<div class="col-lg-4 col-md-6">
-					<a href="demo-furniture-products.html" class="d-block h-op-09 op-ts" style="background: url('demos/furniture/images/categories/chairs.jpg') no-repeat center center; background-size: cover; height: 340px;">
-						<h5 class="text-uppercase ls-1 bg-white mb-0">Chairs</h5>
-					</a>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<a href="demo-furniture-products.html" class="d-block h-op-09 op-ts" style="background: url('demos/furniture/images/categories/lights.jpg') no-repeat center center; background-size: cover; height: 340px;">
-						<h5 class="text-uppercase ls-1 bg-white mb-0">Lights</h5>
-					</a>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<a href="demo-furniture-products.html" class="d-block h-op-09 op-ts" style="background: url('demos/furniture/images/categories/wardrobes.jpg') no-repeat center center; background-size: cover; height: 340px;">
-						<h5 class="text-uppercase ls-1 bg-white mb-0">Wardrobes</h5>
-					</a>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<a href="demo-furniture-products.html" class="d-block h-op-09 op-ts" style="background: url('demos/furniture/images/categories/beds.jpg') no-repeat center center; background-size: cover; height: 340px;">
-						<h5 class="text-uppercase ls-1 bg-white mb-0">Beds</h5>
-					</a>
-				</div>
+				@foreach(var category in Model)
+				{
+					<div class="col-lg-4 col-md-6">
+						<a asp-action="GetProductsByCategoryId" asp-route-id="@category.Id" class="d-block h-op-09 op-ts" style="background: url('@category.ImageUrl') no-repeat center center; background-size: cover; height: 340px;">
+							<h5 class="text-uppercase ls-1 bg-white mb-0">@category.Name</h5>
+						</a>
+					</div>
+				}
 			</div>
 
 		</div>

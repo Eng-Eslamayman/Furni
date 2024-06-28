@@ -20,8 +20,30 @@ namespace Furni.Web.Areas.Customers.Controllers
 
         public IActionResult Index()
         {
-            
-            return View();
+            var viewModel = new CustomerHomeViewModel
+            {
+                CustomProductViewModel = _unitOfWork
+                                            .Products
+                                            .GetCustomProducts()
+                                            .Select(p => new CustomProductViewModel {
+                                                Title = p.Title,
+                                                Id = p.Id,
+                                                Price = p.Price,
+                                                MainImageUrl = p.MainImageUrl })
+                                            .ToList(),
+                CustomCategoryViewModel = _unitOfWork
+                                            .Categories
+                                            .GetCustomProducts()
+                                            .Select(c => new CustomCategoryViewModel
+                                            {
+                                                Id = c.Id,
+                                                Name = c.Name,
+                                                ImageUrl = c.ImageUrl 
+                                            })
+                                            .ToList()
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

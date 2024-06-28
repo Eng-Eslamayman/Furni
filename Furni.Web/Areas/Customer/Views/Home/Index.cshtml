@@ -1,14 +1,16 @@
-﻿@{
+﻿@model CustomerHomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <partial name="_CardPannel" />
 
 
-<partial name="_Slider" />
+<partial name="_Slider" model="@Model.CustomProductViewModel" />
 
 
-<partial name="_Content" />
+<partial name="_Content" model="@Model.CustomCategoryViewModel" />
 
 
 

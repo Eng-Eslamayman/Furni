@@ -27,5 +27,15 @@ namespace Furni.DataAccess.Persistence.Repositories
             return (products, recordsTotal);
         }
 
+
+        public List<CustomProductViewModel> GetCustomProducts() => _context.Products
+                .Select(p => new CustomProductViewModel
+                {
+                    Title = p.Title,
+                    Id = p.Id,
+                    MainImageUrl = p.MainImageUrl,
+                    Price = p.Price
+                }).Skip(0).Take(16).ToList();
+
     }
 }

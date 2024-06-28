@@ -153,9 +153,16 @@ namespace Furni.Web.Areas.Admin.Controllers
 
             return Ok(category.LastUpdatedOn.ToString());
         }
-        public IActionResult AllowItem(CategoryFormViewModel model)
+        public IActionResult AllowName(CategoryFormViewModel model)
         {
             var category = _unitOfWork.Categories.Find(c => c.Name == model.Name);
+            var isAllowed = category is null || category.Id.Equals(model.Id);
+
+            return Json(isAllowed);
+        }
+        public IActionResult AllowDisplayOrder(CategoryFormViewModel model)
+        {
+            var category = _unitOfWork.Categories.Find(c => c.DisplayOrder == model.DisplayOrder);
             var isAllowed = category is null || category.Id.Equals(model.Id);
 
             return Json(isAllowed);

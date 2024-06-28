@@ -15,5 +15,16 @@ namespace Furni.DataAccess.Persistence.Repositories
         public IEnumerable<Category> GetActiveCategories() =>
             _context.Categories.Where(a => !a.IsDeleted).OrderBy(a => a.Name).ToList();
 
+        public List<CustomCategoryViewModel> GetCustomProducts() => _context.Categories
+                .Select(c => new CustomCategoryViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    DisplayOrder = c.DisplayOrder,
+                    ImageUrl = c.ImageUrl
+                })
+                .OrderBy(c => c.DisplayOrder)
+                .Skip(0).Take(6).ToList();
+
     }
 }
