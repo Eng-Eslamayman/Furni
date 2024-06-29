@@ -5,5 +5,7 @@
         IQueryable<Product> GetDetails();
         (IQueryable<Product> products, int count) GetFiltered(GetFilteredDto dto);
         List<CustomProductViewModel> GetCustomProducts();
-    }
+        List<CustomArrivalProductViewModel> GetCustomArrivalProducts();
+
+	}
 }

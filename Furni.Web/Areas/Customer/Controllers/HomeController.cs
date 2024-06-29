@@ -33,15 +33,26 @@ namespace Furni.Web.Areas.Customers.Controllers
                                             .ToList(),
                 CustomCategoryViewModel = _unitOfWork
                                             .Categories
-                                            .GetCustomProducts()
+                                            .GetCustomCategories()
                                             .Select(c => new CustomCategoryViewModel
                                             {
                                                 Id = c.Id,
                                                 Name = c.Name,
                                                 ImageUrl = c.ImageUrl 
                                             })
-                                            .ToList()
-            };
+                                            .ToList(),
+                CustomArrivalProductViewModel = _unitOfWork.Products
+                                               .GetCustomArrivalProducts()
+                                               .Select(p => new CustomArrivalProductViewModel
+                                               {
+												   Title = p.Title,
+												   Id = p.Id,
+												   Price = p.Price,
+												   ImageUrls = p.ImageUrls
+
+											   })
+                                               .ToList(),
+			};
 
             return View(viewModel);
         }

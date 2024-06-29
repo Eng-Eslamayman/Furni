@@ -1,4 +1,4 @@
-﻿@model IList<CustomCategoryViewModel>
+﻿@model Tuple<IList<CustomCategoryViewModel>, IList<CustomArrivalProductViewModel>>
 <!-- Content -->
 <section id="content">
 	<div class="content-wrap py-0">
@@ -58,12 +58,12 @@
 			<!-- Heading Title -->
 			<div class="text-center mt-6 mb-5">
 				<h2 class="h1 fw-normal mb-4">Shop by <span data-animate="svg-underline-animated" class="svg-underline nocolor"><span>Category</span></span></h2>
-				<a href="demo-furniture-products.html" class="button button-small button-border m-0 button-dark border-width-1 border-default px-4 h-bg-color"><i class="bi-grid"></i> View All</a>
+				<a asp-controller="Products" asp-action="Index" class="button button-small button-border m-0 button-dark border-width-1 border-default px-4 h-bg-color"><i class="bi-grid"></i> View All</a>
 			</div>
 
 			<!-- Categories -->
 			<div class="row item-categories gutter-20">
-				@foreach(var category in Model)
+				@foreach(var category in Model.Item1)
 				{
 					<div class="col-lg-4 col-md-6">
 						<a asp-action="GetProductsByCategoryId" asp-route-id="@category.Id" class="d-block h-op-09 op-ts" style="background: url('@category.ImageUrl') no-repeat center center; background-size: cover; height: 340px;">
@@ -86,146 +86,44 @@
 					<div class="col-xl-3 col-lg-6">
 						<h3 class="mb-4 fw-normal h1">New <span data-animate="svg-underline-animated" class="svg-underline nocolor"><span>Arrivals</span></span></h3>
 						<p class="op-07 mb-4">Compellingly cultivate synergistic infrastructures rather than fully tested opportunities. Synergistically evisculate web-enabled interfaces.</p>
-						<a href="demo-furniture-products.html" class="button button-border py-1 text-transform-none ls-0 fw-normal button-dark border-width-1 border-color h-bg-color">New Arrivals</a>
-						<a href="demo-furniture-products.html" class="button button-border py-1 text-transform-none ls-0 fw-normal button-dark border-width-1 border-color h-bg-color">Popular</a>
+						<a asp-controller="Products" asp-action="Index" class="button button-border py-1 text-transform-none ls-0 fw-normal button-dark border-width-1 border-color h-bg-color">New Arrivals</a>
+						<a asp-controller="Products" asp-action="Index" class="button button-border py-1 text-transform-none ls-0 fw-normal button-dark border-width-1 border-color h-bg-color">Popular</a>
 					</div>
 
-					<!-- Product 1 -->
-					<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
-						<div class="grid-inner">
-							<div class="product-image">
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/2.jpg" alt="Light Grey Sofa"></a>
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/2-1.jpg" alt="Light Grey Sofa"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-										<a href="demos/furniture/ajax/quick-view.html" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
+					<!-- Products Arrival -->
+					@foreach (var product in Model.Item2)
+					{
+						<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
+							<div class="grid-inner">
+								<div class="product-image">
+									@if (product.ImageUrls != null && product.ImageUrls.Count > 0)
+									{
+										@if (@product.ImageUrls[0] is not null)
+										{
+											<a asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[0]" alt="@product.Title"></a>
+										}
+									}
+									@if (product.ImageUrls != null && product.ImageUrls.Count > 1)
+									{
+										@if (@product.ImageUrls[1] is not null)
+										{
+											<a asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[1]" alt="@product.Title"></a>
+										}
+									}
+									<div class="bg-overlay">
+										<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
+											<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
+											<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="product-desc">
-								<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" href="demo-forum-single.html">Light Grey Sofa</a></h4></div>
-								<h5 class="product-price fw-normal">$799.99</h5>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 2 -->
-					<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
-						<div class="grid-inner">
-							<div class="product-image">
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/3.jpg" alt="Celling Lights"></a>
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/3-1.jpg" alt="Celling Lights"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-										<a href="demos/furniture/ajax/quick-view.html" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
-									</div>
+								<div class="product-desc">
+									<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" asp-action="Details" asp-route-id="@product.Id">@product.Title</a></h4></div>
+									<h5 class="product-price fw-normal">@product.Price</h5>
 								</div>
 							</div>
-							<div class="product-desc">
-								<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" href="demo-forum-single.html">Celling Lights</a></h4></div>
-								<h5 class="product-price fw-normal">$39.49</h5>
-							</div>
 						</div>
-					</div>
-
-					<!-- Product 3 -->
-					<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
-						<div class="grid-inner">
-							<div class="product-image">
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/4-1.jpg" alt="High Stand Chair"></a>
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/4.jpg" alt="High Stand Chair"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-										<a href="demos/furniture/ajax/quick-view.html" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="product-desc">
-								<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" href="demo-forum-single.html">High Stand Chair</a></h4></div>
-								<h5 class="product-price fw-normal">$24.99</h5>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 4 -->
-					<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
-						<div class="grid-inner">
-							<div class="product-image">
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/5.jpg" alt="Dining Sofa with Tea-table"></a>
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/5-1.jpg" alt="Dining Sofa with Tea-table"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-										<a href="demos/furniture/ajax/quick-view.html" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="product-desc">
-								<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" href="demo-forum-single.html">Dining Sofa with Tea-table</a></h4></div>
-								<h5 class="product-price fw-normal">$99.99</h5>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 5 -->
-					<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
-						<div class="grid-inner">
-							<div class="product-image">
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/6.jpg" alt="Bathroom Cloths Shelves"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-										<a href="demos/furniture/ajax/quick-view.html" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="product-desc">
-								<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" href="demo-forum-single.html">Bathroom Cloths Shelves</a></h4></div>
-								<h5 class="product-price fw-normal">$23</h5>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 1 -->
-					<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
-						<div class="grid-inner">
-							<div class="product-image">
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/7.jpg" alt="Golden Lamp for Room"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-										<a href="demos/furniture/ajax/quick-view.html" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="product-desc">
-								<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" href="demo-forum-single.html">Golden Lamp for Room</a></h4></div>
-								<h5 class="product-price fw-normal">$12.99</h5>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 6 -->
-					<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
-						<div class="grid-inner">
-							<div class="product-image">
-								<a href="demo-forum-single.html"><img src="demos/furniture/images/shop/8.jpg" alt="White Cuddle Chair with Cusions"></a><a href="demo-forum-single.html"><img src="demos/furniture/images/shop/8-1.jpg" alt="White Cuddle Chair with Cusions"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-										<a href="demos/furniture/ajax/quick-view.html" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="product-desc">
-								<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" href="demo-forum-single.html">White Cuddle Chair with Cusions</a></h4></div>
-								<h5 class="product-price fw-normal">$29.99</h5>
-							</div>
-						</div>
-					</div>
+					}
 
 				</div>
 				<!-- #shop end -->
@@ -238,14 +136,14 @@
 			<div class="row align-items-lg-center col-mb-30">
 
 				<!-- Image -->
-				<div class="col-xl-8 col-lg-6 px-lg-0 min-vh-50 min-vh-lg-75" style="background: url('demos/furniture/images/section.jpg') no-repeat center center; background-size: cover;">
+				<div class="col-xl-8 col-lg-6 px-lg-0 min-vh-50 min-vh-lg-75" style="background: url('/assets/customer/images/discover/section.jpg') no-repeat center center; background-size: cover;">
 				</div>
 
 				<!-- Content -->
 				<div class="col-xl-4 col-lg-6 px-lg-5 py-5">
 					<h3 class="h1 mb-4 fw-normal">Explore your <span data-animate="svg-underline-animated" class="svg-underline nocolor"><span>Home</span></span> & <span data-animate="svg-underline-animated" data-delay="300" class="svg-underline nocolor"><span>Office</span></span> with our Furnitures</h3>
 					<p>Compellingly cultivate synergistic infrastructures rather than fully tested opportunities. Synergistically evisculate web-enabled interfaces for market positioning web services. Continually create business infomediaries and interdependent products.</p>
-					<a href="#" class="button button-border m-0 button-dark border-width-1 border-default h-bg-color">Discover Now <i class="bi-arrow-right"></i></a>
+					<a asp-controller="Products" asp-action="Index" class="button button-border m-0 button-dark border-width-1 border-default h-bg-color">Discover Now <i class="bi-arrow-right"></i></a>
 				</div>
 			</div>
 
@@ -305,9 +203,9 @@
 					<div class="text-center dark p-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#FFF" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M172,36H84A47.99987,47.99987,0,0,0,36,84v88a47.99988,47.99988,0,0,0,48,48h88a47.99988,47.99988,0,0,0,48-48V84A47.99987,47.99987,0,0,0,172,36ZM128,168a40,40,0,1,1,40-40A40.0001,40.0001,0,0,1,128,168Z" opacity="0.2"></path><circle cx="128" cy="128" r="40" fill="none" stroke="#FFF" stroke-miterlimit="10" stroke-width="16"></circle><rect class x="36" y="36" width="184" height="184" rx="48" stroke-width="16" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" fill="none"></rect><circle cx="180" cy="75.99998" r="12"></circle></svg>
 
-						<h3 class="mt-3 mb-5 fw-normal h2">Don't Follow the Crowd, Follow us on <span data-animate="svg-underline-animated" class="svg-underline nocolor"><span>Instagram</span></span></h3>
+						<h3 class="mt-3 mb-5 fw-normal h2">Created By Eslam and Abdullah.<span data-animate="svg-underline-animated" class="svg-underline nocolor"></span></h3>
 
-						<a href="https://instagram.com/semicolonweb" target="_blank" class="button button-large button-border text-transform-none ls-0 fw-normal button-light button-white border-width-1 m-0" style="border-color: rgba(255,255,255,0.25)"></a>
+						<a href="https://instagram.com/furnihuture" target="_blank" class="button button-large button-border text-transform-none ls-0 fw-normal button-light button-white border-width-1 m-0" style="border-color: rgba(255,255,255,0.25)">@@Furnihuture</a>
 					</div>
 				</div>
 
@@ -315,16 +213,16 @@
 				<div class="col-lg-4 col-md-6 order-lg-1">
 					<div class="row gutter-4">
 						<div class="col-6">
-							<a class="d-block instagram-image" href="https://instagram.com/semicolonweb" target="_blank" style="background: url('demos/furniture/images/instagram/1.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+							<a class="d-block instagram-image" href="https://instagram.com/furnihuture" target="_blank" style="background: url('/assets/customer/images/instagram/1.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
 						</div>
 						<div class="col-6">
-							<a class="d-block instagram-image" href="https://instagram.com/semicolonweb" target="_blank" style="background: url('demos/furniture/images/instagram/2.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+							<a class="d-block instagram-image" href="https://instagram.com/furnihuture" target="_blank" style="background: url('/assets/customer/images/instagram/2.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
 						</div>
 						<div class="col-6">
-							<a class="d-block instagram-image" href="https://instagram.com/semicolonweb" target="_blank" style="background: url('demos/furniture/images/instagram/3.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+							<a class="d-block instagram-image" href="https://instagram.com/furnihuture" target="_blank" style="background: url('/assets/customer/images/instagram/3.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
 						</div>
 						<div class="col-6">
-							<a class="d-block instagram-image" href="https://instagram.com/semicolonweb" target="_blank" style="background: url('demos/furniture/images/instagram/4.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+							<a class="d-block instagram-image" href="https://instagram.com/furnihuture" target="_blank" style="background: url('/assets/customer/images/instagram/4.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
 						</div>
 					</div>
 				</div>
@@ -333,16 +231,16 @@
 				<div class="col-lg-4 col-md-6 order-lg-3 mt-1 mt-md-0 ps-md-1 ps-lg-0">
 					<div class="row gutter-4">
 						<div class="col-6">
-							<a class="d-block instagram-image" href="https://instagram.com/semicolonweb" target="_blank" style="background: url('demos/furniture/images/instagram/5.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+							<a class="d-block instagram-image" href="https://instagram.com/furnihutureb" target="_blank" style="background: url('/assets/customer/images/instagram/5.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
 						</div>
 						<div class="col-6">
-							<a class="d-block instagram-image" href="https://instagram.com/semicolonweb" target="_blank" style="background: url('demos/furniture/images/instagram/6.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+							<a class="d-block instagram-image" href="https://instagram.com/furnihuture" target="_blank" style="background: url('/assets/customer/images/instagram/6.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
 						</div>
 						<div class="col-6">
-							<a class="d-block instagram-image" href="https://instagram.com/semicolonweb" target="_blank" style="background: url('demos/furniture/images/instagram/7.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+							<a class="d-block instagram-image" href="https://instagram.com/furnihuture" target="_blank" style="background: url('/assets/customer/images/instagram/7.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
 						</div>
 						<div class="col-6">
-							<a class="d-block instagram-image" href="https://instagram.com/semicolonweb" target="_blank" style="background: url('demos/furniture/images/instagram/8.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+							<a class="d-block instagram-image" href="https://instagram.com/furnihuture" target="_blank" style="background: url('/assets/customer/images/instagram/8.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
 						</div>
 					</div>
 				</div>

@@ -4,5 +4,6 @@
     {
         public IList<CustomProductViewModel> CustomProductViewModel { get; set; }
         public IList<CustomCategoryViewModel> CustomCategoryViewModel { get; set; }
+        public IList<CustomArrivalProductViewModel> CustomArrivalProductViewModel { get; set; }
     }
 }

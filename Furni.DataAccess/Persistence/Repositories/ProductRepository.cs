@@ -35,7 +35,20 @@ namespace Furni.DataAccess.Persistence.Repositories
                     Id = p.Id,
                     MainImageUrl = p.MainImageUrl,
                     Price = p.Price
-                }).Skip(0).Take(16).ToList();
+                }).Skip(0).Take(8).ToList();
 
-    }
+		public List<CustomArrivalProductViewModel> GetCustomArrivalProducts() =>
+	            _context.Products.Include(p => p.ProductImages)
+		            .Select(p => new CustomArrivalProductViewModel
+		            {
+			            Title = p.Title,
+			            Id = p.Id,
+			            Price = p.Price,
+			            ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).ToList()
+		            })
+		            .Skip(6)
+		            .Take(7)
+		            .ToList();
+
+	}
 }

@@ -3,6 +3,6 @@
     public interface ICategoryRepository : IBaseRepository<Category>
     {
         IEnumerable<Category> GetActiveCategories();
-        List<CustomCategoryViewModel> GetCustomProducts();
+        List<CustomCategoryViewModel> GetCustomCategories();
     }
 }
