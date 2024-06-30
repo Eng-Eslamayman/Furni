@@ -44,7 +44,7 @@ namespace Furni.DataAccess.Persistence.Repositories
 			            Title = p.Title,
 			            Id = p.Id,
 			            Price = p.Price,
-			            ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).ToList()
+			            ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList()
 		            })
 		            .Skip(6)
 		            .Take(7)

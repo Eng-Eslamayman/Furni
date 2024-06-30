@@ -33559,3 +33559,9 @@ body.dark {
   background-color: rgba(0, 0, 0, 0.2);
 }
 /*# sourceMappingURL=style.css.map */
+
+
+.menu-item .active {
+    font-weight: bold !important; /* Example style */
+    color: #1a786f !important; /* Example style */
+}
