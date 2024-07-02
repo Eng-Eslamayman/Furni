@@ -7,7 +7,7 @@ namespace Furni.DataAccess.Persistence.Repositories
         public ProductRepository(ApplicationDbContext context) : base(context)
         {
 
-        }
+        }	
 
         public IQueryable<Product> GetDetails() => _context.Products
                 .Include(b => b.Category);
@@ -37,18 +37,66 @@ namespace Furni.DataAccess.Persistence.Repositories
                     Price = p.Price
                 }).Skip(0).Take(8).ToList();
 
-		public List<CustomArrivalProductViewModel> GetCustomArrivalProducts() =>
-	            _context.Products.Include(p => p.ProductImages)
-		            .Select(p => new CustomArrivalProductViewModel
-		            {
-			            Title = p.Title,
-			            Id = p.Id,
-			            Price = p.Price,
-			            ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList()
-		            })
-		            .Skip(6)
-		            .Take(7)
-		            .ToList();
+		public IQueryable<CustomArrivalProductViewModel> GetCustomArrivalProducts(int? categoryId = null)
+		{
+			if (categoryId.HasValue)
+				return _context.Products.Include(p => p.Category).Include(p => p.ProductImages)
+					.Where(p => p.CategoryId == categoryId)
+					 .Select(p => new CustomArrivalProductViewModel
+					 {
+						 Title = p.Title,
+						 Id = p.Id,
+						 Price = p.Price,
+						 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList()
+					 });
+
+			else
+				return _context.Products.Include(p => p.ProductImages)
+				  .Select(p => new CustomArrivalProductViewModel
+				  {
+					  Title = p.Title,
+					  Id = p.Id,
+					  Price = p.Price,
+					  ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList()
+				  });
+		}
+
+		public IList<CustomArrivalProductViewModel> GetShopProducts(int pageNumber, int pageSize,int? categoryId = null)
+		{
+			IQueryable<CustomArrivalProductViewModel> products;
+			if (categoryId.HasValue)
+			{
+				 products = _context.Products.Include(p => p.Category).Include(p => p.ProductImages)
+					.Where(p => p.CategoryId == categoryId)
+					 .Select(p => new CustomArrivalProductViewModel
+					 {
+						 Title = p.Title,
+						 Id = p.Id,
+						 Price = p.Price,
+						 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList()
+					 });
+			}
+			else
+			{
+				products = _context.Products.Include(p => p.Category).Include(p => p.ProductImages)
+				 .Select(p => new CustomArrivalProductViewModel
+				 {
+					 Title = p.Title,
+					 Id = p.Id,
+					 Price = p.Price,
+					 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList()
+				 });
+			}
+				
+
+			return GetPaginatedList(products, pageNumber, pageSize);
+		}
+		public PaginatedList<CustomArrivalProductViewModel> GetPaginatedList(IQueryable<CustomArrivalProductViewModel> query, int pageNumber, int pageSize)
+		{
+			return PaginatedList<CustomArrivalProductViewModel>.Create(query, pageNumber, pageSize);
+		}
+
 
 	}
+
 }

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ShopProductViewModel
+
+@{
 	ViewData["Title"] = "Products";
 }
 <div class="stretched">
@@ -62,7 +64,10 @@
 							<div class="dropdown sortbuttons">
 								<button class="button button-border m-0 button-dark border-width-1 border-default text-transform-none ls-0 fw-normal h-bg-color dropdown-toggle" type="button" id="catButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Category</button>
 								<div class="dropdown-menu py-0 border-default rounded-0" aria-labelledby="catButton">
-									<a class="dropdown-item" href="#">Sofa Full Set</a>					
+									@foreach (var category in Model.Categories)
+									{
+										<a class="dropdown-item" asp-route-categoryId="@category.Value">@category.Text</a>
+									}				
 								</div>
 							</div>
 
