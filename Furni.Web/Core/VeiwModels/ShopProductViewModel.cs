@@ -5,9 +5,9 @@ namespace Furni.Web.Core.VeiwModels
 {
 	public class ShopProductViewModel
 	{
-		[Display(Name = "Categories")]
-		public List<int>? SelectedCategories { get; set; } = new List<int>();
+		[Display(Name = "Category")]
+		public int CategoryId { get; set; }
 		public IEnumerable<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
-		public PaginatedList<CustomArrivalProductViewModel> Products { get; set; }
+		public IList<CustomArrivalProductViewModel> Products { get; set; }
 	}
 }

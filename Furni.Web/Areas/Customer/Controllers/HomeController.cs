@@ -50,8 +50,7 @@ namespace Furni.Web.Areas.Customers.Controllers
 												   Price = p.Price,
 												   ImageUrls = p.ImageUrls
 
-											   })
-                                               .ToList(),
+											   }).Skip(6).Take(7).ToList(),
 			};
 
             return View(viewModel);

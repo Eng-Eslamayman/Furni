@@ -28,10 +28,10 @@ namespace Furni.DataAccess.Persistence.Repositories
 			return _context.Set<T>();
 		}
 
-		public PaginatedList<T> GetPaginatedList(IQueryable<T> query, int pageNumber, int pageSize)
-		{
-			return PaginatedList<T>.Create(query, pageNumber, pageSize);
-		}
+		//public PaginatedList<T> GetPaginatedList(IQueryable<T> query, int pageNumber, int pageSize)
+		//{
+		//	return PaginatedList<T>.Create(query, pageNumber, pageSize);
+		//}
 
 		public T? GetById(int id) => _context.Set<T>().Find(id);
 

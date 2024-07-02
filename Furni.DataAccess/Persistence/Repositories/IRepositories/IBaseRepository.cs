@@ -7,7 +7,7 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
     {
         IEnumerable<T> GetAll(bool withNoTracking = true);
         IQueryable<T> GetQueryable();
-        PaginatedList<T> GetPaginatedList(IQueryable<T> query, int pageNumber, int pageSize);
+        //PaginatedList<T> GetPaginatedList(IQueryable<T> query, int pageNumber, int pageSize);
         T? GetById(int id);
         T? Find(Expression<Func<T, bool>> predicate);
         T? Find(Expression<Func<T, bool>> predicate, string[]? includes = null);
