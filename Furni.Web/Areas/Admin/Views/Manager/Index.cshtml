@@ -1,5 +1,6 @@
-﻿@model ManagerViewModel
-
+﻿@using Newtonsoft.Json
+@model ManagerViewModel
+@inject UserManager<ApplicationUser> UserManager
 @inject IWebHostEnvironment WebHostEnvironment
 @{
     ViewData["Title"] = "Profile";
@@ -8,6 +9,9 @@
     var avatarUrl = $"{WebHostEnvironment.WebRootPath}/images/users/{User.FindFirst(ClaimTypes.NameIdentifier)!.Value}.png";
     avatarUrl = System.IO.File.Exists(avatarUrl) ? $"/images/users/{User.FindFirst(ClaimTypes.NameIdentifier)!.Value}.png" :
                                                                        "/assets/images/avatar.png";
+
+    var user = await UserManager.GetUserAsync(User);
+    var isTwoFactorEnabled = user != null && await UserManager.GetTwoFactorEnabledAsync(user);
 }
 
 <h3>@ViewData["Title"]</h3>
@@ -229,29 +233,42 @@
                 <!--end::Action-->
             </div>
             <!--end::Password-->
-            <!--begin::Notice-->
-            <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6">
-                <!--begin::Icon-->
+            <!--begin::Notice Enabled-->
+            <div id="enable-2fa-notice" class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 @((isTwoFactorEnabled ? "" : "d-none"))">
+                <!-- Content and action for enabling 2FA -->
                 <i class="ki-duotone ki-shield-tick fs-2tx text-primary me-4">
                     <span class="path1"></span>
                     <span class="path2"></span>
                 </i>
-                <!--end::Icon-->
-                <!--begin::Wrapper-->
                 <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
-                    <!--begin::Content-->
                     <div class="mb-3 mb-md-0 fw-semibold">
                         <h4 class="text-gray-900 fw-bold">Secure Your Account</h4>
                         <div class="fs-6 text-gray-700 pe-7">Two-factor authentication adds an extra layer of security to your account. To log in, in addition you'll need to provide a 6 digit code</div>
                     </div>
-                    <!--end::Content-->
-                    <!--begin::Action-->
                     <a href="javascript:;" data-url="/Admin/Manager/TwoFactor" data-title="Authentication Method" class="btn btn-primary px-6 align-self-center text-nowrap js-two-factor">Enable</a>
-                    <!--end::Action-->
                 </div>
-                <!--end::Wrapper-->
             </div>
-            <!--end::Notice-->
+            <!--end::Notice Enabled-->
+
+
+            <!--begin::Notice Disable-->
+            <div id="disable-2fa-notice" class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 @((isTwoFactorEnabled ? "d-none" : ""))">
+                <!-- Content and action for disabling 2FA -->
+                <i class="ki-duotone ki-shield-exclamation fs-2tx text-primary me-4">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+                <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                    <div class="mb-3 mb-md-0 fw-semibold">
+                        <h4 class="text-gray-900 fw-bold">Two-Factor Authentication Enabled</h4>
+                        <div class="fs-6 text-gray-700 pe-7">Your account is currently protected by two-factor authentication.</div>
+                    </div>
+                    <a href="javascript:;" class="btn btn-danger px-6 align-self-center text-nowrap js-disable-two-factor"
+                       data-message="Are you sure that you want to Disable Two-Factor Authentication?"
+                       data-url="/Admin/Manager/DisableTwoFactorAuthentication">Disable</a>
+                </div>
+            </div>
+            <!--end::Notice Disable-->
         </div>
         <!--end::Card body-->
     </div>
@@ -266,4 +283,129 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/profile.js" asp-append-version="true"></script>
+
+    <script>
+
+
+        var enableNotice = document.getElementById('enable-2fa-notice');
+        var disableNotice = document.getElementById('disable-2fa-notice');
+
+        //Handle Two factor enabled
+        function onModalTwoFactorBegin() {
+            // disableSubmitButton($('#TwoFactorModal').find(':submit'));
+        }
+
+        function onModalTwoFactorSuccess(response) {
+            isTwoFactorEnabled = response.isTwoFactorEnabled; // Update based on server response
+            if (isTwoFactorEnabled) {
+                enableNotice.classList.add('d-none');
+                disableNotice.classList.remove('d-none');
+            } else {
+                disableNotice.classList.add('d-none');
+                enableNotice.classList.remove('d-none');
+            }
+            showSuccessMessage();
+            $('#TwoFactorModal').modal('hide');
+        }
+
+        function showErrorMessageTwoFactor(response) {
+            // Extract the error message from the AJAX response object
+            let messageText = response.responseJSON ? response.responseJSON.message : 'Something went wrong!';
+
+            // Display the error message using SweetAlert
+            Swal.fire({
+                text: messageText,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn btn-danger"
+                }
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            if (enableNotice && disableNotice) {
+                var isTwoFactorEnabled = @Html.Raw(JsonConvert.ToString(isTwoFactorEnabled).ToLower());
+
+                if (isTwoFactorEnabled) {
+                    enableNotice.classList.add('d-none');
+                    disableNotice.classList.remove('d-none');
+                } else {
+                    disableNotice.classList.add('d-none');
+                    enableNotice.classList.remove('d-none');
+                }
+            } else {
+                console.error("Element with ID 'enable-2fa-notice' or 'disable-2fa-notice' not found.");
+            }
+
+            // Event delegation using on() method
+            $('body').on('click', '.js-disable-two-factor', function () {
+                var btn = $(this);
+
+                bootbox.confirm({
+                    message: btn.data('message'),
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-secondary'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            // Ajax Request 'Post'
+                            $.post({
+                                url: btn.data('url'),
+                                data: {
+                                    '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                                },
+                                success: function (response) {
+                                    isTwoFactorEnabled = response.isTwoFactorEnabled; // Update based on server response
+                                    if (isTwoFactorEnabled) {
+                                        enableNotice.classList.add('d-none');
+                                        disableNotice.classList.remove('d-none');
+                                    } else {
+                                        disableNotice.classList.add('d-none');
+                                        enableNotice.classList.remove('d-none');
+                                    }
+                                    showSuccessMessage();
+                                },
+                                error: function () {
+                                    showErrorMessage();
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            $('body').delegate('.js-two-factor', 'click', function () {
+                var btn = $(this);
+                var modal = $('#TwoFactorModal');
+
+                modal.find('#ModalTitle').text(btn.data('title'));
+
+                $.get({
+                    url: btn.data('url'),
+                    success: function (form) {
+                        modal.find('.modal-body-two-factor').html(form);
+                        $.validator.unobtrusive.parse(form);
+                    },
+                    error: function () {
+                        showErrorMessage();
+                    }
+                });
+                modal.modal('show');
+            });
+
+        });
+
+    </script>
+
 }

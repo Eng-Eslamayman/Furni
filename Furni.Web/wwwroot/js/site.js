@@ -48,27 +48,6 @@ function onModalSuccess(row) {
 }
 
 
-function onModalTwoFactorBegin() {
-    disableSubmitButton($('#TwoFactorModal').find(':submit'));
-}
-
-function onModalTwoFactorSuccess(row) {
-    showSuccessMessage();
-    $('#TwoFactorModal').modal('hide');
-}
-
-function showErrorMessageTwoFactor(message = 'Something went wrong!') {
-    Swal.fire({
-        text: 'Code is wrong!',
-        icon: "error",
-        buttonsStyling: false,
-        confirmButtonText: "Ok",
-        customClass: {
-            confirmButton: "btn btn-danger"
-        }
-    });
-}
-
 function onModalComplete() {
     $('body :submit').removeAttr('disabled').removeAttr('data-kt-indicator');
 }
@@ -268,27 +247,7 @@ $(document).ready(function () {
     });
 
 
-    //Handle bootstrap modal
-    $('body').delegate('.js-two-factor', 'click', function () {
-        var btn = $(this);
-        var modal = $('#TwoFactorModal');
-
-        modal.find('#ModalTitle').text(btn.data('title'));
-
-        $.get({
-            url: btn.data('url'),
-            success: function (form) {
-                //console.log(form)
-                modal.find('.modal-body-two-factor').html(form);
-                $.validator.unobtrusive.parse(form);
-                //applySelect2();
-            },
-            error: function () {
-                showErrorMessage();
-            }
-        });
-        modal.modal('show');
-    });
+    
 
     // Datepicker
     $('.js-datepicker').daterangepicker({
@@ -405,6 +364,7 @@ $(document).ready(function () {
                             '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
                         },
                         success: function () {
+                            !isTwoFactorEnabled;
                             showSuccessMessage();
                         },
                         error: function () {

@@ -13,7 +13,8 @@ using System.Text.Encodings.Web;
 
 namespace Furni.Web.Areas.Admin.Controllers
 {
-    [Authorize(Roles = $"{AppRoles.Admin}, {AppRoles.Customer}")]
+	[Area(AppRoles.Admin)]
+	[Authorize(Roles = $"{AppRoles.Admin}")]
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

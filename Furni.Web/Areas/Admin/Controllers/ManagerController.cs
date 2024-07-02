@@ -136,8 +136,15 @@ namespace Furni.Web.Areas.Admin.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound(new { message = $"Unable to load user with ID '{_userManager.GetUserId(User)}'." });
             }
+
+            // Check if 2FA is already enabled
+            if (await _userManager.GetTwoFactorEnabledAsync(user))
+            {
+                return BadRequest(new { message = "Two-factor authentication is already enabled." });
+            }
+
 
             TwoFactorViewModel twoFactorViewModel = await LoadSharedKeyAndQrCodeUriAsync(user);
 
@@ -151,11 +158,17 @@ namespace Furni.Web.Areas.Admin.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound(new { message = $"Unable to load user with ID '{_userManager.GetUserId(User)}'." });
+            }
+
+            // Check if 2FA is already enabled
+            if (await _userManager.GetTwoFactorEnabledAsync(user))
+            {
+                return BadRequest(new { message = "Two-factor authentication is already enabled." });
             }
 
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(new { message = "Invalid model state." });
 
             // Strip spaces and hyphens
             var verificationCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
@@ -168,7 +181,7 @@ namespace Furni.Web.Areas.Admin.Controllers
                 ModelState.AddModelError("model.Code", "Verification code is invalid.");
                 TwoFactorViewModel twoFactorViewModel = await LoadSharedKeyAndQrCodeUriAsync(user);
 
-                return BadRequest();
+                return BadRequest(new { message = "Verification code is invalid." });
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
@@ -187,9 +200,38 @@ namespace Furni.Web.Areas.Admin.Controllers
             }
             else
             {
-                return View(nameof(Index));
+                var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+                return Json(new { isTwoFactorEnabled });
             }
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DisableTwoFactorAuthentication()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound(new { message = $"Unable to load user with ID '{_userManager.GetUserId(User)}'." });
+            }
+
+            // Check if 2FA is already disabled
+            if (!await _userManager.GetTwoFactorEnabledAsync(user))
+            {
+                return BadRequest(new { message = "Two-factor authentication is already disabled." });
+            }
+
+            var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
+            if (!disable2faResult.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred disabling 2FA.");
+            }
+
+            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
+            var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+            return Json(new { isTwoFactorEnabled });
+        }
+
 
 
         private async Task<TwoFactorViewModel> LoadSharedKeyAndQrCodeUriAsync(ApplicationUser user)
