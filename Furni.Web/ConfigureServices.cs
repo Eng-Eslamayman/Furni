@@ -1,5 +1,6 @@
 ﻿using Furni.DataAccess.Persistence;
 using Furni.Models.Common;
+using Furni.Web.Areas.Admin.Components;
 using Furni.Web.Helpers;
 using Furni.Web.Services;
 using Microsoft.AspNetCore.Identity;
@@ -48,6 +49,9 @@ namespace Furni.Web
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IEmailBodyBuilder, EmailBodyBuilder>();
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+            // Register TwoFactorNoticeViewComponent
+            services.AddScoped<TwoFactorNoticeViewComponent>();
+
 
             // Settings
             //services.Configure<FacebookSetting>(builder.Configuration.GetSection(nameof(FacebookSetting)));
@@ -78,6 +82,7 @@ namespace Furni.Web
             services.AddMvc(options =>
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
             );
+
 
             return services;
         }

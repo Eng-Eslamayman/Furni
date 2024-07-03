@@ -233,42 +233,10 @@
                 <!--end::Action-->
             </div>
             <!--end::Password-->
-            <!--begin::Notice Enabled-->
-            <div id="enable-2fa-notice" class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 @((isTwoFactorEnabled ? "" : "d-none"))">
-                <!-- Content and action for enabling 2FA -->
-                <i class="ki-duotone ki-shield-tick fs-2tx text-primary me-4">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>
-                <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
-                    <div class="mb-3 mb-md-0 fw-semibold">
-                        <h4 class="text-gray-900 fw-bold">Secure Your Account</h4>
-                        <div class="fs-6 text-gray-700 pe-7">Two-factor authentication adds an extra layer of security to your account. To log in, in addition you'll need to provide a 6 digit code</div>
-                    </div>
-                    <a href="javascript:;" data-url="/Admin/Manager/TwoFactor" data-title="Authentication Method" class="btn btn-primary px-6 align-self-center text-nowrap js-two-factor">Enable</a>
-                </div>
+            <div id="two-factor-notices">
+                <!-- This will be dynamically populated by the ViewComponent -->
+                <partial name="_TwoFactorComponent" />
             </div>
-            <!--end::Notice Enabled-->
-
-
-            <!--begin::Notice Disable-->
-            <div id="disable-2fa-notice" class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 @((isTwoFactorEnabled ? "d-none" : ""))">
-                <!-- Content and action for disabling 2FA -->
-                <i class="ki-duotone ki-shield-tick fs-2tx text-danger me-4">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>
-                <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
-                    <div class="mb-3 mb-md-0 fw-semibold">
-                        <h4 class="text-gray-900 fw-bold">Two-Factor Authentication Enabled</h4>
-                        <div class="fs-6 text-gray-700 pe-7">Your account is currently protected by two-factor authentication.</div>
-                    </div>
-                    <a href="javascript:;" class="btn btn-danger px-6 align-self-center text-nowrap js-disable-two-factor"
-                       data-message="Are you sure that you want to Disable Two-Factor Authentication?"
-                       data-url="/Admin/Manager/DisableTwoFactorAuthentication">Disable</a>
-                </div>
-            </div>
-            <!--end::Notice Disable-->
         </div>
         <!--end::Card body-->
     </div>
@@ -286,26 +254,22 @@
 
     <script>
 
-
-        var enableNotice = document.getElementById('enable-2fa-notice');
-        var disableNotice = document.getElementById('disable-2fa-notice');
+        // Function to remove the _TwoFactorComponent partial from the two-factor-notices div
+        function removeTwoFactorComponent() {
+            $('#two-factor-notices').empty();
+        }
 
         //Handle Two factor enabled
         function onModalTwoFactorBegin() {
-            // disableSubmitButton($('#TwoFactorModal').find(':submit'));
+            disableSubmitButton($('#TwoFactorModal').find(':submit'));
         }
 
         function onModalTwoFactorSuccess(response) {
-            isTwoFactorEnabled = response.isTwoFactorEnabled; // Update based on server response
-            if (isTwoFactorEnabled) {
-                enableNotice.classList.add('d-none');
-                disableNotice.classList.remove('d-none');
-            } else {
-                disableNotice.classList.add('d-none');
-                enableNotice.classList.remove('d-none');
-            }
             showSuccessMessage();
             $('#TwoFactorModal').modal('hide');
+            // Add the _TwoFactorComponent partial on modal open
+            removeTwoFactorComponent();
+            $('#two-factor-notices').append(response);
         }
 
         function showErrorMessageTwoFactor(response) {
@@ -324,24 +288,11 @@
             });
         }
 
-
         document.addEventListener('DOMContentLoaded', function () {
 
-            if (enableNotice && disableNotice) {
-                var isTwoFactorEnabled = @Html.Raw(JsonConvert.ToString(isTwoFactorEnabled).ToLower());
-
-                if (isTwoFactorEnabled) {
-                    enableNotice.classList.add('d-none');
-                    disableNotice.classList.remove('d-none');
-                } else {
-                    disableNotice.classList.add('d-none');
-                    enableNotice.classList.remove('d-none');
-                }
-            } else {
-                console.error("Element with ID 'enable-2fa-notice' or 'disable-2fa-notice' not found.");
-            }
-
-            // Event delegation using on() method
+            // Add the _TwoFactorComponent partial on page load
+            // addTwoFactorComponent();
+            
             $('body').on('click', '.js-disable-two-factor', function () {
                 var btn = $(this);
 
@@ -366,15 +317,10 @@
                                     '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
                                 },
                                 success: function (response) {
-                                    isTwoFactorEnabled = response.isTwoFactorEnabled; // Update based on server response
-                                    if (isTwoFactorEnabled) {
-                                        enableNotice.classList.add('d-none');
-                                        disableNotice.classList.remove('d-none');
-                                    } else {
-                                        disableNotice.classList.add('d-none');
-                                        enableNotice.classList.remove('d-none');
-                                    }
+                                    removeTwoFactorComponent();
+                                    $('#two-factor-notices').append(response);
                                     showSuccessMessage();
+
                                 },
                                 error: function () {
                                     showErrorMessage();
@@ -407,5 +353,4 @@
         });
 
     </script>
-
 }

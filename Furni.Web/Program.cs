@@ -52,7 +52,6 @@ namespace Furni.Web
 				name: "default",
 				pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
-
             app.MapRazorPages();
 
 			app.Run();

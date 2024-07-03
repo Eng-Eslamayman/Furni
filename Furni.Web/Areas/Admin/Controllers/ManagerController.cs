@@ -200,8 +200,8 @@ namespace Furni.Web.Areas.Admin.Controllers
             }
             else
             {
-                var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
-                return Json(new { isTwoFactorEnabled });
+                //var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+                return PartialView("_TwoFactorComponent");
             }
         }
 
@@ -228,8 +228,8 @@ namespace Furni.Web.Areas.Admin.Controllers
             }
 
             _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
-            var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
-            return Json(new { isTwoFactorEnabled });
+            //var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+            return PartialView("_TwoFactorComponent");
         }
 
 
