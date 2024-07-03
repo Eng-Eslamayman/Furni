@@ -267,7 +267,8 @@
         function onModalTwoFactorSuccess(response) {
             showSuccessMessage();
             $('#TwoFactorModal').modal('hide');
-            // Add the _TwoFactorComponent partial on modal open
+
+
             removeTwoFactorComponent();
             $('#two-factor-notices').append(response);
         }
@@ -290,8 +291,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
 
-            // Add the _TwoFactorComponent partial on page load
-            // addTwoFactorComponent();
             
             $('body').on('click', '.js-disable-two-factor', function () {
                 var btn = $(this);
