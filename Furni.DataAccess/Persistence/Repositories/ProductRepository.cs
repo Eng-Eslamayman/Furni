@@ -41,7 +41,7 @@ namespace Furni.DataAccess.Persistence.Repositories
 		{
 			if (categoryId.HasValue)
 				return _context.Products.Include(p => p.Category).Include(p => p.ProductImages)
-					.Where(p => p.CategoryId == categoryId)
+					.Where(p => p.CategoryId == categoryId && !p.Category!.IsDeleted)
 					 .Select(p => new CustomArrivalProductViewModel
 					 {
 						 Title = p.Title,
@@ -61,42 +61,40 @@ namespace Furni.DataAccess.Persistence.Repositories
 				  });
 		}
 
-		public IList<CustomArrivalProductViewModel> GetShopProducts(int pageNumber, int pageSize,int? categoryId = null)
+		public PaginatedList<CustomArrivalProductViewModel> GetShopProducts(int pageNumber, int pageSize,int? categoryId = null)
 		{
 			IQueryable<CustomArrivalProductViewModel> products;
 			if (categoryId.HasValue)
 			{
-				 products = _context.Products.Include(p => p.Category).Include(p => p.ProductImages)
+				 products = _context.Products
+					.Include(p => p.Category)
+					.Include(p => p.ProductImages)
 					.Where(p => p.CategoryId == categoryId)
 					 .Select(p => new CustomArrivalProductViewModel
 					 {
 						 Title = p.Title,
 						 Id = p.Id,
 						 Price = p.Price,
-						 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList()
+						 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList(),
 					 });
 			}
 			else
 			{
-				products = _context.Products.Include(p => p.Category).Include(p => p.ProductImages)
-				 .Select(p => new CustomArrivalProductViewModel
-				 {
-					 Title = p.Title,
-					 Id = p.Id,
-					 Price = p.Price,
-					 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList()
-				 });
+				products = _context.Products
+					 .Include(p => p.Category)
+					 .Include(p => p.ProductImages)
+					 .Select(p => new CustomArrivalProductViewModel
+					 {
+						 Title = p.Title,
+						 Id = p.Id,
+						 Price = p.Price,
+						 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList(),
+					 });
 			}
 				
 
-			return GetPaginatedList(products, pageNumber, pageSize);
+			return PaginatedList<CustomArrivalProductViewModel>.Create(products, pageNumber, pageSize);
 		}
-		public PaginatedList<CustomArrivalProductViewModel> GetPaginatedList(IQueryable<CustomArrivalProductViewModel> query, int pageNumber, int pageSize)
-		{
-			return PaginatedList<CustomArrivalProductViewModel>.Create(query, pageNumber, pageSize);
-		}
-
-
 	}
 
 }

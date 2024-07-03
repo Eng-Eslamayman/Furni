@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Furni.Models.Enums;
+using Furni.Utility.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -30,15 +31,8 @@ namespace Furni.Web.Areas.Customer.Controllers
 
 			if (pageNumber is not null)
 				viewModel.Products = _unitOfWork.Products
-											  .GetShopProducts(pageNumber ?? 0, (int)ReportsConfigurations.PageSize,categoryId)
-											  .Select(p => new CustomArrivalProductViewModel
-											  {
-												  Title = p.Title,
-												  Id = p.Id,
-												  Price = p.Price,
-												  ImageUrls = p.ImageUrls
+							.GetShopProducts(pageNumber ?? 0, (int)ReportsConfigurations.PageSize,categoryId);
 
-											  }).ToList();
 			return View(viewModel);
 		}
 
