@@ -91,38 +91,41 @@
 					</div>
 
 					<!-- Products Arrival -->
-					@foreach (var product in Model.Item2)
+					@if(Model.Item2 is not null)
 					{
-						<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
-							<div class="grid-inner">
-								<div class="product-image">
-									@if (product.ImageUrls != null && product.ImageUrls.Count > 0)
-									{
-										@if (@product.ImageUrls[0] is not null)
+						@foreach (var product in Model.Item2)
+						{
+							<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
+								<div class="grid-inner">
+									<div class="product-image">
+										@if (product.ImageUrls != null && product.ImageUrls.Count > 0)
 										{
-											<a asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[0]" alt="@product.Title"></a>
+											@if (@product.ImageUrls[0] is not null)
+											{
+												<a asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[0]" alt="@product.Title"></a>
+											}
 										}
-									}
-									@if (product.ImageUrls != null && product.ImageUrls.Count > 1)
-									{
-										@if (@product.ImageUrls[1] is not null)
+										@if (product.ImageUrls != null && product.ImageUrls.Count > 1)
 										{
-											<a asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[1]" alt="@product.Title"></a>
+											@if (@product.ImageUrls[1] is not null)
+											{
+												<a asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[1]" alt="@product.Title"></a>
+											}
 										}
-									}
-									<div class="bg-overlay">
-										<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-											<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-											<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
+										<div class="bg-overlay">
+											<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
+												<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
+												<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="product-desc">
-									<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" asp-action="Details" asp-route-id="@product.Id">@product.Title</a></h4></div>
-									<h5 class="product-price fw-normal">@product.Price</h5>
+									<div class="product-desc">
+										<div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" asp-action="Details" asp-route-id="@product.Id">@product.Title</a></h4></div>
+										<h5 class="product-price fw-normal">@product.Price</h5>
+									</div>
 								</div>
 							</div>
-						</div>
+						}
 					}
 
 				</div>

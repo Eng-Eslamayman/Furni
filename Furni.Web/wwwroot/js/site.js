@@ -52,23 +52,12 @@ function onModalComplete() {
     $('body :submit').removeAttr('disabled').removeAttr('data-kt-indicator');
 }
 
-//Select2
-function applySelect2() {
-    $('.js-select2').select2();
-    $('.js-select2').on('select2:select', function (e) {
-        $('form').not('#SignOut').validate().element('#' + $(this).attr('id'));
-    });
-}
-
 //DataTables
 var headers = $('th');
 $.each(headers, function (i) {
     if (!$(this).hasClass('js-no-export'))
         exportedCols.push(i);
 });
-
-
-
 
 // Select2
 function applySelect2() {
@@ -79,9 +68,6 @@ function applySelect2() {
         //$('form').validate().getElementById('forTest');
     });
 }
-
-
-
 
 // Class definition
 var KTDatatables = function () {

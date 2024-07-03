@@ -33565,3 +33565,8 @@ body.dark {
     font-weight: bold !important; /* Example style */
     color: #1a786f !important; /* Example style */
 }
+
+.z-index-10 {
+    z-index: 1000;
+    position: relative; /* or absolute/fixed as needed */
+}

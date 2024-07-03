@@ -33,6 +33,10 @@ namespace Furni.Web.Areas.Customer.Controllers
 				viewModel.Products = _unitOfWork.Products
 							.GetShopProducts(pageNumber ?? 0, (int)ReportsConfigurations.PageSize,categoryId);
 
+			else
+				viewModel.Products = _unitOfWork.Products
+							.GetShopProducts(1, (int)ReportsConfigurations.PageSize, categoryId);
+
 			return View(viewModel);
 		}
 

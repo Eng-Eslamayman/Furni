@@ -13,7 +13,12 @@ namespace Furni.DataAccess.Persistence.Repositories
         {
         }
         public IEnumerable<Category> GetActiveCategories() =>
-            _context.Categories.Where(a => !a.IsDeleted).OrderBy(a => a.Name).ToList();
+            _context.Categories.Where(a => !a.IsDeleted).OrderBy(a => a.Name).Select(c => new Category
+            {
+                Id = c.Id,
+                Name = c.Name
+            })
+            .ToList();
 
         public List<CustomCategoryViewModel> GetCustomCategories() => _context.Categories
                 .Select(c => new CustomCategoryViewModel
