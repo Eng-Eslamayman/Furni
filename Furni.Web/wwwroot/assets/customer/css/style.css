@@ -33566,7 +33566,46 @@ body.dark {
     color: #1a786f !important; /* Example style */
 }
 
-.z-index-10 {
-    z-index: 1000;
-    position: relative; /* or absolute/fixed as needed */
+
+.dropdown-menu .dropdown-item {
+    cursor: pointer; /* Add pointer cursor on hover */
+}
+
+.js-all-products:hover {
+    cursor: pointer;
+}
+
+
+
+.loader-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    width: 100%; /* Ensure it takes full width */
+    height: 100%; /* Ensure it takes full height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.loader {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #1a786f;
+    border-radius: 50%;
+    width: 60px; /* Adjust size as needed */
+    height: 60px; /* Adjust size as needed */
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

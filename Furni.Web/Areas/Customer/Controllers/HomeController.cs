@@ -24,33 +24,13 @@ namespace Furni.Web.Areas.Customers.Controllers
             {
                 CustomProductViewModel = _unitOfWork
                                             .Products
-                                            .GetCustomProducts()
-                                            .Select(p => new CustomProductViewModel {
-                                                Title = p.Title,
-                                                Id = p.Id,
-                                                Price = p.Price,
-                                                MainImageUrl = p.MainImageUrl })
-                                            .ToList(),
+                                            .GetCustomProducts(),
                 CustomCategoryViewModel = _unitOfWork
                                             .Categories
-                                            .GetCustomCategories()
-                                            .Select(c => new CustomCategoryViewModel
-                                            {
-                                                Id = c.Id,
-                                                Name = c.Name,
-                                                ImageUrl = c.ImageUrl 
-                                            })
-                                            .ToList(),
+                                            .GetCustomCategories(),
                 CustomArrivalProductViewModel = _unitOfWork.Products
                                                .GetCustomArrivalProducts()
-                                               .Select(p => new CustomArrivalProductViewModel
-                                               {
-												   Title = p.Title,
-												   Id = p.Id,
-												   Price = p.Price,
-												   ImageUrls = p.ImageUrls
-
-											   }).Skip(6).Take(7).ToList(),
+                                               .Skip(6).Take(7).ToList(),
 			};
 
             return View(viewModel);
