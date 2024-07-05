@@ -1,0 +1,326 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+
+
+<div class="stretched">
+	<!-- Document Wrapper
+	============================================= -->
+	<div id="wrapper">
+
+		<!-- Content
+		============================================= -->
+		<section id="content">
+			<div class="content-wrap py-0">
+
+				<!-- 1. Section
+				============================================= -->
+				<div class="section bg-transparent my-0 py-0">
+					<div class="container-fluid">
+
+						<div class="clear"></div>
+
+						<!-- 1. Section Map -->
+						<div class="row align-items-center custom-bg" style="--custom-bg: var(--cnvs-themecolor)">
+							<!-- Map -->
+							<div class="col-md-6 px-lg-0 min-vh-50 min-vh-lg-100 d-flex align-self-stretch">
+								<div class="gmap-bg gmap h-100 position-absolute" data-address="Ottawa, Canada"
+									 data-markers='[
+									{address: "London", icon:{ image: "demos/furniture/images/map-pin.svg", iconsize: [36,36], iconanchor: [36,36] }},
+									{address: "San Fransisco",html: "San Fransisco, USA",icon: {image: "demos/furniture/images/map-pin.svg",iconsize: [36,36],iconanchor: [36,36]}},
+									{address: "Melbourne",html: "Melbourne, Australia",icon: {image: "demos/furniture/images/map-pin.svg",iconsize: [36,36],iconanchor: [36,36]}},
+									{address: "New York",html: "New York, USA",icon: {image: "demos/furniture/images/map-pin.svg",iconsize: [36,36],iconanchor: [36,36]}},
+									{address: "New York",html: "New York, New York",icon: {image: "demos/furniture/images/map-pin.svg",iconsize: [36,36],iconanchor: [36,36]}},
+									{address: "Los Angeles",html: "Los Angeles, California",icon: {image: "demos/furniture/images/map-pin.svg",iconsize: [36,36],iconanchor: [36,36]}},
+									{address: "Ottawa",html: "Ottawa, Canada",icon: {image: "demos/furniture/images/map-pin.svg",iconsize: [36,36],iconanchor: [36,36]}},]'
+									 data-styles='
+									[{"featureType":"all","elementType":"geometry.fill","stylers":[{"weight":"2.00"}]},{"featureType":"all","elementType":"geometry.stroke","stylers":[{"color":"#9c9c9c"}]},{"featureType":"all","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"landscape","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"color":"#eeeeee"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#7b7b7b"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#46bcec"},{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#c8d7d4"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#070707"}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]}]'
+									 data-scrollwheel="false" data-zoom="4" data-control-zoom="true"
+									 style=" top: 0; left: 0; width: 100%; z-index: 1;"></div>
+								<div class="position-absolute pos-x-center pos-y-center m-0 text-white-50">Map loading...</div>
+							</div>
+
+							<!-- Content -->
+							<div class="col-md-6 p-5 p-lg-6 dark">
+								<h2 class="h1 fw-normal mb-5">Our <span data-animate="svg-underline-animated" class="svg-underline nocolor"><span>Showrooms</span></span></h2>
+								<div class="row col-mb-50">
+									<a href="https://www.google.com/maps/place/San+Francisco" target="_blank" class="col-sm-6">
+										<h3 class="h5 mb-2 fw-medium">San Fransisco</h3>
+										<p class="m-0 text-white-50">
+											795 Folsom Ave, Suite 600<br>
+											San Francisco, CA 94107
+										</p>
+									</a>
+
+									<a href="https://www.google.com/maps/place/melbourne" target="_blank" class="col-sm-6">
+										<h3 class="h5 mb-2 fw-medium">Australia</h3>
+										<p class="m-0 text-white-50">
+											62 Parkes Road,<br>
+											Melbourne, Victoria 3004
+										</p>
+									</a>
+
+									<a href="https://www.google.com/maps/place/london" target="_blank" class="col-sm-6">
+										<h3 class="h5 mb-2 fw-medium">London</h3>
+										<p class="m-0 text-white-50">
+											115  Guild Street, Suite 893<br>
+											London, EC3A3RN
+										</p>
+									</a>
+
+									<a href="https://www.google.com/maps/place/new+york" target="_blank" class="col-sm-6">
+										<h3 class="h5 mb-2 fw-medium">New York</h3>
+										<p class="m-0 text-white-50">
+											996  Geraldine Lane, New York<br>
+											NY, 10004
+										</p>
+									</a>
+
+									<a href="https://www.google.com/maps/place/california" target="_blank" class="col-sm-6">
+										<h3 class="h5 mb-2 fw-medium">California</h3>
+										<p class="m-0 text-white-50">
+											3122  Doctors Drive, Los Angeles<br>
+											California, 90017
+										</p>
+									</a>
+
+									<a href="https://www.google.com/maps/place/Ottawa,+ON,+Canada/" target="_blank" class="col-sm-6">
+										<h3 class="h5 mb-2 fw-medium">Canada</h3>
+										<p class="m-0 text-white-50">
+											305 Garrett Drive, Ottawa<br>
+											Canada, 21907
+										</p>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<div class="clear"></div>
+
+						<!-- 2. Get In Touch -->
+						<div class="row flex-md-row-reverse align-items-center custom-bg" style="--custom-bg: #fff7de;">
+							<!-- Image -->
+							<div class="col-md-6 px-lg-0 min-vh-50 min-vh-lg-100 d-flex align-self-stretch" style="background: url('/assets/images/contact.jpg') no-repeat center center; background-size: cover;">
+							</div>
+
+							<!-- Content -->
+							<div class="col-md-6 p-5 p-lg-6">
+								<h2 class="h1 fw-normal mb-5">Get In <span data-animate="svg-underline-animated" class="svg-underline nocolor"><span>Touch</span></span></h2>
+
+								<div class="row col-mb-50">
+									<div class="col-12 col-lg-6">
+										<h3 class="h5 mb-2 fw-medium">Email:</h3>
+										<a href="eslamabdelmawgoud11@gmail.com" class="m-0 op-07"><u>eslamabdelmawgoud11@gmail.com</u></a>
+									</div>
+
+									<div class="col-12 col-lg-6">
+										<h3 class="h5 mb-2 fw-medium">Email:</h3>
+										<a href="abdullahgo924@gmail.com" class="m-0 op-07">
+											<u>abdullahgo924@gmail.com</u>
+										</a>
+									</div>
+
+									<div class="col-12 col-lg-6">
+										<h3 class="h5 mb-2 fw-medium">Call:</h3>
+										<a href="tel:+201017066934" class="m-0 op-07"><u>+20 101 706 6934</u></a>
+									</div>
+
+									<div class="col-12 col-lg-6">
+										<h3 class="h5 mb-2 fw-medium">WhatsApp:</h3>
+										<a href="https://wa.me/+01029249874" class="m-0 op-07"><u>+20 102 924 9874</u></a>
+									</div>
+
+									<div class="col-12 col-lg-12">
+										<h3 class="h5 mb-3 fw-medium">Follow Us</h3>
+										<a href="https://facebook.com/" target="_blank" class="social-icon si-small rounded-circle text-white bg-facebook">
+											<i class="fa-brands fa-facebook-f"></i>
+											<i class="fa-brands fa-facebook-f"></i>
+										</a>
+										<a href="https://instagram.com/" target="_blank" class="social-icon si-small rounded-circle text-white bg-instagram">
+											<i class="bi-instagram"></i>
+											<i class="bi-instagram"></i>
+										</a>
+										<a href="https://twitter.com/" target="_blank" class="social-icon si-small rounded-circle text-white bg-x-twitter">
+											<i class="fa-brands fa-x-twitter"></i>
+											<i class="fa-brands fa-x-twitter"></i>
+										</a>
+										<a href="https://youtube.com/c/" target="_blank" class="social-icon si-small rounded-circle text-white bg-youtube">
+											<i class="fa-brands fa-youtube"></i>
+											<i class="fa-brands fa-youtube"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div> <!-- Section End -->
+				<!-- 6. Section Instagram
+				============================================= -->
+				<div class="section custom-bg my-0 py-1" style="--custom-bg: var(--cnvs-themecolor);">
+					<div class="row align-items-center no-gutters">
+						<!-- Instagram Center Col - Text -->
+						<div class="col-lg-4 py-5 order-lg-2">
+							<div class="text-center dark p-5">
+								<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#FFF" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M172,36H84A47.99987,47.99987,0,0,0,36,84v88a47.99988,47.99988,0,0,0,48,48h88a47.99988,47.99988,0,0,0,48-48V84A47.99987,47.99987,0,0,0,172,36ZM128,168a40,40,0,1,1,40-40A40.0001,40.0001,0,0,1,128,168Z" opacity="0.2"></path><circle cx="128" cy="128" r="40" fill="none" stroke="#FFF" stroke-miterlimit="10" stroke-width="16"></circle><rect class x="36" y="36" width="184" height="184" rx="48" stroke-width="16" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" fill="none"></rect><circle cx="180" cy="75.99998" r="12"></circle></svg>
+
+								<h3 class="mt-3 mb-5 fw-normal h2">Don't Follow the Crowd, Follow us on <span><span>Instagram</span></span></h3>
+
+								<a href="https://instagram.com/" target="_blank" class="button button-large button-border text-transform-none ls-0 fw-normal button-light button-white border-width-1 m-0" style="border-color: rgba(255,255,255,0.25)">@@furnihuture</a>
+							</div>
+						</div>
+
+						<!-- Instagram Left Col - Image -->
+						<div class="col-lg-4 col-md-6 order-lg-1">
+							<div class="row gutter-4">
+								<div class="col-6">
+									<a class="d-block instagram-image" href="https://instagram.com/" target="_blank" style="background: url('/assets/images/instagram/1.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+								</div>
+								<div class="col-6">
+									<a class="d-block instagram-image" href="https://instagram.com/" target="_blank" style="background: url('/assets/images/instagram/2.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+								</div>
+								<div class="col-6">
+									<a class="d-block instagram-image" href="https://instagram.com/" target="_blank" style="background: url('/assets/images/instagram/3.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+								</div>
+								<div class="col-6">
+									<a class="d-block instagram-image" href="https://instagram.com/" target="_blank" style="background: url('/assets/images/instagram/4.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+								</div>
+							</div>
+						</div>
+
+						<!-- Instagram Right Col - Image -->
+						<div class="col-lg-4 col-md-6 order-lg-3 mt-1 mt-md-0 ps-md-1 ps-lg-0">
+							<div class="row gutter-4">
+								<div class="col-6">
+									<a class="d-block instagram-image" href="https://instagram.com/" target="_blank" style="background: url('/assets/images/instagram/5.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+								</div>
+								<div class="col-6">
+									<a class="d-block instagram-image" href="https://instagram.com/" target="_blank" style="background: url('/assets/images/instagram/6.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+								</div>
+								<div class="col-6">
+									<a class="d-block instagram-image" href="https://instagram.com/" target="_blank" style="background: url('/assets/images/instagram/7.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+								</div>
+								<div class="col-6">
+									<a class="d-block instagram-image" href="https://instagram.com/" target="_blank" style="background: url('/assets/images/instagram/8.jpg') no-repeat center center; background-size:cover; min-height: 33vh;"></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- Section End -->
+
+			</div>
+		</section><!-- #content end -->
+		<!-- Footer
+		============================================= -->
+		<footer id="footer" class="border-0 bg-white">
+			<div class="container">
+
+				<!-- Footer Widgets
+				============================================= -->
+				<div class="footer-widgets-wrap py-lg-6">
+					<div class="row col-mb-30">
+
+						<!-- Footer Col 1 -->
+						<div class="col-lg-2 col-md-3 col-6">
+							<div class="widget widget_links widget-li-noicon">
+
+								<h4 class="ls-0 text-transform-none">Social</h4>
+
+								<ul class="list-unstyled iconlist ms-0">
+									<li><a href="https://facebook.com/semicolonweb" target="_blank"><i class="fa-brands fa-facebook-f"></i> Facebook</a></li>
+									<li><a href="https://instagram.com/semicolonweb" target="_blank"><i class="bi-instagram"></i> Instagram</a></li>
+									<li><a href="https://twitter.com/__semicolon" target="_blank"><i class="fa-brands fa-x-twitter"></i> Twitter</a></li>
+									<li><a href="https://youtube.com/c/SemiColonweb/videos" target="_blank"><i class="fa-brands fa-youtube"></i> YouTube</a></li>
+									<li><a href="https://wa.me/00112233344"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></li>
+								</ul>
+
+							</div>
+						</div>
+
+						<!-- Footer Col 2 -->
+						<div class="col-lg-2 col-md-3 col-6">
+							<div class="widget widget_links widget-li-noicon">
+
+								<h4 class="ls-0 text-transform-none">Support</h4>
+
+								<ul class="list-unstyled iconlist ms-0">
+									<li><a href="demo-furniture.html">Home</a></li>
+									<li><a href="demo-furniture-about.html">About</a></li>
+									<li><a href="demo-furniture-contact.html">Contact</a></li>
+								</ul>
+
+							</div>
+						</div>
+
+						<!-- Footer Col 3 -->
+						<div class="col-lg-2 col-md-3 col-6">
+							<div class="widget widget_links widget-li-noicon">
+
+								<h4 class="ls-0 text-transform-none">Trending</h4>
+
+								<ul class="list-unstyled iconlist ms-0">
+									<li><a href="demo-furniture-products.html">Shop</a></li>
+									<li><a href="demo-forum-single.html">Single</a></li>
+									<li><a href="demo-furniture-about.html">Who are we</a></li>
+								</ul>
+
+							</div>
+						</div>
+
+						<!-- Footer Col 4 -->
+						<div class="col-lg-2 col-md-3 col-6">
+							<div class="widget widget_links widget-li-noicon">
+
+								<h4 class="ls-0 text-transform-none">Get to Know us</h4>
+
+								<ul class="list-unstyled iconlist ms-0">
+									<li><a href="intro.html#section-niche">Niche Demos</a></li>
+									<li><a href="intro.html#section-multipage">Home Pages</a></li>
+									<li><a href="intro.html#section-onepage">One Pages</a></li>
+								</ul>
+
+							</div>
+						</div>
+
+						<!-- Footer Col 5 -->
+						<div class="col-lg-4">
+							<div class="widget subscribe-widget" data-loader="button">
+								<h4>Subscribe Us</h4>
+								<h5 class="font-body op-04"><strong>Subscribe</strong> to Our Newsletter to get Important News, Amazing Offers &amp; Inside Scoops:</h5>
+								<div class="widget-subscribe-form-result"></div>
+								<form id="widget-subscribe-form" action="include/subscribe.php" method="post" class="mb-0">
+									<div class="input-group">
+										<input type="email" id="widget-subscribe-form-email" name="widget-subscribe-form-email" class="form-control required email" placeholder="Enter your Email Address">
+										<button class="btn btn-dark bg-color px-3 input-group-text" type="submit">Subscribe</button>
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+				</div><!-- .footer-widgets-wrap end -->
+
+			</div>
+
+			<!-- Copyrights
+			============================================= -->
+			<div id="copyrights" class="py-3 bg-color-light">
+				<div class="container">
+
+					<div class="d-flex justify-content-between op-04">
+						<span>&copy; 2023 All Rights Reserved by Eslam & Abdullah Inc.</span>
+						<div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>
+					</div>
+
+				</div>
+			</div><!-- #copyrights end -->
+		</footer><!-- #footer end -->
+
+	</div><!-- #wrapper end -->
+	<!-- Go To Top
+	============================================= -->
+	<div id="gotoTop" class="bg-color op-07 h-op-1">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FFF" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polygon points="48 208 128 128 208 208 48 208" opacity="0.2"></polygon><polygon points="48 208 128 128 208 208 48 208" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polygon><polyline points="48 128 128 48 208 128" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline></svg>
+	</div>
+</div>
