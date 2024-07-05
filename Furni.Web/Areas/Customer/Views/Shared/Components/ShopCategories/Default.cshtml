@@ -1,0 +1,35 @@
+﻿@model IList<CategoryHeaderViewModel>
+
+<div class="container">
+	<div class="row">
+		<ul class="sub-menu-container mega-menu-column col-lg-auto">
+			<li class="menu-item">
+				<a class="menu-link js-header-all-products" asp-area="Customer" asp-controller="Products" asp-action="Index">
+					<div>All Products</div>
+				</a>
+			</li>
+		</ul>
+		
+		@for (int i = 0; i < 5; i++)
+		{
+			<ul class="sub-menu-container mega-menu-column col-lg-auto">
+				<li class="menu-item">
+					<a class="menu-link js-category-Id" data-category-id="@Model[i].Id"><div>@Model[i].Name</div></a>
+				</li>
+			</ul>
+		}
+		<ul class="sub-menu-container mega-menu-column col-lg-auto">
+			<li class="menu-item">
+				<a class="menu-link" href="#"><div>More</div></a>
+				<ul class="sub-menu-container mega-menu-dropdown">
+					@for (int i = 5; i < 10; i++)
+					{
+						<li class="menu-item">
+							<a class="menu-link js-category-Id" data-category-id="@Model[i].Id"><div>@Model[i].Name</div></a>
+						</li>
+					}
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>

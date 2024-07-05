@@ -13,21 +13,7 @@
 <partial name="_Content" model="Tuple.Create(Model.CustomCategoryViewModel, Model.CustomArrivalProductViewModel)" />
 
 
-@section Scripts {
 
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-	<script>
-		$(document).ready(function () {
-			$('.js-category-Id').on('click', function (event) {
-				event.preventDefault();
-				const categoryId = $(this).data('category-id');
-				sessionStorage.setItem('selectedCategoryId', categoryId);
-				window.location.href = '/Customer/Products';
-			});
-		});
-	</script>
-}
 
 
 

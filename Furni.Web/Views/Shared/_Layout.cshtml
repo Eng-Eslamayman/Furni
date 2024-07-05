@@ -139,12 +139,13 @@
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FFF" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polygon points="48 208 128 128 208 208 48 208" opacity="0.2"></polygon><polygon points="48 208 128 128 208 208 48 208" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polygon><polyline points="48 128 128 48 208 128" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline></svg>
 		</div>
 		<!-- JavaScripts -->
-		@await RenderSectionAsync("Scripts", required: false)
+		<script src="~/lib/jquery/dist/jquery.min.js"></script>
+		<script src="~/assets/customer/js/site.js"></script>
 
 		<script src="~/assets/customer/js/plugins.min.js"></script>
 		<script src="~/assets/customer/js/functions.bundle.js"></script>
 
-
+		@await RenderSectionAsync("Scripts", required: false)
 	}
 	<!--end::Root-->
 	<!--end::Main-->

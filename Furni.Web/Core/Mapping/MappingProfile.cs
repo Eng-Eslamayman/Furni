@@ -14,10 +14,10 @@ namespace Furni.Web.Core.Mapping
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name)).ReverseMap();
             CreateMap<CategoryFormViewModel, Category>().ReverseMap();
             CreateMap<Category, CategoryViewModel>();
+            CreateMap<Category, CategoryHeaderViewModel>();
 
-
-            // Products
-            CreateMap<Product, ProductViewModel>()
+			// Products
+			CreateMap<Product, ProductViewModel>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category!.Name));
             CreateMap<ProductFormViewModel, Product>().ReverseMap()
                 .ForMember(dest => dest.Categories, opt => opt.Ignore());
