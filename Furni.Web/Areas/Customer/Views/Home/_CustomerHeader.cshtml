@@ -43,67 +43,9 @@
 						</li>
 						<li class="menu-item mega-menu mega-menu-full">
 							<a asp-area="Customer" asp-controller="Products" asp-action="Index" class="menu-link" active-when="Products"><div>Shop</div></a>
-
-							<!-- Menu DropDown
-							============================================= -->
+							
 							<div class="mega-menu-content border-bottom-0">
-								<div class="container">
-									<div class="row">
-										<ul class="sub-menu-container mega-menu-column col-lg-auto">
-											<li class="menu-item">
-												<a class="menu-link" asp-area="Customer" asp-controller="Products" asp-action="Index">
-													<div>All Products</div></a>
-											</li>
-										</ul>
-										<ul class="sub-menu-container mega-menu-column col-lg-auto">
-											<li class="menu-item">
-												<a class="menu-link" href="demo-furniture-products.html"><div>Sofa</div></a>
-											</li>
-										</ul>
-										<ul class="sub-menu-container mega-menu-column col-lg-auto">
-											<li class="menu-item">
-												<a class="menu-link" href="demo-furniture-products.html"><div>Chairs</div></a>
-											</li>
-										</ul>
-										<ul class="sub-menu-container mega-menu-column col-lg-auto">
-											<li class="menu-item">
-												<a class="menu-link" href="demo-furniture-products.html"><div>Beds</div></a>
-											</li>
-										</ul>
-										<ul class="sub-menu-container mega-menu-column col-lg-auto">
-											<li class="menu-item">
-												<a class="menu-link" href="demo-furniture-products.html"><div>Wardrobe</div></a>
-											</li>
-										</ul>
-										<ul class="sub-menu-container mega-menu-column col-lg-auto">
-											<li class="menu-item">
-												<a class="menu-link" href="demo-furniture-products.html"><div>Tables</div></a>
-											</li>
-										</ul>
-										<ul class="sub-menu-container mega-menu-column col-lg-auto">
-											<li class="menu-item">
-												<a class="menu-link" href="demo-furniture-products.html"><div>More</div></a>
-												<ul class="sub-menu-container mega-menu-dropdown">
-													<li class="menu-item">
-														<a class="menu-link" href="demo-furniture-products.html"><div>Kids Room</div></a>
-													</li>
-													<li class="menu-item">
-														<a class="menu-link" href="demo-furniture-products.html"><div>Mattress</div></a>
-													</li>
-													<li class="menu-item">
-														<a class="menu-link" href="demo-furniture-products.html"><div>Lighting</div></a>
-													</li>
-													<li class="menu-item">
-														<a class="menu-link" href="demo-furniture-products.html"><div>Pillows</div></a>
-													</li>
-													<li class="menu-item">
-														<a class="menu-link" href="demo-furniture-products.html"><div>FlowerPot</div></a>
-													</li>
-												</ul>
-											</li>
-										</ul>
-									</div>
-								</div>
+								@await Component.InvokeAsync("ShopCategories")
 							</div>
 						</li>
 						<li class="menu-item">
