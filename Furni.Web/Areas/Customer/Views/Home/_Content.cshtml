@@ -66,7 +66,7 @@
 				@foreach(var category in Model.Item1)
 				{
 					<div class="col-lg-4 col-md-6">
-						<a asp-action="GetProductsByCategoryId" asp-route-id="@category.Id" class="d-block h-op-09 op-ts" style="background: url('@category.ImageUrl') no-repeat center center; background-size: cover; height: 340px;">
+						<a data-category-id="@category.Id" class="d-block h-op-09 op-ts js-category-Id" style="background: url('@category.ImageUrl') no-repeat center center; background-size: cover; height: 340px;">
 							<h5 class="text-uppercase ls-1 bg-white mb-0">@category.Name</h5>
 						</a>
 					</div>
@@ -254,3 +254,28 @@
 	</div>
 </section>
 <!-- Content end -->
+@section Scripts {
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+	<script>
+		// Check if jQuery is loaded
+		if (typeof jQuery != 'undefined') {
+			console.log('jQuery is loaded');
+		} else {
+			console.log('jQuery is not loaded');
+		}
+
+		$(document).ready(function () {
+			console.log('Document is ready');
+			$('.js-category-Id').on('click', function (event) {
+				event.preventDefault();
+				console.log('Link clicked');
+				const categoryId = $(this).data('category-id');
+				console.log('Category ID:', categoryId);
+				sessionStorage.setItem('selectedCategoryId', categoryId);
+				window.location.href = '/Admin/Products';
+			});
+		});
+	</script>
+}

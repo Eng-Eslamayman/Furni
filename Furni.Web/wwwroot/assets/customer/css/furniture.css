@@ -201,18 +201,18 @@ body:not(.primary-menu-open) #primary-menu-trigger svg:nth-child(2) { display: n
 	opacity: 1;
 }
 
-.svg-underline::before {
-	content: "";
-	position: absolute;
-	bottom: -2px;
-	left: 0;
-	right: 0;
-	height: 13px;
-	background-image: url("../../demos/furniture/images/underline.svg");
-	background-size: 100% 13px;
-	background-position: bottom center;
-	opacity: 0.7;
-}
+	.svg-underline::before {
+		content: "";
+		position: absolute;
+		bottom: -2px;
+		left: 0;
+		right: 0;
+		height: 13px;
+		background-image: url("/assets/customer/images/underline.svg");
+		background-size: 100% 13px;
+		background-position: bottom center;
+		opacity: 0.7;
+	}
 
 .svg-underline[data-animate]::after {
 	content: "";
@@ -231,7 +231,7 @@ body:not(.primary-menu-open) #primary-menu-trigger svg:nth-child(2) { display: n
 
 .dark .svg-underline::before {
 	opacity: 0.7;
-	background-image: url("../../demos/furniture/images/underline_dark.svg");
+	background-image: url("/assets/customer/images/underline_dark.svg");
 }
 
 .custom-bg,
@@ -282,7 +282,7 @@ body:not(.primary-menu-open) #primary-menu-trigger svg:nth-child(2) { display: n
 	opacity: 0;
 	content: "";
 	background-color: rgba(0,0,0,0.65);
-	background-image: url('images/instagram.svg');
+	background-image: url('/assets/customer/images/instagram.svg');
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 40px 40px;

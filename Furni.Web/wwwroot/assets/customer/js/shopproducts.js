@@ -45,7 +45,7 @@
     });
 
     // Initial load of products when page loads
-    if (selectedCategoryId) {
+    if (selectedCategoryId || currentPageNumber) {
         loadProducts(selectedCategoryId, currentPageNumber);
     }
 });
