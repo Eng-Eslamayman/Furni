@@ -1,6 +1,7 @@
 ﻿@model ProductDetailsViewModel
 
 @{
+	ViewData["Title"] = "Product Details";
 	var productNumber = Model.Quantity == 1 ? "Last product" :
 												Model.Quantity <= 3 ? $"Only {Model.Quantity} Stocks Available" :
 															$"{Model.Quantity} Stocks Available";
@@ -127,7 +128,7 @@
 		<div class="mw-sm mx-auto text-center px-4 px-md-0">
 			<h2 class="fw-medium mb-3">How do We Install?</h2>
 			<p class="op-07 px-md-5 mb-5">Seamlessly leverage existing adaptive supply chains without process-centric results. Efficiently incubate web-enabled materials without functional technologies.</p>
-			<a href="https://www.youtube.com/watch?v=lWb_427hIl0" data-lightbox="iframe" class="d-flex flex-column justify-content-center align-items-center mb-2  h-scale-sm transform-ts rounded-xxxl" style="background: url('demos/furniture/images/video-poster.jpg') no-repeat center center / cover; min-height: 450px">
+			<a href="https://www.youtube.com/watch?v=lWb_427hIl0" data-lightbox="iframe" class="d-flex flex-column justify-content-center align-items-center mb-2  h-scale-sm transform-ts rounded-xxxl" style="background: url('/assets/customer/images/video-poster.jpg') no-repeat center center / cover; min-height: 450px">
 				<i class="uil uil-play h3 icon-stacked text-center rounded-circle ps-1 color bg-white"></i>
 				<h4 class="mb-0 text-monospace fw-normal text-white" style="text-shadow: 1px 1px 1px #00000073">03:46</h4>
 			</a>

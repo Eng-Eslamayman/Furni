@@ -29,13 +29,13 @@ namespace Furni.Web.Areas.Identity.Pages.Account
             _logger.LogInformation("User logged out."); // In Development => Log Informations in console
             if (returnUrl != null)
             {
-                return LocalRedirect(returnUrl);
+                return RedirectToPage("/Account/Login", returnUrl);
             }
             else
             {
                 // This needs to be a redirect so that the browser performs a new
                 // request and the identity for the user gets updated.
-                return RedirectToPage();
+                return RedirectToPage("/Account/Login");
             }
         }
     }

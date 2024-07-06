@@ -146,9 +146,17 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
+					_logger.LogInformation("User logged in.");
+
+					if (await _userManager.IsInRoleAsync(user, AppRoles.Customer))
+					{
+                        return RedirectToAction("Index", "Home", new { area = AppRoles.Customer });
+					}
+					else if (await _userManager.IsInRoleAsync(user, AppRoles.Admin))
+					{
+                        return RedirectToAction("Index", "Products", new { area = AppRoles.Admin });
+                    }
+				}
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
