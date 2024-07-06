@@ -134,7 +134,7 @@
                                         </span>
                                         <!--end::Cancel-->
                                         <!--begin::Remove-->
-                                        <span onclick="removeImage('@image', this)" class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                        <span onclick="removeImage('@image', this)" class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow">
                                             <i class="ki-duotone ki-cross fs-2">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
@@ -373,8 +373,11 @@
 
 @section Scripts
 {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/validation-styling.js"></script>
     <script src="~/assets/plugins/tinymce/tinymce.bundle.js"></script>
-    <partial name="_ValidationScriptsPartial" />
 
     <script src="~/lib/expressive-annotations-validate/expressive.annotations.validate.min.js"></script>
     <script>
@@ -384,20 +387,34 @@
     </script>
 
     <script>
+        $.validator.setDefaults({
+            ignore: ":hidden:not(input[type=file])", // Ignore hidden fields except file inputs
+            errorClass: 'is-invalid', // Class added to invalid elements
+            validClass: 'is-valid',   // Class added to valid elements
+            errorElement: 'div',      // Wrap error messages in a div
+            errorPlacement: function (error, element) {
+                // Customize error message placement
+                if (element.parent().hasClass('input-group')) {
+                    error.insertAfter(element.parent()); // Example: Place error after input group
+                } else {
+                    error.insertAfter(element); // Default: Place error after the element
+                }
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass(errorClass).removeClass(validClass);
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass(errorClass).addClass(validClass);
+            }
+        });
+
         function removeImage(imageUrl, element) {
-            // Find the hidden input field for removed images
             var hiddenInput = document.querySelector('input[name="avatar_remove"]');
 
-            // Get the current value and convert it to an array
             var removedImages = hiddenInput.value ? hiddenInput.value.split(',') : [];
-
-            // Add the new image URL to the array
             removedImages.push(imageUrl);
-
-            // Set the updated list back to the hidden input value
             hiddenInput.value = removedImages.join(',');
 
-            // Optionally hide or remove the image preview element from the DOM
             var imageElement = element.closest('.image-input');
             if (imageElement) {
                 imageElement.remove();
