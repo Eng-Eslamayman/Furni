@@ -33613,3 +33613,11 @@ body.dark {
         transform: rotate(360deg);
     }
 }
+
+
+.qv-toogle > .collapse.show + p {
+    color: green;
+    opacity: 0.6;
+    font-weight: normal;
+    margin: 0.5rem 0;
+}

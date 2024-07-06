@@ -60,10 +60,7 @@ namespace Furni.Web.Areas.Customer.Controllers
         //    return PartialView("_ShopProducts", viewModel.Products);
         //}
 
-
-        //public IActionResult GetAll()
-        //{
-
-        //}
+        public IActionResult Details(int id)
+            => View(_unitOfWork.Products.GetProduct(id));
     }
 }

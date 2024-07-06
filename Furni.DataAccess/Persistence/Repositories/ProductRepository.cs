@@ -95,6 +95,42 @@ namespace Furni.DataAccess.Persistence.Repositories
 
 			return PaginatedList<CustomArrivalProductViewModel>.Create(products, pageNumber, pageSize);
 		}
-	}
+
+
+        public ProductDetailsViewModel? GetProduct(int id)
+        {
+            var product = _context?.Products
+                .Where(p => p.Id == id)
+                .Include(p => p.ProductImages)
+                .Select(p => new
+                {
+                    p.Title,
+                    p.Id,
+                    p.Price,
+                    p.Description,
+                    p.Quantity,
+                    p.DiscountValue,
+                    ProductImages = p.ProductImages.Select(pi => pi.ImageUrl).ToList()
+                })
+                .FirstOrDefault(); // Find Does not work with eager loading Include. but it is more efficient. than First, and Single will give an exception if there more one product and less efficient. 
+
+            if (product == null)
+            {
+                return null;
+            }
+
+            return new ProductDetailsViewModel
+            {
+                Title = product.Title,
+                Id = product.Id,
+                Price = product.Price,
+                Description = product.Description,
+                Quantity = product.Quantity,
+                DiscountValue = product.DiscountValue,
+                ImageUrls = product.ProductImages ?? new List<string>()
+            };
+        } 
+
+    }
 
 }

@@ -11,7 +11,7 @@
 						@for (int i = 0; i < 3; i++)
 						{
 							<div class="col-md-auto col-10 ts">
-								<a asp-action="Details" asp-route-id="@Model[i].Id" class="card d-flex flex-row" data-animate="fadeInLeft" data-delay="200 * @i">
+								<a asp-controller="Products" asp-action="Details" asp-route-id="@Model[i].Id" class="card d-flex flex-row" data-animate="fadeInLeft" data-delay="200 * @i">
 									<img src="@Model[i].MainImageUrl" width="100" height="100" alt="Image" class="rounded-start">
 									<div class="card-body px-4">
 										<h4 class="mb-2 text-white fw-medium">@Model[i].Title</h4>
@@ -31,7 +31,7 @@
 						@for (int i = 3; i < 5; i++)
 						{
 							<div class="col-md-auto col-10 ts">
-								<a asp-action="Details" asp-route-id="@Model[i].Id" class="card d-flex flex-row" data-animate="fadeInLeft" data-delay="400">
+								<a asp-controller="Products" asp-action="Details" asp-route-id="@Model[i].Id" class="card d-flex flex-row" data-animate="fadeInLeft" data-delay="400">
 									<img src="@Model[i].MainImageUrl" width="100" height="100" alt="Image" class="rounded-start">
 									<div class="card-body px-4">
 										<h4 class="mb-2 text-white fw-medium">@Model[i].Title</h4>
@@ -51,7 +51,7 @@
 						@for (int i = 5; i < 8; i++)
 						{
 							<div class="col-md-auto col-10 ts">
-								<a asp-action="Details" asp-route-id="@Model[i].Id" class="card d-flex flex-row" data-animate="fadeInLeft" data-delay="200 * i">
+								<a asp-controller="Products" asp-action="Details" asp-route-id="@Model[i].Id" class="card d-flex flex-row" data-animate="fadeInLeft" data-delay="200 * i">
 									<img src="@Model[i].MainImageUrl" width="100" height="100" alt="Image" class="rounded-start">
 									<div class="card-body px-4">
 										<h4 class="mb-2 text-white fw-medium">@Model[i].Title</h4>

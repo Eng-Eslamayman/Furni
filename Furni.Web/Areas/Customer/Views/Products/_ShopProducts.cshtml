@@ -11,25 +11,25 @@
                     {
                         @if (@product.ImageUrls[0] is not null)
                         {
-                            <a asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[0]" alt="@product.Title"></a>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[0]" alt="@product.Title"></a>
                         }
                     }
                     @if (product.ImageUrls != null && product.ImageUrls.Count > 1)
                     {
                         @if (@product.ImageUrls[1] is not null)
                         {
-                            <a asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[1]" alt="@product.Title"></a>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrls[1]" alt="@product.Title"></a>
                         }
                     }
                     <div class="bg-overlay">
                         <div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-                            <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
-                            <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn btn-light me-2"><i class="uil uil-shopping-cart"></i></a>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn btn-light" data-lightbox="ajax"><i class="bi-eye"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="product-desc">
-                    <div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" asp-action="Details" asp-route-id="@product.Id">@product.Title</a></h4></div>
+                    <div class="product-title mb-0"><h4 class="mb-0"><a class="fw-medium" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">@product.Title</a></h4></div>
                     <h5 class="product-price fw-normal">$@product.Price</h5>
                 </div>
             </div>
