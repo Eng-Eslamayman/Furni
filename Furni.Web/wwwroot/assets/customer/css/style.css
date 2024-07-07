@@ -33614,3 +33614,15 @@ body.dark {
     }
 }
 
+.header-misc {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Adjust as necessary */
+}
+
+.signout-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers the form horizontally */
+}

@@ -55,7 +55,6 @@
 
 		<!-- Custom CSS -->
 		<link rel="stylesheet" href="~/assets/customer/css/custom.css">
-
 	}
 </head>
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-enabled mb-0 stretched">
@@ -131,9 +130,9 @@
 	}
 	else
 	{
+		@await Html.PartialAsync("~/Areas/Customer/Views/Shared/_CardPannel.cshtml")
 		<partial name="~/Areas/Customer/Views/Home/_CustomerHeader.cshtml"/>
 		@RenderBody()
-
 
 		<!-- Scroll Top -->
 		<div id="gotoTop" class="bg-color op-07 h-op-1">
@@ -141,10 +140,14 @@
 		</div>
 		<!-- JavaScripts -->
 		<script src="~/lib/jquery/dist/jquery.min.js"></script>
-		<script src="~/assets/customer/js/site.js"></script>
 
 		<script src="~/assets/customer/js/plugins.min.js"></script>
 		<script src="~/assets/customer/js/functions.bundle.js"></script>
+
+
+		<script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+
+		<script src="~/assets/customer/js/site.js"></script>
 
 		@await RenderSectionAsync("Scripts", required: false)
 	}

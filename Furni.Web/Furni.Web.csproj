@@ -91,9 +91,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Customer\Views\Carts\" />
     <Folder Include="wwwroot\images\categories\thumb\" />
     <Folder Include="wwwroot\images\products\thumb\" />
     <Folder Include="wwwroot\images\Users\thumb\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\lib\sweetalert2\sweetalert2\sweetalert2.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@
 															$"{Model.Quantity} Stocks Available";
 }
 
-<div class="content-wrap py-0 overflow-visible">
+<div class="content-wrap py-0 overflow-visible indecator-loader">
 
 	<div class="section bg-color dark overflow-visible mt-0">
 		<div class="container">
@@ -51,17 +51,18 @@
 
 							<!-- Product Single - Quantity & Cart Button
 							============================================= -->
-							<form class="cart mb-0 d-flex align-items-center" method="post" enctype='multipart/form-data'>
+							<div id="addToCart" class="cart mb-0 d-flex align-items-center">
 								<div class="quantity position-relative mb-3">
+									<input type="hidden" name="productId" data-product-Id="@Model.Id" />
 									<input type="button" value="-" class="minus">
-									<input type="number" step="1" min="1" max="3" name="quantity" value="1" title="Qty" class="qty">
+									<input type="number" step="1" min="1" max="@Model.Quantity" name="count" value="1" title="Qty" class="qty">
 									<input type="button" value="+" class="plus">
 									<div class="clear"></div>
 									<span class="stock-in">@productNumber</span>
 									<span class="stock-out">Ooops! There is no more Stock</span>
 								</div>
-								<button type="submit" class="add-to-cart button button-large fw-medium color button-light bg-white px-lg-4 add-to-cart m-0 mb-3"><i style="position: relative; top: -2px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cnvs-themecolor)" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M62.54543,144H188.10132a16,16,0,0,0,15.74192-13.13783L216,64H48Z" opacity="0.2"></path><path d="M184,184H69.81818L41.92162,30.56892A8,8,0,0,0,34.05066,24H16" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><circle cx="80" cy="204" r="20" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><circle cx="184" cy="204" r="20" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><path d="M62.54543,144H188.10132a16,16,0,0,0,15.74192-13.13783L216,64H48" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg></i> Add to cart</button>
-							</form><!-- Product Single - Quantity & Cart Button End -->
+								<a href="javascript:;" class="js-add-product-to-cart add-to-cart button button-large fw-medium color button-light bg-white px-lg-4 add-to-cart m-0 mb-3"><i style="position: relative; top: -2px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cnvs-themecolor)" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M62.54543,144H188.10132a16,16,0,0,0,15.74192-13.13783L216,64H48Z" opacity="0.2"></path><path d="M184,184H69.81818L41.92162,30.56892A8,8,0,0,0,34.05066,24H16" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><circle cx="80" cy="204" r="20" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><circle cx="184" cy="204" r="20" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><path d="M62.54543,144H188.10132a16,16,0,0,0,15.74192-13.13783L216,64H48" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg></i> Add to cart</a>
+							</div><!-- Product Single - Quantity & Cart Button End -->
 							<!-- Line
 							============================================= -->
 							<div class="line my-5"></div>
@@ -184,3 +185,49 @@
 	</div><!-- Section End -->
 
 </div>
+
+@Html.AntiForgeryToken()
+
+
+@section Scripts{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+
+			function loadShopCarts(productId, count) {
+				// Show loading indicator
+				// $('.indecator-loader').html('<div class="loader-container"><div class="loader"></div></div>');
+				
+				$.ajax({
+					url: '@Url.Action("AddToCart", "Carts", new { area = "Customer" })',
+					type: 'POST',
+					data: {
+						productId: productId,
+						count: count,
+						'__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+					},
+					success: function (data) {
+						// Handle success response
+						// console.log(data);
+						// Update UI or display success message
+						// $('.side-panel').html(data);
+						showSuccessMessage();
+					},
+					error: function () {
+						showErrorMessage();
+					}
+				});
+			}
+
+			$('body').on('click', '.js-add-product-to-cart', function () {
+				var form = $(this).closest('.cart');
+				var productId = form.find('input[name="productId"]').data('product-id');
+				var count = form.find('input[name="count"]').val();
+
+				// Call function to add to cart
+				loadShopCarts(productId, count);
+			});
+		});
+	</script>
+}
