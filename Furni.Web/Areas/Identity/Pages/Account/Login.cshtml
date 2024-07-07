@@ -1,5 +1,5 @@
 ﻿@page
-@model LoginModel
+@model Furni.Web.Areas.Identity.Pages.Account.LoginModel
 
 @{
     ViewData["isInIdentityArea"] = "Identity";
@@ -8,6 +8,8 @@
 
 <!--begin::Root-->
 <div class="d-flex flex-column flex-root pb-0">
+    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
     <!--begin::Authentication - Sign-in -->
     <div class="d-flex flex-column flex-lg-row flex-column-fluid">
         <!--begin::Body-->
@@ -112,7 +114,7 @@
                         <!--begin::Sign up-->
                         <div class="text-gray-500 text-center fw-semibold fs-6">
                             Not a Member yet?
-                            <a asp-page="./Register" class="link-primary">Sign up</a>
+                            <a asp-page="./Register" asp-route-returnUrl="@ViewData["ReturnUrl"]" class="link-primary">Sign up</a>
                         </div>
                         <!--end::Sign up-->
                     </form>

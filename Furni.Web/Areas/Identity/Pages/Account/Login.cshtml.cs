@@ -90,30 +90,27 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
-			ViewData["isInIdentityArea"] = "Identity";
-			// Check if the user is already authenticated
-			if (User.Identity!.IsAuthenticated)
-			{
-				// Redirect authenticated users to the return URL if provided
-				if (!string.IsNullOrEmpty(returnUrl))
-				{
-					return LocalRedirect(returnUrl);
-				}
-				else
-				{
-					// Redirect authenticated users to the home page or another default page
-					return RedirectToPage("/Index"); // Adjust the redirect target as needed
-				}
-			}
+            ViewData["ReturnUrl"] = returnUrl;
+           
+            if (User.Identity!.IsAuthenticated)
+            {
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToPage("/Index");
+                }
+            }
 
-			if (!string.IsNullOrEmpty(ErrorMessage))
+            if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
             returnUrl ??= Url.Content("~/");
 
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -123,16 +120,15 @@ namespace Furni.Web.Areas.Identity.Pages.Account
             return Page();
         }
 
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-
+            ViewData["ReturnUrl"] = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var userName = Input.Username.ToUpper();
                 var user = await _userManager.Users
                     .SingleOrDefaultAsync(u => (u.NormalizedUserName == userName || u.NormalizedEmail == userName) && !u.IsDeleted);
@@ -146,17 +142,28 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-					_logger.LogInformation("User logged in.");
+                    _logger.LogInformation("User logged in.");
 
-					if (await _userManager.IsInRoleAsync(user, AppRoles.Customer))
-					{
-                        return RedirectToAction("Index", "Home", new { area = AppRoles.Customer });
-					}
-					else if (await _userManager.IsInRoleAsync(user, AppRoles.Admin))
-					{
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+
+                    if (await _userManager.IsInRoleAsync(user, AppRoles.Customer))
+                    {
+                        if (returnUrl is not null)
+                        {
+							Uri uri = new Uri(returnUrl);
+							string pathAndQuery = uri.PathAndQuery;
+							return Redirect(pathAndQuery);
+						}
+						return RedirectToAction("Index", "Home", new { area = AppRoles.Customer });
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, AppRoles.Admin))
+                    {
                         return RedirectToAction("Index", "Products", new { area = AppRoles.Admin });
                     }
-				}
+                }
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
@@ -177,8 +184,8 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
+
     }
 }

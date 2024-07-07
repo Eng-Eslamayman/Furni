@@ -1,88 +1,117 @@
-﻿
-<!-- Header
-		============================================= -->
+﻿<!-- Header
+============================================= -->
 <header id="header" class="header-size-sm border-bottom-0">
-	<div id="header-wrap">
-		<div class="container">
-			<div class="header-row justify-content-lg-between">
+    <div id="header-wrap">
+        <div class="container">
+            <div class="header-row justify-content-lg-between">
 
-				<!-- Logo
-				============================================= -->
-				<div id="logo" class="mx-auto col-auto flex-column order-2">
-					<a href="/">
-						Furnihuture
-					</a>
-				</div><!-- #logo end -->
+                <!-- Logo
+                ============================================= -->
+                <div id="logo" class="mx-auto col-auto flex-column order-2">
+                    <a href="/">
+                        Furnihuture
+                    </a>
+                </div><!-- #logo end -->
 
-				<div class="header-misc col-auto col-lg-3 order-3 justify-content-lg-end ms-0 ms-sm-3 px-0">
+                <div class="header-misc col-auto col-lg-3 order-3 justify-content-lg-end ms-0 ms-sm-3 px-0">
+                    <!-- Top Search
+                    ============================================= -->
+                    <div id="top-search" class="header-misc-icon">
+                        <a href="#" id="top-search-trigger">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cnvs-themecolor)" viewBox="0 0 256 256">
+                                    <rect width="256" height="256" fill="none"></rect>
+                                    <circle cx="115.99512" cy="116" r="84" opacity="0.2"></circle>
+                                    <circle cx="115.99512" cy="116" r="84" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle>
+                                    <line x1="175.38868" y1="175.40039" x2="223.98926" y2="224.00098" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line>
+                                </svg>
+                            </i>
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cnvs-themecolor)" viewBox="0 0 256 256">
+                                    <rect width="256" height="256" fill="none"></rect>
+                                    <circle cx="128" cy="128" r="96" opacity="0.2"></circle>
+                                    <circle cx="128" cy="128" r="96" fill="none" stroke="var(--cnvs-themecolor)" stroke-miterlimit="10" stroke-width="16"></circle>
+                                    <line x1="160" y1="96" x2="96" y2="160" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line>
+                                    <line x1="160" y1="160" x2="96" y2="96" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line>
+                                </svg>
+                            </i>
+                        </a>
+                    </div><!-- #top-search end -->
+                    <!-- Top Cart
+                    ============================================= -->
+                        <div id="top-cart" class="header-misc-icon">
+                            <a href="javascript:;" class="side-panel-trigger js-show-cards">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cnvs-themecolor)" viewBox="0 0 256 256">
+                                    <rect width="256" height="256" fill="none"></rect>
+                                    <path d="M62.54543,144H188.10132a16,16,0,0,0,15.74192-13.13783L216,64H48Z" opacity="0.2"></path>
+                                    <path d="M184,184H69.81818L41.92162,30.56892A8,8,0,0,0,34.05066,24H16" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path>
+                                    <circle cx="80" cy="204" r="20" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle>
+                                    <circle cx="184" cy="204" r="20" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle>
+                                    <path d="M62.54543,144H188.10132a16,16,0,0,0,15.74192-13.13783L216,64H48" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path>
+                                </svg>
+                                <span class="top-cart-number">3</span>
+                            </a>
+                        </div>
+                    <!-- #top-cart end -->
+                    <!-- Sign Out and Login Links
+                    ============================================= -->
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <div id="sign-out" class="header-misc-icon">
+                            <form id="SignOut" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/">
+                                <a type="submit" class="menu-link js-signout">Sign Out</a>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="login" class="header-misc-icon">
+                            <div>
+                                <a class="menu-link" asp-action="Login" asp-area="Identity" asp-controller="Account">Login</a>
+                            </div>
+                        </div>
+                    }
+                    <!-- #sign-out end -->
+                </div>
 
-
-
-					<!-- Top Search
-					============================================= -->
-					<div id="top-search" class="header-misc-icon">
-						<a href="#" id="top-search-trigger">
-							<i><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cnvs-themecolor)" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><circle cx="115.99512" cy="116" r="84" opacity="0.2"></circle><circle cx="115.99512" cy="116" r="84" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><line x1="175.38868" y1="175.40039" x2="223.98926" y2="224.00098" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></svg></i>
-							<i><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cnvs-themecolor)" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="128" r="96" opacity="0.2"></circle><circle cx="128" cy="128" r="96" fill="none" stroke="var(--cnvs-themecolor)" stroke-miterlimit="10" stroke-width="16"></circle><line x1="160" y1="96" x2="96" y2="160" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="160" y1="160" x2="96" y2="96" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></svg></i>
-						</a>
-					</div><!-- #top-search end -->
-					<!-- Top Cart
-					============================================= -->
-					@if (!(ViewBag.ControllerName == "Products" && ViewBag.ActionName == "Index"))
-					{
-						<div id="top-cart" class="header-misc-icon">
-							<a href="javascript:;" class="side-panel-trigger js-show-cards"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cnvs-themecolor)" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M62.54543,144H188.10132a16,16,0,0,0,15.74192-13.13783L216,64H48Z" opacity="0.2"></path><path d="M184,184H69.81818L41.92162,30.56892A8,8,0,0,0,34.05066,24H16" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><circle cx="80" cy="204" r="20" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><circle cx="184" cy="204" r="20" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><path d="M62.54543,144H188.10132a16,16,0,0,0,15.74192-13.13783L216,64H48" fill="none" stroke="var(--cnvs-themecolor)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg><span class="top-cart-number">3</span></a>
-						</div>
-					}
-					<!-- #top-cart end -->
-
-
-					<div>
-						<form id="SignOut" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/">
-							<a type="submit" class="js-signout mx-4">Sign Out</a>
-						</form>
-					</div>
-
-				</div>
-
-				<!-- Primary Navigation
-				============================================= -->
-				<nav class="primary-menu with-arrows order-lg-1 order-last px-0">
-
-					<ul class="menu-container">
-						<li class="menu-item current">
-							<a class="menu-link" asp-area="Customer" asp-controller="Home" asp-action="Index" active-when="Home">
-								<div>Home</div>
-							</a>
-						</li>
-						<li class="menu-item mega-menu mega-menu-full">
-							<a asp-area="Customer" asp-controller="Products" asp-action="Index" class="menu-link" active-when="Products"><div>Shop</div></a>
-							
-							<div class="mega-menu-content border-bottom-0">
-								@await Component.InvokeAsync("ShopCategories")
-							</div>
-						</li>
-						<li class="menu-item">
-							<a class="menu-link" asp-area="Customer" asp-controller="About" asp-action="Index" active-when="About">
-								<div>About Us</div>
-							</a>
-						</li>
-						<li class="menu-item">
-							<a class="menu-link" asp-area="Customer" asp-controller="Contact" asp-action="Index" active-when="Contact">
-								<div>Contact</div>
-							</a>
-						</li>
-					</ul>
-
-				</nav><!-- #primary-menu end -->
-				<!-- Top Search Form
-				============================================= -->
-				<form class="top-search-form" action="search.html" method="get">
-					<input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter.." autocomplete="off">
-				</form>
-
-			</div>
-		</div>
-	</div>
-	<div class="header-wrap-clone"></div>
+                <!-- Primary Navigation
+                ============================================= -->
+                <nav class="primary-menu with-arrows order-lg-1 order-last px-0">
+                    <ul class="menu-container">
+                        <li class="menu-item current">
+                            <a class="menu-link" asp-area="Customer" asp-controller="Home" asp-action="Index" active-when="Home">
+                                <div>Home</div>
+                            </a>
+                        </li>
+                        <li class="menu-item mega-menu mega-menu-full">
+                            <a asp-area="Customer" asp-controller="Products" asp-action="Index" class="menu-link" active-when="Products">
+                                <div>Shop</div>
+                            </a>
+                            <div class="mega-menu-content border-bottom-0">
+                                @await Component.InvokeAsync("ShopCategories")
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <a class="menu-link" asp-area="Customer" asp-controller="About" asp-action="Index" active-when="About">
+                                <div>About Us</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="menu-link" asp-area="Customer" asp-controller="Contact" asp-action="Index" active-when="Contact">
+                                <div>Contact</div>
+                            </a>
+                        </li>
+                    </ul>
+                </nav><!-- #primary-menu end -->
+                <!-- Top Search Form
+                ============================================= -->
+                <div>
+                    <form class="top-search-form" action="search.html" method="get">
+                        <input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter.." autocomplete="off">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-wrap-clone"></div>
 </header><!-- #header end -->

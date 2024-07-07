@@ -33621,8 +33621,12 @@ body.dark {
 }
 
 .signout-container {
-    flex: 1;
     display: flex;
-    align-items: center;
-    justify-content: center; /* Centers the form horizontally */
+    justify-content: space-between; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    height: 100%; /* Adjust as needed */
+}
+
+#SignOut {
+    margin: 0; /* Remove default margin */
 }
