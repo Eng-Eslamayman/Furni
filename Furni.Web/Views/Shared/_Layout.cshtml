@@ -40,7 +40,10 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Zilla+Slab:wght@400;500&display=swap" rel="stylesheet">
-		
+
+		@await RenderSectionAsync("Styles", required: false)
+
+
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 		<!-- Core Style -->
 		<link rel="stylesheet" href="~/assets/customer/css/style.css">
@@ -55,6 +58,7 @@
 
 		<!-- Custom CSS -->
 		<link rel="stylesheet" href="~/assets/customer/css/custom.css">
+		
 	}
 </head>
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-enabled mb-0 stretched">
@@ -146,6 +150,7 @@
 
 
 		<script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+		
 
 		<script src="~/assets/customer/js/site.js"></script>
 

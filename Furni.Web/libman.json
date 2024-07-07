@@ -60,6 +60,14 @@
         "sweetalert2.all.min.js",
         "sweetalert2.min.css"
       ]
+    },
+    {
+      "library": "magnific-popup.js@1.2.0",
+      "destination": "wwwroot/lib/magnific-popup.js/",
+      "files": [
+        "jquery.magnific-popup.min.js",
+        "magnific-popup.min.css"
+      ]
     }
   ]
 }
