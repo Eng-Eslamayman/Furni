@@ -51,6 +51,7 @@ namespace Furni.DataAccess.Persistence.Repositories
                 Count = c.Count,
                 MainImageUrl = c.Product.MainImageUrl,
                 Price = c.Product.Price,
+                DiscountValue = c.Product.DiscountValue,
             }).ToList();
         }
 

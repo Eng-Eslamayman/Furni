@@ -23,8 +23,9 @@
 							<a href="#" class="fw-medium">@card.Title</a>
 							<span class="top-cart-item-price d-block"><del>@card.Price</del> $19.99</span>
 							<div class="d-flex mt-2">
-								<a href="#" class="fw-normal text-black-50 text-smaller"><u>Edit</u></a>
-								<a href="#" class="fw-normal text-black-50 text-smaller ms-3"><u>Remove</u></a>
+								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller increase-item"><u>Increase</u></a>
+								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 dencrease-item"><u>Decrease</u></a>
+								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 remove-item"><u>Remove</u></a>
 							</div>
 						</div>
 						<div class="top-cart-item-quantity">x @card.Count</div>
@@ -42,9 +43,19 @@
 		<div class="top-cart-action flex-column align-items-stretch">
 			<div class="d-flex justify-content-between align-items-center mb-2">
 				<small class="text-uppercase ls-1">Total</small>
-				<h4 class="fw-medium font-body mb-0">$69.97</h4>
+				<h4 class="fw-medium font-body mb-0">$@Model.Sum(x => (x.Price - x.DiscountValue) * x.Count)</h4>
 			</div>
-			<a href="#" class="button btn-block text-center m-0 fw-normal"><i style="position: relative; top: -2px;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#FFF" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M40,192a16,16,0,0,0,16,16H216a8,8,0,0,0,8-8V88a8,8,0,0,0-8-8H56A16,16,0,0,1,40,64Z" opacity="0.2"></path><path d="M40,64V192a16,16,0,0,0,16,16H216a8,8,0,0,0,8-8V88a8,8,0,0,0-8-8H56A16,16,0,0,1,40,64v0A16,16,0,0,1,56,48H192" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"></path><circle cx="180" cy="144" r="12"></circle></svg></i> Checkout</a>
+			<a href="#" class="button btn-block text-center m-0 fw-normal">
+				<i style="position: relative; top: -2px;">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#FFF" viewBox="0 0 256 256">
+						<rect width="256" height="256" fill="none"></rect>
+						<path d="M40,192a16,16,0,0,0,16,16H216a8,8,0,0,0,8-8V88a8,8,0,0,0-8-8H56A16,16,0,0,1,40,64Z" opacity="0.2"></path>
+						<path d="M40,64V192a16,16,0,0,0,16,16H216a8,8,0,0,0,8-8V88a8,8,0,0,0-8-8H56A16,16,0,0,1,40,64v0A16,16,0,0,1,56,48H192" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"></path>
+						<circle cx="180" cy="144" r="12"></circle>
+					</svg>
+					</i> 
+					Checkout
+			</a>
 		</div>
 	</div>
 

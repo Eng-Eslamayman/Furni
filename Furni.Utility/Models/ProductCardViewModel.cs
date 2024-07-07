@@ -13,5 +13,6 @@ namespace Furni.Utility.Models
         public string MainImageUrl { get; set; }
         public float Price { get; set; }
         public int Count { get; set; }
-    }
+		public float DiscountValue { get; set; }
+	}
 }
