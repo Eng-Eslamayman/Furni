@@ -14,5 +14,7 @@ namespace Furni.Utility.Models
         public float Price { get; set; }
         public int Count { get; set; }
 		public float DiscountValue { get; set; }
+        public string PriceAfterDiscount => (Price * (1.0f - (DiscountValue / 100f))).ToString("0.00");
+
 	}
 }

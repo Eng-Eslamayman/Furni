@@ -62,4 +62,39 @@ $(document).ready(function () {
 
 
 
+
+
+
+
+
+
+
+
+	function removeCard(productId) {
+		// User is authenticated, proceed with adding to cart
+		$.ajax({
+			url: '/Customer/Carts/RemoveFromCart',
+			type: 'POST',
+			data: {
+				productId: productId,
+				'__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+			},
+			success: function (data) {
+				// Handle success response
+				$('#show-all-cards').html(data);
+			},
+			error: function () {
+				showErrorMessage();
+			}
+		});
+	}
+
+	$('body').on('click', '.remove-item', function (e) {
+		e.preventDefault();
+		var item = $(this);
+		var productId = item.data('remove-card');
+		removeCard(productId);
+	});
+
+
 });

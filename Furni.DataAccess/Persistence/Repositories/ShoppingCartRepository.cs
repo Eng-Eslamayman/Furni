@@ -14,30 +14,53 @@ namespace Furni.DataAccess.Persistence.Repositories
         {
         }
 
-        public async Task AddProductToCartAsync(string userId, int productId, int count)
-        {
-            var cartItem = await _context.ShoppingCarts
-                .FirstOrDefaultAsync(c => c.ApplicationUserId == userId && c.ProductId == productId);
+		public async Task AddProductToCartAsync(string userId, int productId, int count)
+		{
+			var cartItem = await _context.ShoppingCarts
+				.FirstOrDefaultAsync(c => c.ApplicationUserId == userId && c.ProductId == productId);
 
-            if (cartItem == null)
-            {
-                cartItem = new ShoppingCart
-                {
-                    ApplicationUserId = userId,
-                    ProductId = productId,
-                    Count = count // Use the provided count
-                };
-                _context.ShoppingCarts.Add(cartItem);
-            }
-            else
-            {
-                cartItem.Count += count; // Increment the existing count by the provided count
-            }
+			var product = await _context.Products
+				.FirstOrDefaultAsync(p => p.Id == productId);
 
-            await _context.SaveChangesAsync();
-        }
+			if (product == null)
+			{
+				// Handle the case where the product is not found
+				return;
+			}
 
-        public async Task<IList<ProductCardViewModel>> GetCartItemsAsync(string userId)
+			int availableQuantity = product.Quantity;
+			if (cartItem == null)
+			{
+				int adjustedCount = Math.Min(availableQuantity, count);
+				cartItem = new ShoppingCart
+				{
+					ApplicationUserId = userId,
+					ProductId = productId,
+					Count = adjustedCount
+				};
+				_context.ShoppingCarts.Add(cartItem);
+			}
+			else
+			{
+				int newCount = cartItem.Count + count;
+				cartItem.Count = Math.Min(availableQuantity, newCount);
+			}
+
+			// Ensure the count does not fall below zero
+			if (cartItem.Count < 0)
+			{
+				cartItem.Count = 0;
+			}
+
+			if(cartItem.Count == 0)
+			{
+				_context.ShoppingCarts.Remove(cartItem);
+			}
+
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task<IList<ProductCardViewModel>> GetCartItemsAsync(string userId)
         {
             var cartItems = await _context.ShoppingCarts
                 .Where(c => c.ApplicationUserId == userId)
@@ -55,5 +78,16 @@ namespace Furni.DataAccess.Persistence.Repositories
             }).ToList();
         }
 
-    }
+		public async Task RemoveCardAsync(int productId)
+		{
+			var card = await _context.ShoppingCarts.FirstOrDefaultAsync(x => x.ProductId == productId);
+
+            if (card is not null)
+			{
+				_context.ShoppingCarts.Remove(card);
+				await _context.SaveChangesAsync();
+			}
+
+		}
+	}
 }

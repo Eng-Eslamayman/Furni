@@ -4,5 +4,6 @@
     {
         Task AddProductToCartAsync(string userId, int productId, int count);
         Task<IList<ProductCardViewModel>> GetCartItemsAsync(string userId);
+        Task RemoveCardAsync(int productId);
     }
 }

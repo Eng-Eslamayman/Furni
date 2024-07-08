@@ -1,9 +1,6 @@
 ﻿@model IList<ProductCardViewModel>
 
-
-
 <div class="side-panel-wrap">
-
 	<div class="top-cart d-flex flex-column h-100">
 		<div class="top-cart-title">
 			<h4>Shopping Cart <small class="bg-color-light icon-stacked text-center rounded-circle color">@Model.Count</small></h4>
@@ -21,11 +18,11 @@
 					<div class="top-cart-item-desc">
 						<div class="top-cart-item-desc-title">
 							<a href="#" class="fw-medium">@card.Title</a>
-							<span class="top-cart-item-price d-block"><del>@card.Price</del> $19.99</span>
+							<span class="top-cart-item-price d-block"><del>$@card.Price</del> $@card.PriceAfterDiscount</span>
 							<div class="d-flex mt-2">
 								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller increase-item"><u>Increase</u></a>
 								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 dencrease-item"><u>Decrease</u></a>
-								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 remove-item"><u>Remove</u></a>
+								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 remove-item" data-remove-card="@card.Id"><u>Remove</u></a>
 							</div>
 						</div>
 						<div class="top-cart-item-quantity">x @card.Count</div>
@@ -43,7 +40,8 @@
 		<div class="top-cart-action flex-column align-items-stretch">
 			<div class="d-flex justify-content-between align-items-center mb-2">
 				<small class="text-uppercase ls-1">Total</small>
-				<h4 class="fw-medium font-body mb-0">$@Model.Sum(x => (x.Price - x.DiscountValue) * x.Count)</h4>
+				<h4 class="fw-medium font-body mb-0"><del>$@Model.Sum(x => x.Price * x.Count).ToString("0.00")</del> $@Model.Sum(x => (x.Price * (1.0f - (x.DiscountValue / 100f))) * x.Count).ToString("0.00")</h4>
+	
 			</div>
 			<a href="#" class="button btn-block text-center m-0 fw-normal">
 				<i style="position: relative; top: -2px;">

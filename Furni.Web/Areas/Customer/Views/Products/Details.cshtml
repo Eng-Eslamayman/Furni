@@ -7,6 +7,10 @@
 															$"{Model.Quantity} Stocks Available";
 }
 
+@section Styles {
+	<link href="~/assets/plugins/datatables/datatables.bundle.css" rel="stylesheet" />
+}
+
 <div class="content-wrap py-0 overflow-visible indecator-loader">
 
 	<div class="section bg-color dark overflow-visible mt-0">
@@ -47,7 +51,8 @@
 
 							<!-- Product Price
 							============================================= -->
-							<h3 class="h2 mb-5 fw-medium text-white">$@Model.Price</h3>
+							
+							<h3 class="h2 mb-5 fw-medium text-white"><del>$@Model.Price</del> $@Model.PriceAfterDiscount</h3>
 
 							<!-- Product Single - Quantity & Cart Button
 							============================================= -->
@@ -198,12 +203,10 @@
 
 </div>
 
-@Html.AntiForgeryToken()
-
 
 @section Scripts {
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
+	<script src="~/lib/magnific-popup.js/jquery.magnific-popup.min.js"></script>
 	<script>
 		$(document).ready(function () {
 

@@ -52,7 +52,50 @@ namespace Furni.Web.Areas.Customer.Controllers
 			return PartialView("_Cards", cartItems);
 		}
 
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> RemoveFromCart(int productId)
+		{
+			var userId = User.GetUserId();
+			if (userId == null)
+			{
+				return Unauthorized();
+			}
+			await _unitOfWork.ShoppingCarts.RemoveCardAsync(productId);
+			var cartItems = await _unitOfWork.ShoppingCarts.GetCartItemsAsync(userId);
 
+			return PartialView("_Cards", cartItems);
+		}
+
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> Increase(int productId)
+		{
+			var userId = User.GetUserId();
+			if (userId == null)
+			{
+				return Unauthorized();
+			}
+			await _unitOfWork.ShoppingCarts.AddProductToCartAsync(userId,productId,1);
+			var cartItems = await _unitOfWork.ShoppingCarts.GetCartItemsAsync(userId);
+
+			return PartialView("_Cards", cartItems);
+		}
+
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> Decrease(int productId)
+		{
+			var userId = User.GetUserId();
+			if (userId == null)
+			{
+				return Unauthorized();
+			}
+			await _unitOfWork.ShoppingCarts.AddProductToCartAsync(userId, productId, -1);
+			var cartItems = await _unitOfWork.ShoppingCarts.GetCartItemsAsync(userId);
+
+			return PartialView("_Cards", cartItems);
+		}
 
 	}
 }
