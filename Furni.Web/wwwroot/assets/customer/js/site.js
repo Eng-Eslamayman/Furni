@@ -89,11 +89,63 @@ $(document).ready(function () {
 		});
 	}
 
-	$('body').on('click', '.remove-item', function (e) {
+	function increaseCard(productId) {
+		// User is authenticated, proceed with adding to cart
+		$.ajax({
+			url: '/Customer/Carts/Increase',
+			type: 'POST',
+			data: {
+				productId: productId,
+				'__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+			},
+			success: function (data) {
+				// Handle success response
+				$('#show-all-cards').html(data);
+			},
+			error: function () {
+				showErrorMessage();
+			}
+		});
+	}
+
+	function decreaseCard(productId) {
+		// User is authenticated, proceed with adding to cart
+		$.ajax({
+			url: '/Customer/Carts/Decrease',
+			type: 'POST',
+			data: {
+				productId: productId,
+				'__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+			},
+			success: function (data) {
+				// Handle success response
+				$('#show-all-cards').html(data);
+			},
+			error: function () {
+				showErrorMessage();
+			}
+		});
+	}
+
+	$('body').on('click', '.js-remove-item', function (e) {
 		e.preventDefault();
 		var item = $(this);
 		var productId = item.data('remove-card');
 		removeCard(productId);
+	});
+
+	$('body').on('click', '.js-increase-item', function (e) {
+		e.preventDefault();
+		var item = $(this);
+		var productId = item.data('increase-card');
+		increaseCard(productId);
+	});
+
+	$('body').on('click', '.js-decrease-item', function (e) {
+		e.preventDefault();
+		var item = $(this);
+		var productId = item.data('decrease-card');
+		decreaseCard(productId);
 	});
 
 

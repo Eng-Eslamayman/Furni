@@ -1,0 +1,5 @@
+Back ground function to check if ShopingCart.Count > Product.Count
+to make ShopingCart.Count = Product.Count
+
+
+and If ShopingCart.Count == 0 => Remove from CartItem

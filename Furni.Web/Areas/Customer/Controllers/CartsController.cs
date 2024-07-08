@@ -76,7 +76,7 @@ namespace Furni.Web.Areas.Customer.Controllers
 			{
 				return Unauthorized();
 			}
-			await _unitOfWork.ShoppingCarts.AddProductToCartAsync(userId,productId,1);
+			await _unitOfWork.ShoppingCarts.AddProductToCartAsync(userId ,productId, 1);
 			var cartItems = await _unitOfWork.ShoppingCarts.GetCartItemsAsync(userId);
 
 			return PartialView("_Cards", cartItems);

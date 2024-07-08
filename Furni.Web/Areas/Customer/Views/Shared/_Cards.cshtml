@@ -20,9 +20,9 @@
 							<a href="#" class="fw-medium">@card.Title</a>
 							<span class="top-cart-item-price d-block"><del>$@card.Price</del> $@card.PriceAfterDiscount</span>
 							<div class="d-flex mt-2">
-								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller increase-item"><u>Increase</u></a>
-								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 dencrease-item"><u>Decrease</u></a>
-								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 remove-item" data-remove-card="@card.Id"><u>Remove</u></a>
+								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller js-increase-item" data-increase-card="@card.Id"><u>Increase</u></a>
+								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 js-decrease-item" data-decrease-card="@card.Id"><u>Decrease</u></a>
+								<a href="js-javascript:;" class="fw-normal text-black-50 text-smaller ms-3 js-remove-item" data-remove-card="@card.Id"><u>Remove</u></a>
 							</div>
 						</div>
 						<div class="top-cart-item-quantity">x @card.Count</div>
