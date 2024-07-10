@@ -1,5 +1,6 @@
 ﻿using Furni.Utility.Models;
 using Furni.Web.Extensions;
+using Furni.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,8 @@ namespace Furni.Web.Areas.Customer.Controllers
 
 		public IActionResult Index()
 		{
+			if (User.Identity!.IsAuthenticated && User.IsInRole(AppRoles.Admin))
+				return RedirectToAction(nameof(Index), controllerName: "Dashboard", new { area = AppRoles.Admin });
 			return View();
 		}
 
@@ -39,6 +42,7 @@ namespace Furni.Web.Areas.Customer.Controllers
 
 		[Authorize]
 		[HttpGet]
+		[AjaxOnly]
 		public async Task<IActionResult> GetCards()
 		{
 			var userId = User.GetUserId();

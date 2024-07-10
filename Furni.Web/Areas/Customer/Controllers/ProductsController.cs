@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Furni.Models.Enums;
 using Furni.Utility.Models;
+using Furni.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,9 @@ namespace Furni.Web.Areas.Customer.Controllers
 
         public IActionResult Index(int? categoryId, int? pageNumber)
         {
-            var categories = _unitOfWork.Categories.GetActiveCategories();
+			if (User.Identity!.IsAuthenticated && User.IsInRole(AppRoles.Admin))
+				return RedirectToAction(nameof(Index), controllerName: "Dashboard", new { area = AppRoles.Admin });
+			var categories = _unitOfWork.Categories.GetActiveCategories();
 
             var viewModel = new ShopProductViewModel
             {
@@ -32,6 +35,7 @@ namespace Furni.Web.Areas.Customer.Controllers
             return View(viewModel);
         }
 
+        [AjaxOnly]
         [HttpGet]
         public IActionResult GetProducts(int? categoryId, int? pageNumber)
         {
@@ -61,6 +65,10 @@ namespace Furni.Web.Areas.Customer.Controllers
         //}
 
         public IActionResult Details(int id)
-            => View(_unitOfWork.Products.GetProduct(id));
+        {
+			if (User.Identity!.IsAuthenticated && User.IsInRole(AppRoles.Admin))
+				return RedirectToAction(nameof(Index), controllerName: "Dashboard", new { area = AppRoles.Admin });
+            return View(_unitOfWork.Products.GetProduct(id));
+		}
     }
 }

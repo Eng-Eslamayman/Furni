@@ -61,24 +61,20 @@ namespace Furni.DataAccess.Persistence.Repositories
 		}
 
 		public async Task<IList<ProductCardViewModel>> GetCartItemsAsync(string userId)
-        {
-            var cartItems = await _context.ShoppingCarts
+			=> await _context.ShoppingCarts
                 .Where(c => c.ApplicationUserId == userId)
                 .Include(c => c.Product)
-                .ToListAsync();
+                .Select(c => new ProductCardViewModel
+                {
+                    Id = c.Product.Id,
+                    Title = c.Product.Title,
+                    Count = c.Count,
+                    MainImageUrl = c.Product.MainImageUrl,
+                    Price = c.Product.Price,
+                    DiscountValue = c.Product.DiscountValue,
+                }).ToListAsync();
 
-            return cartItems.Select(c => new ProductCardViewModel
-            {
-                Id = c.Product.Id,
-                Title = c.Product.Title,
-                Count = c.Count,
-                MainImageUrl = c.Product.MainImageUrl,
-                Price = c.Product.Price,
-                DiscountValue = c.Product.DiscountValue,
-            }).ToList();
-        }
-
-		public async Task RemoveCardAsync(int productId)
+        public async Task RemoveCardAsync(int productId)
 		{
 			var card = await _context.ShoppingCarts.FirstOrDefaultAsync(x => x.ProductId == productId);
 

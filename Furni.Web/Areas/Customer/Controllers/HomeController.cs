@@ -20,7 +20,10 @@ namespace Furni.Web.Areas.Customers.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = new CustomerHomeViewModel
+			if (User.Identity!.IsAuthenticated && User.IsInRole(AppRoles.Admin))
+				return RedirectToAction(nameof(Index), controllerName: "Dashboard", new { area = AppRoles.Admin });
+
+			var viewModel = new CustomerHomeViewModel
             {
                 CustomProductViewModel = _unitOfWork
                                             .Products
@@ -34,11 +37,6 @@ namespace Furni.Web.Areas.Customers.Controllers
 			};
 
             return View(viewModel);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
