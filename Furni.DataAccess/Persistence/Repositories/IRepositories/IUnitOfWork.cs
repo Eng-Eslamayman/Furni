@@ -12,7 +12,8 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
         IProductRepository Products { get; }
         IShoppingCartRepository ShoppingCarts {  get; }
         IProductImageRepository ProductImages {  get; }
+		IBaseRepository<ApplicationUser> ApplicationUsers { get; }
 
-        int Complete();
+		int Complete();
     }
 }

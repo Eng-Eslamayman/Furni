@@ -8,6 +8,6 @@
         [Range(1, 100, ErrorMessage = Errors.MaxRange)]
         public int Count { get; set; }
         public string ApplicationUserId { get; set; } = null!;
-        public ApplicationUser? ApplicationUser { get; set; } 
+        public ApplicationUser? ApplicationUser { get; set; }
     }
 }
