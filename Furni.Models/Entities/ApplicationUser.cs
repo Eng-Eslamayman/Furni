@@ -19,5 +19,11 @@ namespace Furni.Models.Entities
         public string? ImageUrl { get; set; }
         public string? ImageThumbnailUrl { get; set; }
         public string? ImagePublicId { get; set; }
-    }
+
+		public string? StreetNumber { get; set; } 
+		public string? City { get; set; } 
+		public string? State { get; set; } 
+		public string? PostalCode { get; set; } 
+		public string? Name { get; set; } 
+	}
 }

@@ -4,6 +4,7 @@ using Furni.DataAccess.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Furni.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240709165909_AddOrderHeaderAndDetailsInDb")]
+    partial class AddOrderHeaderAndDetailsInDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +32,6 @@ namespace Furni.DataAccess.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -81,9 +81,6 @@ namespace Furni.DataAccess.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -101,16 +98,7 @@ namespace Furni.DataAccess.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -194,13 +182,13 @@ namespace Furni.DataAccess.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6599),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2772),
                             DisplayOrder = 3,
                             ImageThumbnailUrl = "/images/categories/thumb/3b61ac7e-4157-4e65-8409-4fd0c5b0e8ae.jpg",
                             ImageUrl = "/images/categories/3b61ac7e-4157-4e65-8409-4fd0c5b0e8ae.jpg",
@@ -210,7 +198,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6665),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2927),
                             DisplayOrder = 7,
                             ImageThumbnailUrl = "",
                             ImageUrl = "",
@@ -220,7 +208,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6668),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2930),
                             DisplayOrder = 6,
                             ImageThumbnailUrl = "/images/categories/thumb/3adc43a5-d623-4d97-8693-8241bdc80e1d.jpg",
                             ImageUrl = "/images/categories/3adc43a5-d623-4d97-8693-8241bdc80e1d.jpg",
@@ -230,7 +218,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6670),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2933),
                             DisplayOrder = 2,
                             ImageThumbnailUrl = "/images/categories/thumb/f5bc5d01-6d9e-4b86-958a-4b5ec2bde6e9.jpg",
                             ImageUrl = "/images/categories/f5bc5d01-6d9e-4b86-958a-4b5ec2bde6e9.jpg",
@@ -240,7 +228,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6673),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2935),
                             DisplayOrder = 8,
                             ImageThumbnailUrl = "",
                             ImageUrl = "",
@@ -250,7 +238,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6676),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2939),
                             DisplayOrder = 9,
                             ImageThumbnailUrl = "",
                             ImageUrl = "",
@@ -260,7 +248,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6678),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2941),
                             DisplayOrder = 5,
                             ImageThumbnailUrl = "/images/categories/thumb/999eae65-2149-4fee-8687-b7356b67b06a.jpg",
                             ImageUrl = "/images/categories/999eae65-2149-4fee-8687-b7356b67b06a.jpg",
@@ -270,7 +258,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6680),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2992),
                             DisplayOrder = 1,
                             ImageThumbnailUrl = "/images/categories/thumb/4bb63bbc-4b87-42ea-b0c6-5752153b8491.jpg",
                             ImageUrl = "/images/categories/4bb63bbc-4b87-42ea-b0c6-5752153b8491.jpg",
@@ -280,7 +268,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 9,
-                            CreatedOn = new DateTime(2024, 7, 10, 1, 26, 33, 515, DateTimeKind.Local).AddTicks(6682),
+                            CreatedOn = new DateTime(2024, 7, 9, 19, 59, 8, 66, DateTimeKind.Local).AddTicks(2995),
                             DisplayOrder = 4,
                             ImageThumbnailUrl = "/images/categories/thumb/104e9c53-b0ca-44e8-bcf3-540a3ceab9eb.jpg",
                             ImageUrl = "/images/categories/104e9c53-b0ca-44e8-bcf3-540a3ceab9eb.jpg",
@@ -289,7 +277,36 @@ namespace Furni.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Furni.Models.Entities.Order", b =>
+            modelBuilder.Entity("Furni.Models.Entities.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Furni.Models.Entities.OrderHeader", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -307,15 +324,6 @@ namespace Furni.DataAccess.Migrations
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastUpdatedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -365,36 +373,7 @@ namespace Furni.DataAccess.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Orders", (string)null);
-                });
-
-            modelBuilder.Entity("Furni.Models.Entities.OrderDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderHeaderId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderHeaderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderHeaders");
                 });
 
             modelBuilder.Entity("Furni.Models.Entities.Product", b =>
@@ -471,7 +450,7 @@ namespace Furni.DataAccess.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Furni.Models.Entities.ProductImage", b =>
@@ -500,7 +479,7 @@ namespace Furni.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages", (string)null);
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Furni.Models.Entities.ShoppingCart", b =>
@@ -548,7 +527,7 @@ namespace Furni.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ShoppingCarts", (string)null);
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -699,20 +678,9 @@ namespace Furni.DataAccess.Migrations
                     b.Navigation("LastUpdatedBy");
                 });
 
-            modelBuilder.Entity("Furni.Models.Entities.Order", b =>
-                {
-                    b.HasOne("Furni.Models.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-                });
-
             modelBuilder.Entity("Furni.Models.Entities.OrderDetail", b =>
                 {
-                    b.HasOne("Furni.Models.Entities.Order", "OrderHeader")
+                    b.HasOne("Furni.Models.Entities.OrderHeader", "OrderHeader")
                         .WithMany()
                         .HasForeignKey("OrderHeaderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -727,6 +695,17 @@ namespace Furni.DataAccess.Migrations
                     b.Navigation("OrderHeader");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Furni.Models.Entities.OrderHeader", b =>
+                {
+                    b.HasOne("Furni.Models.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Furni.Models.Entities.Product", b =>
