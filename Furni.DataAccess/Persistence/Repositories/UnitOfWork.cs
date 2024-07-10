@@ -11,11 +11,14 @@ namespace Furni.DataAccess.Persistence.Repositories
 			_context = context;
 		}
 
-        public ICategoryRepository Categories => new CategoryRepository(_context);
-        public IProductRepository Products => new ProductRepository(_context);
-        public IShoppingCartRepository ShoppingCarts => new ShoppingCartRepository(_context);
-        public IProductImageRepository ProductImages => new ProductImageRepository(_context);
+
 		public IBaseRepository<ApplicationUser> ApplicationUsers => new BaseRepository<ApplicationUser>(_context);
+		public ICategoryRepository Categories => new CategoryRepository(_context);
+		public IOrderRepository Orders => new OrderRepository(_context);
+        public IProductRepository Products => new ProductRepository(_context);
+		public IProductImageRepository ProductImages => new ProductImageRepository(_context);
+		public IShoppingCartRepository ShoppingCarts => new ShoppingCartRepository(_context);
+		
 
 		public int Complete()
 		{
