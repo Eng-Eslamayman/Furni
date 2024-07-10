@@ -161,7 +161,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                     }
                     else if (await _userManager.IsInRoleAsync(user, AppRoles.Admin))
                     {
-                        return RedirectToAction("Index", "Products", new { area = AppRoles.Admin });
+                        return RedirectToAction("Index", "Dashboard", new { area = AppRoles.Admin });
                     }
                 }
                 if (result.RequiresTwoFactor)
