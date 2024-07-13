@@ -3,6 +3,7 @@ using Furni.DataAccess.Persistence;
 using Furni.DataAccess.Persistence.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 namespace Furni.Web
 {
 	public class Program
@@ -32,6 +33,9 @@ namespace Furni.Web
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
+
+			// Stripe Configuration
+			StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 			app.UseRouting();
 

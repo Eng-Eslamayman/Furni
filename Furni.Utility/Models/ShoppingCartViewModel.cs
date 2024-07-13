@@ -11,7 +11,7 @@ namespace Furni.Utility.Models
 	public class ShoppingCartViewModel
 	{
 		public IEnumerable<ProductCardViewModel> ProductCards { get; set; }
-		public OrderViewModel Order { get; set; }
+		public OrderFormViewModel Order { get; set; }
 		public double TotalPrice { get; set; }
 	}
 }

@@ -1,0 +1,25 @@
+﻿@model int
+
+<div class="d-flex flex-column justify-content-center align-items-center bg-color" style="padding-top: 20px; padding-bottom: 20px;">
+    <div class="w-md-50">
+        <!-- Adjusted width of the container div -->
+        <div class="card">
+            <!-- Card Header with Image -->
+            <img class="card-img-top img-fluid" style="max-width: 100%; max-height: 550px;" src="~/assets/customer/images/paymentSuccess.jpg" alt="Payment Success">
+            <!-- Card Body -->
+            <div class="card-body text-center">
+                <!-- Success Message -->
+                <p class="card-text fs-4">Your order has been successfully placed!</p>
+                <p class="card-text">Order ID: @Model</p>
+                <a asp-area="Customer" asp-controller="Products" asp-action="Index" class="button button-3d">Buy More</a>
+            </div>
+            <!-- Card Body -->
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-color {
+        background-color: #4fa79d !important;
+    }
+</style>

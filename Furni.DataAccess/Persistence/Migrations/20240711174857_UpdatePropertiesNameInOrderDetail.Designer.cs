@@ -4,6 +4,7 @@ using Furni.DataAccess.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Furni.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240711174857_UpdatePropertiesNameInOrderDetail")]
+    partial class UpdatePropertiesNameInOrderDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,7 +203,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9368),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5255),
                             DisplayOrder = 3,
                             ImageThumbnailUrl = "/images/categories/thumb/3b61ac7e-4157-4e65-8409-4fd0c5b0e8ae.jpg",
                             ImageUrl = "/images/categories/3b61ac7e-4157-4e65-8409-4fd0c5b0e8ae.jpg",
@@ -210,7 +213,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9427),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5307),
                             DisplayOrder = 7,
                             ImageThumbnailUrl = "",
                             ImageUrl = "",
@@ -220,7 +223,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9431),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5310),
                             DisplayOrder = 6,
                             ImageThumbnailUrl = "/images/categories/thumb/3adc43a5-d623-4d97-8693-8241bdc80e1d.jpg",
                             ImageUrl = "/images/categories/3adc43a5-d623-4d97-8693-8241bdc80e1d.jpg",
@@ -230,7 +233,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9434),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5313),
                             DisplayOrder = 2,
                             ImageThumbnailUrl = "/images/categories/thumb/f5bc5d01-6d9e-4b86-958a-4b5ec2bde6e9.jpg",
                             ImageUrl = "/images/categories/f5bc5d01-6d9e-4b86-958a-4b5ec2bde6e9.jpg",
@@ -240,7 +243,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9437),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5315),
                             DisplayOrder = 8,
                             ImageThumbnailUrl = "",
                             ImageUrl = "",
@@ -250,7 +253,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9443),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5320),
                             DisplayOrder = 9,
                             ImageThumbnailUrl = "",
                             ImageUrl = "",
@@ -260,7 +263,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9445),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5322),
                             DisplayOrder = 5,
                             ImageThumbnailUrl = "/images/categories/thumb/999eae65-2149-4fee-8687-b7356b67b06a.jpg",
                             ImageUrl = "/images/categories/999eae65-2149-4fee-8687-b7356b67b06a.jpg",
@@ -270,7 +273,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9448),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5325),
                             DisplayOrder = 1,
                             ImageThumbnailUrl = "/images/categories/thumb/4bb63bbc-4b87-42ea-b0c6-5752153b8491.jpg",
                             ImageUrl = "/images/categories/4bb63bbc-4b87-42ea-b0c6-5752153b8491.jpg",
@@ -280,7 +283,7 @@ namespace Furni.DataAccess.Migrations
                         new
                         {
                             Id = 9,
-                            CreatedOn = new DateTime(2024, 7, 12, 22, 55, 25, 203, DateTimeKind.Local).AddTicks(9451),
+                            CreatedOn = new DateTime(2024, 7, 11, 20, 48, 55, 323, DateTimeKind.Local).AddTicks(5328),
                             DisplayOrder = 4,
                             ImageThumbnailUrl = "/images/categories/thumb/104e9c53-b0ca-44e8-bcf3-540a3ceab9eb.jpg",
                             ImageUrl = "/images/categories/104e9c53-b0ca-44e8-bcf3-540a3ceab9eb.jpg",
@@ -330,14 +333,11 @@ namespace Furni.DataAccess.Migrations
                     b.Property<float>("OrderTotal")
                         .HasColumnType("real");
 
-                    b.Property<DateTime?>("PaymentDate")
+                    b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("PaymentDueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentIntentId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateOnly>("PaymentDueDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("PaymentStatus")
                         .HasColumnType("nvarchar(max)");
@@ -350,10 +350,7 @@ namespace Furni.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SessionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ShippingDate")
+                    b.Property<DateTime>("ShippingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("State")
@@ -385,21 +382,6 @@ namespace Furni.DataAccess.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastUpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("LastUpdatedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -410,10 +392,6 @@ namespace Furni.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastUpdatedById");
 
                     b.HasIndex("OrderId");
 
@@ -737,16 +715,8 @@ namespace Furni.DataAccess.Migrations
 
             modelBuilder.Entity("Furni.Models.Entities.OrderDetail", b =>
                 {
-                    b.HasOne("Furni.Models.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
-                    b.HasOne("Furni.Models.Entities.ApplicationUser", "LastUpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("LastUpdatedById");
-
                     b.HasOne("Furni.Models.Entities.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -756,10 +726,6 @@ namespace Furni.DataAccess.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("LastUpdatedBy");
 
                     b.Navigation("Order");
 
@@ -885,11 +851,6 @@ namespace Furni.DataAccess.Migrations
             modelBuilder.Entity("Furni.Models.Entities.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Furni.Models.Entities.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Furni.Models.Entities.Product", b =>

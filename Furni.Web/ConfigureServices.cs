@@ -57,6 +57,7 @@ namespace Furni.Web
             //services.Configure<FacebookSetting>(builder.Configuration.GetSection(nameof(FacebookSetting)));
             //services.Configure<GoogleSetting>(builder.Configuration.GetSection(nameof(GoogleSetting)));
             services.Configure<STMPSetting>(builder.Configuration.GetSection(nameof(STMPSetting)));
+            services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 
             // Add External Login Configuration to Facebook

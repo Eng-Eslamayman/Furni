@@ -85,5 +85,20 @@ namespace Furni.DataAccess.Persistence.Repositories
 			}
 
 		}
-	}
+
+
+        public async Task ClearCartAsync(string userId)
+        {
+            var cartItems = await _context.ShoppingCarts
+                                          .Where(c => c.ApplicationUserId == userId)
+                                          .ToListAsync();
+
+            if (cartItems.Any())
+            {
+                _context.ShoppingCarts.RemoveRange(cartItems);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+    }
 }

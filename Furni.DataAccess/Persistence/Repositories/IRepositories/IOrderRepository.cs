@@ -8,6 +8,12 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 {
 	public interface IOrderRepository : IBaseRepository<Order>
 	{
-		Task<OrderViewModel> GetAsync(string userId);
-	}
+		Task<OrderFormViewModel> GetAsync(string userId);
+		Task UpdateUserDetailsAsync(string userId, OrderFormViewModel model);
+		Task<int> CreateOrderAsync(string userId, OrderFormViewModel model);
+		Task UpdateStatusAsync(int id, string orderStatus, string? paymentStatus = null);
+		Task UpdateStripePaymentIDAsync(int id, string sessionId, string paymentIntentId);
+		Task DeleteOrderAsync(int id);
+
+    }
 }

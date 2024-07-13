@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace Furni.Models.Entities
 {
-	public class OrderDetail
-	{
-		public int Id { get; set; }
-		public int OrderHeaderId { get; set; }
-		public Order? OrderHeader { get; set; }
-		public int ProductId { get; set; }
-		public Product? Product { get; set; }
+    public class OrderDetail : BaseEntity
+    {
+        public int Id { get; set; }
+        public int OrderId { get; set; }
+        public Order? Order { get; set; }
+        public int ProductId { get; set; }
+        public Product? Product { get; set; }
         public int Count { get; set; }
         public float Price { get; set; }
-
     }
 }
