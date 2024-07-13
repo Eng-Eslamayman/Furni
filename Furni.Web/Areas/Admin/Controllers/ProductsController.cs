@@ -28,10 +28,8 @@ namespace Furni.Web.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var productList = _unitOfWork.Products.GetAll();
-            var viewModel = _mapper.Map<IEnumerable<ProductViewModel>>(productList);
             ActionName();
-            return View(viewModel);
+            return View();
         }
 
 

@@ -17,6 +17,13 @@
 				<!--end::Title-->
 			}
 
+			@if (ViewBag.ControllerName == "Orders" && ViewBag.ActionName == "Index")
+			{
+				<!--begin::Title-->
+				<h1 class="d-flex text-gray-900 fw-bold my-1 fs-3">Orders</h1>
+				<!--end::Title-->
+			}
+
 			@if (ViewBag.ControllerName == "Categories" && ViewBag.ActionName == "Index")
 			{
 				<!--begin::Title-->
@@ -67,6 +74,13 @@
 				{
 					<!--begin::Item-->
 					<li class="breadcrumb-item text-gray-500">Products</li>
+					<!--end::Item-->
+				}
+
+				@if (ViewBag.ControllerName == "Orders" && ViewBag.ActionName == "Index")
+				{
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-gray-500">Customers Order List</li>
 					<!--end::Item-->
 				}
 

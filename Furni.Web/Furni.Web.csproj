@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\orders.js" />
     <Content Remove="wwwroot\js\products.js" />
     <Content Remove="wwwroot\js\register.js" />
   </ItemGroup>
@@ -87,6 +88,7 @@
     <None Include="wwwroot\assets\customer\css\icons\unicons\unicons-8.woff2" />
     <None Include="wwwroot\assets\customer\css\icons\unicons\unicons-9.woff2" />
     <None Include="wwwroot\assets\plugins\fslightbox\fslightbox.bundle.js" />
+    <None Include="wwwroot\js\orders.js" />
     <None Include="wwwroot\js\products.js" />
     <None Include="wwwroot\js\register.js" />
   </ItemGroup>

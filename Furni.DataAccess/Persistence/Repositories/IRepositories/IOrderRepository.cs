@@ -15,5 +15,9 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 		Task UpdateStripePaymentIDAsync(int id, string sessionId, string paymentIntentId);
 		Task DeleteOrderAsync(int id);
 
+
+		// Admin Side
+		(IQueryable<CustomerListingViewModel> orders, int count) GetFiltered(GetFilteredDto dto);
+
     }
 }

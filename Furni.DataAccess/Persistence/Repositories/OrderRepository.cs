@@ -1,4 +1,5 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -148,6 +149,33 @@ namespace Furni.DataAccess.Persistence.Repositories
             _context.Orders.Remove(order);
 
             await _context.SaveChangesAsync();
+        }
+
+
+        // Admin Side
+        public (IQueryable<CustomerListingViewModel> orders, int count) GetFiltered(GetFilteredDto dto)
+        {
+            IQueryable<CustomerListingViewModel> orders = 
+                _context.Orders.Include(o => o.ApplicationUser)
+                .Select(order => new CustomerListingViewModel
+                {
+                    Id = order.Id,
+                    FullName = order.ApplicationUser!.FullName!,
+                    Email = order.ApplicationUser!.Email!,
+                    ImageThumbnailUrl = order.ApplicationUser!.ImageThumbnailUrl,
+                    IsDeleted = order.ApplicationUser!.IsDeleted,
+                    CreatedOn = order.CreatedOn,
+                    Price = order.OrderTotal,
+                });
+
+            if (!string.IsNullOrEmpty(dto.SearchValue))
+                orders = orders.Where(b => b.FullName!.Contains(dto.SearchValue!) || b.Email!.Contains(dto.SearchValue!));
+
+            orders = orders.OrderBy($"{dto.SortColumn} {dto.SortColumnDirection}");
+
+            var recordsTotal = _context.Products.Count(); // All Records in Database
+
+            return (orders, recordsTotal);
         }
 
     }

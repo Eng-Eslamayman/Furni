@@ -5,13 +5,13 @@
         datatable.search(input.val()).draw();
     });
 
-    datatable = $('#Products').DataTable({
+    datatable = $('#Orders').DataTable({
         serverSide: true,
         processing: true,
         stateSave: false,
         lengthMenu: [10, 20, 40],
         ajax: {
-            url: '/Admin/Products/GetProducts', 
+            url: '/Admin/Orders/GetOrders', 
             type: 'POST'
         },
         order: [[1, 'asc']],
@@ -26,26 +26,27 @@
         columns: [ // Array of columns that will rendered
             { "data": "id", "name": "Id", className: "d-none" },
             {
-                "name": "Title",
+                "name": "FullName",
                 "render": function (data, type, row) {
+                    // Check if imageThumbnailUrl is null or empty and set default image if necessary
+                    var imageUrl = row.imageThumbnailUrl ? row.imageThumbnailUrl : '/assets/images/avatar-blank.svg';
+
                     return `<div class="d-flex align-items-center">
-								<!--begin::Thumbnail-->
-								<a href="/Admin/Products/Details/${row.id}" class="symbol symbol-50px">
-									<span class="symbol-label" style="background-image:url(${row.mainImageThumbnailUrl});"></span>
-								</a>
-								<!--end::Thumbnail-->
-								<div class="ms-5 d-flex flex-column">
-									<!--begin::Title-->
-									<a href="/Admin/Products/Details/${row.id}" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">${row.title}</a>
-                                    <span>${row.category}</span>
-									<!--end::Title-->
-								</div>
-							</div>`;
+                    <!--begin::Thumbnail-->
+                    <a href="/Admin/Orders/Details/${row.id}" class="symbol symbol-50px">
+                        <span class="symbol-label" style="background-image:url(${imageUrl});"></span>
+                    </a>
+                    <!--end::Thumbnail-->
+                    <div class="ms-5 d-flex flex-column">
+                        <!--begin::FullName-->
+                        <a href="/Admin/Orders/Details/${row.id}" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">${row.fullName}</a>
+                        <!--end::FullName-->
+                    </div>
+                </div>`;
                 }
             },
-            { "data": "quantity", "name": "Quantity" },
-            { "data": "price", "name": "Price" },
-            { "data": "category", "name": "Category" },
+            { "data": "email", "name": "Email" },
+            { "data": "priceWithDollarSign", "name": "PriceWithDollarSign" },
             {
                 "name": "createdOn", "render": function (data, type, row) {
                     return moment(row.publishingDate).format('YYYY MMMM, DD');
@@ -76,17 +77,10 @@
                             </a>
                             <!--begin::Menu-->
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                                
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="/Admin/Products/Edit/${row.id}" class="menu-link px-3">
-                                        Edit
-                                    </a>
-                                </div>
-                                <!--end::Menu item-->
-
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="javascript:;" class="menu-link flex-stack px-3 js-toggle-status" data-url="/Admin/Products/ToggleStatus/${row.id}">
+                                    <a href="javascript:;" class="menu-link flex-stack px-3 js-toggle-status" data-url="/Admin/Orders/ToggleStatus/${row.id}">
                                         Toggle Status
                                     </a>
                                 </div>
