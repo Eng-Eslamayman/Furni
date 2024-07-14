@@ -22,6 +22,16 @@ namespace Furni.Web.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var viewModel = await _unitOfWork.Orders.GetDetails(id);
+
+            if(viewModel is null) return NotFound();    
+
+            return View(viewModel);
+        }
+
 
         [HttpPost, IgnoreAntiforgeryToken]
         public IActionResult GetOrders()

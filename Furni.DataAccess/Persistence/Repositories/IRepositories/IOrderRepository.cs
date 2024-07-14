@@ -14,10 +14,12 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 		Task UpdateStatusAsync(int id, string orderStatus, string? paymentStatus = null);
 		Task UpdateStripePaymentIDAsync(int id, string sessionId, string paymentIntentId);
 		Task DeleteOrderAsync(int id);
+		
 
 
 		// Admin Side
 		(IQueryable<CustomerListingViewModel> orders, int count) GetFiltered(GetFilteredDto dto);
+		Task<OrderDetailsViewModel> GetDetails(int id);
 
     }
 }

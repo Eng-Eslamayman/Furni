@@ -21,7 +21,7 @@ namespace Furni.Utility.Models
         public string? FullName { get; set; }
         [EmailAddress]
         [MaxLength(150)]
-        public string? Email { get; set; }
+        public string Email { get; set; } = null!;
         [MaxLength(11)]
         [Display(Name = "Mobile Number")]
         [RegularExpression(RegexPatterns.MobileNumber, ErrorMessage = Errors.InvalidMobileNumber)]

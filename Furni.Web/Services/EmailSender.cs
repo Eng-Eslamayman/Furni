@@ -25,7 +25,7 @@ namespace Furni.Web.Services
                 IsBodyHtml = true
             };
 
-            message.To.Add(_webHostEnvironment.IsDevelopment() ? "Abdullahgo924@gmail.com" : email);
+            message.To.Add(email);
 
             SmtpClient smtpClient = new(_smtpSetting.Host)
             {

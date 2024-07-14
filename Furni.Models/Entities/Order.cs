@@ -32,12 +32,13 @@ namespace Furni.Models.Entities
         public string? PaymentIntentId { get; set; }
 
         public string PhoneNumber { get; set; } = null!;
-        public string StreetNumber { get; set; } = null!;
+        public string Address { get; set; } = null!;
         public string City { get; set; } = null!;
         public string State { get; set; } = null!;
         public string PostalCode { get; set; } = null!;
         public string Name { get; set; } = null!;
+        public string Email { get; set; } = null!;
 
-        public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+		public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

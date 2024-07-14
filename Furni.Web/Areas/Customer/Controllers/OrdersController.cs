@@ -38,9 +38,13 @@ namespace Furni.Web.Areas.Customer.Controllers
 			var userId = User.GetUserId();
 
 			var productCards = await _unitOfWork.ShoppingCarts.GetCartItemsAsync(userId);
+
+			if (!productCards.Any())
+				return RedirectToAction(nameof(Index), controllerName: "Home", new { area = AppRoles.Customer });
+
 			var order = await _unitOfWork.Orders.GetAsync(userId);
 
-			if (productCards == null || order == null)
+			if (order == null)
 			{
 				return NotFound();
 			}
@@ -155,7 +159,7 @@ namespace Furni.Web.Areas.Customer.Controllers
 				{
 					{ "imageUrl", "https://res.cloudinary.com/dzqc5nfai/image/upload/v1717798788/qkp9tphwwlqkrmkdukpx.svg" },
 					{ "header", $"Hey {user.FullName}, thanks for making order from furnihuture!" },
-					{ "body", "Your Order will will arrive on {Date}" },
+					{ "body", $"Thank you for your order! 🎉 Your order will arrive on {order.ShippingDate}. We’re excited to deliver it to you at: {order.Address}, {order.City}. If you have any questions, feel free to reach out!" },
 					{ "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
 					{ "linkTitle", "Buy more" }
 				};
@@ -164,7 +168,7 @@ namespace Furni.Web.Areas.Customer.Controllers
 			var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
 
 			// Send the email
-			//await _emailSender.SendEmailAsync(user.Email, "Go to Furnihuture", body);
+			await _emailSender.SendEmailAsync(order.Email, "Furnihuture", body);
 
 			// Remove items from Shopping Cart 
 			await ClearShoppingCartAsync(order.ApplicationUserId);
@@ -186,8 +190,6 @@ namespace Furni.Web.Areas.Customer.Controllers
             await _unitOfWork.Orders.UpdateUserDetailsAsync(userId, model);
             return PartialView("_ShippingAddress", model);
         }
-
-
         private async Task ClearShoppingCartAsync(string userId)
         {
             await _unitOfWork.ShoppingCarts.ClearCartAsync(userId);

@@ -61,11 +61,12 @@ namespace Furni.DataAccess.Persistence.Repositories
                 OrderStatus = "Pending",
                 PaymentStatus = "Pending",
                 PhoneNumber = model.PhoneNumber!,
-                StreetNumber = model.Address!,
+                Address = model.Address!,
                 City = model.City!,
                 State = model.State!,
                 PostalCode = model.PostalCode!,
                 Name = model.FullName!,
+                Email = model.Email!,
                 //CreatedById = userId,
                 CreatedOn = DateTime.Now
             };
@@ -161,7 +162,7 @@ namespace Furni.DataAccess.Persistence.Repositories
                 {
                     Id = order.Id,
                     FullName = order.ApplicationUser!.FullName!,
-                    Email = order.ApplicationUser!.Email!,
+                    Email = order.Email!,
                     ImageThumbnailUrl = order.ApplicationUser!.ImageThumbnailUrl,
                     IsDeleted = order.ApplicationUser!.IsDeleted,
                     CreatedOn = order.CreatedOn,
@@ -178,5 +179,41 @@ namespace Furni.DataAccess.Persistence.Repositories
             return (orders, recordsTotal);
         }
 
+        public async Task<OrderDetailsViewModel> GetDetails(int id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .Where(o => o.Id == id)
+                .Select(o => new OrderDetailsViewModel
+                {
+                    Id = o.Id,
+                    PhoneNumber = o.PhoneNumber,
+                    Address = o.Address,
+                    City = o.City,
+                    State = o.State,
+                    PostalCode = o.PostalCode,
+                    Name = o.Name,
+                    Email = o.Email,
+                    OrderStatus = o.OrderStatus,
+                    OrderDate = o.OrderDate,
+                    ShippingDate = o.ShippingDate,
+                    OrderTotal = o.OrderTotal,
+                    OrderDetails = o.OrderDetails.Select(od => new OrderDetailViewModel
+                    {
+                        Id = od.Id,
+                        ProductTitle = od.Product!.Title,
+                        ProductMainImageThumbnailUrl = od.Product.MainImageThumbnailUrl,
+                        OrderId = od.OrderId,
+                        ProductId = od.ProductId,
+                        Count = od.Count,
+                        Price = od.Price,
+                        IsDeleted = od.IsDeleted,
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
+
+            return order ?? new OrderDetailsViewModel(); // Handle the case when order is not found
+        }
     }
 }
