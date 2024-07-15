@@ -476,31 +476,31 @@
 
 
 		// Function to update graph with new review data
-		function updateGraph(newReviewData) {
-			// Clear old graph elements
-			$('#my-graph').remove();
-			// Re-create the graph element
-			$('<div id="my-graph"></div>').appendTo('.col-md-6');
+		// function updateGraph(newReviewData) {
+		// 	// Clear old graph elements
+		// 	$('#my-graph').remove();
+		// 	// Re-create the graph element
+		// 	$('<div id="my-graph"></div>').appendTo('.col-md-6');
 
-			var graph = new HorizontalBarGraph('#my-graph', newReviewData);
-			graph.draw();
-		}
+		// 	var graph = new HorizontalBarGraph('#my-graph', newReviewData);
+		// 	graph.draw();
+		// }
 
-		// Function to fetch updated review data from server
-		function getReviewData(id) {
-			$.ajax({
-				url: `/Customer/Reviews/GetReviewData/${id}`,
-				type: 'GET',
-				success: function (data) {
-					var newReviewData = data.reviewData;
-					// console.log(data.reviewData);
-					updateGraph(newReviewData); // Update graph with new data
-				},
-				error: function () {
-					alert('Error getting reviews.');
-				}
-			});
-		}
+		// // Function to fetch updated review data from server
+		// function getReviewData(id) {
+		// 	$.ajax({
+		// 		url: `/Customer/Reviews/GetReviewData/${id}`,
+		// 		type: 'GET',
+		// 		success: function (data) {
+		// 			var newReviewData = data.reviewData;
+		// 			// console.log(data.reviewData);
+		// 			updateGraph(newReviewData); // Update graph with new data
+		// 		},
+		// 		error: function () {
+		// 			alert('Error getting reviews.');
+		// 		}
+		// 	});
+		// }
 
 
 		document.addEventListener('DOMContentLoaded', function () {
@@ -512,7 +512,7 @@
 			$('body').on('click', '.js-add-review', function (e) {
 				e.preventDefault();
 				addNewReview(); 
-				getReviewData(@Model.Id); // Update the graph with new data after adding review
+				// getReviewData(@Model.Id); // Update the graph with new data after adding review
 			});
 
 		});
