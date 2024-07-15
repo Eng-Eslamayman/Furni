@@ -328,7 +328,7 @@
 
 
 @section Scripts {
-	<script src="https://d3js.org/d3.v3.min.js"></script> <!-- Ensure D3.js is loaded -->
+	<script src="~/lib/d3/d3.v7.min.js"></script>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<partial name="_ValidationScriptsPartial" />
 	<script src="~/lib/magnific-popup.js/jquery.magnific-popup.min.js"></script>
@@ -381,47 +381,46 @@
 		});
 
 
-		function HorizontalBarGraph(el, series) {
+		HorizontalBarGraph = function (el, series) {
 			this.el = d3.select(el);
 			this.series = series;
-		}
+		};
 
 		HorizontalBarGraph.prototype.draw = function () {
 			var x = d3.scale.linear()
 				.domain([0, d3.max(this.series, function (d) {
-					return d.value;
+					return d.value
 				})])
 				.range([0, 100]);
 
 			var segment = this.el
 				.selectAll(".horizontal-bar-graph-segment")
-				.data(this.series);
-
-			// Clear old segments
-			segment.exit().remove();
-
-			// Add new segments
-			var newSegment = segment.enter()
+				.data(this.series)
+				.enter()
 				.append("div").classed("horizontal-bar-graph-segment", true);
 
-			newSegment.append("span").classed("fa fa-star horizontal-bar-graph-label", true)
+			segment
+
+				.append("span").classed(" fa fa-star horizontal-bar-graph-label", true)
 				.text(function (d) {
-					return d.label;
+					return d.label
 				});
 
-			newSegment.append("div").classed("horizontal-bar-graph-value", true)
+			segment
+				.append("div").classed("horizontal-bar-graph-value", true)
 				.append("div").classed("horizontal-bar-graph-value-bar", true)
 				.style("background-color", function (d) {
-					return d.color;
+					return d.color
 				})
 				.text(function (d) {
-					return d.inner_label ? d.inner_label : "";
+					return d.inner_label ? d.inner_label : ""
 				})
 				.transition()
 				.duration(1000)
 				.style("min-width", function (d) {
-					return x(d.value) + "%";
+					return x(d.value) + "%"
 				});
+
 		};
 
 
@@ -455,9 +454,6 @@
 		function updateGraph(newReviewData) {
 			// Clear old graph elements
 			d3.select('#my-graph').selectAll('.horizontal-bar-graph-segment').remove();
-
-			console.log(d3.select('#my-graph').selectAll('.horizontal-bar-graph-segment').remove());
-
 			var graph = new HorizontalBarGraph('#my-graph', newReviewData);
 			graph.draw();
 		}
@@ -469,7 +465,7 @@
 				type: 'GET',
 				success: function (data) {
 					var newReviewData = data.reviewData;
-					console.log(data.reviewData);
+					// console.log(data.reviewData);
 					updateGraph(newReviewData); // Update graph with new data
 				},
 				error: function () {
@@ -480,9 +476,8 @@
 
 
 		document.addEventListener('DOMContentLoaded', function () {
-
-			var initialReviewData = @Html.Raw(Json.Serialize(reviewData));
-			loadInitialGraph(initialReviewData); // Draw graph with initial data
+			getReviewData(@Model.Id);
+			
 
 			// Your JavaScript/jQuery code here
 			$('body').on('click', '.js-add-review', function (e) {
