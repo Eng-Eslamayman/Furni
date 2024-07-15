@@ -378,6 +378,31 @@
 				var count = form.find('input[name="count"]').val();
 				loadShopCarts(productId, count);
 			});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		});
 
 
@@ -453,7 +478,10 @@
 		// Function to update graph with new review data
 		function updateGraph(newReviewData) {
 			// Clear old graph elements
-			d3.select('#my-graph').selectAll('.horizontal-bar-graph-segment').remove();
+			$('#my-graph').remove();
+			// Re-create the graph element
+			$('<div id="my-graph"></div>').appendTo('.col-md-6');
+
 			var graph = new HorizontalBarGraph('#my-graph', newReviewData);
 			graph.draw();
 		}
@@ -476,8 +504,9 @@
 
 
 		document.addEventListener('DOMContentLoaded', function () {
-			getReviewData(@Model.Id);
-			
+
+			var initialReviewData = @Html.Raw(Json.Serialize(reviewData));
+			loadInitialGraph(initialReviewData); // Draw graph with initial data
 
 			// Your JavaScript/jQuery code here
 			$('body').on('click', '.js-add-review', function (e) {
