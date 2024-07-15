@@ -5,11 +5,81 @@
 	var productNumber = Model.Quantity == 1 ? "Last product" :
 												Model.Quantity <= 3 ? $"Only {Model.Quantity} Stocks Available" :
 															$"{Model.Quantity} Stocks Available";
+
+
+
+	var reviewData = new[]
+	{
+		new { label = "5", inner_label = Model.ReviewData.ContainsKey(5) ? Model.ReviewData[5].ToString() : "0", value = Model.ReviewData.ContainsKey(5) ? Model.ReviewData[5] : 0, color = "#88b131" },
+		new { label = "4", inner_label = Model.ReviewData.ContainsKey(4) ? Model.ReviewData[4].ToString() : "0", value = Model.ReviewData.ContainsKey(4) ? Model.ReviewData[4] : 0, color = "#99cc00" },
+		new { label = "3", inner_label = Model.ReviewData.ContainsKey(3) ? Model.ReviewData[3].ToString() : "0", value = Model.ReviewData.ContainsKey(3) ? Model.ReviewData[3] : 0, color = "#ffcf02" },
+		new { label = "2", inner_label = Model.ReviewData.ContainsKey(2) ? Model.ReviewData[2].ToString() : "0", value = Model.ReviewData.ContainsKey(2) ? Model.ReviewData[2] : 0, color = "#ff9f02" },
+		new { label = "1", inner_label = Model.ReviewData.ContainsKey(1) ? Model.ReviewData[1].ToString() : "0", value = Model.ReviewData.ContainsKey(1) ? Model.ReviewData[1] : 0, color = "#e17a69" }
+    };
 }
 
 @section Styles {
 	<link href="~/assets/plugins/datatables/datatables.bundle.css" rel="stylesheet" />
 }
+
+<style>
+	.horizontal-bar-graph {
+		display: table;
+		width: 100%;
+		line-height: normal;
+	}
+
+	.horizontal-bar-graph-segment {
+		display: table-row;
+	}
+
+	.horizontal-bar-graph-label {
+		display: table-cell;
+		border-right: 1px solid silver;
+		text-align: right;
+		padding: 4px 10px 4px 0;
+		vertical-align: baseline;
+		white-space: nowrap;
+	}
+
+	.horizontal-bar-graph-value {
+		display: table-cell;
+		padding: 3px 0;
+		vertical-align: baseline;
+		width: 100%;
+	}
+
+	.horizontal-bar-graph-value-bar {
+		background: silver;
+		-moz-box-sizing: padding-box;
+		-webkit-box-sizing: padding-box;
+		box-sizing: padding-box;
+		padding: 4px 4px 3px;
+		text-align: right;
+		color: white;
+		overflow: visible;
+		display: inline-block;
+		white-space: nowrap;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	.horizontal-bar-graph-segment:first-child .horizontal-bar-graph-label {
+		padding-top: 12px;
+	}
+
+	.horizontal-bar-graph-segment:first-child .horizontal-bar-graph-value {
+		padding-top: 11px;
+	}
+
+	.horizontal-bar-graph-segment:last-child .horizontal-bar-graph-label {
+		padding-bottom: 12px;
+	}
+
+	.horizontal-bar-graph-segment:last-child .horizontal-bar-graph-value {
+		padding-bottom: 11px;
+	}
+
+</style>
 
 <div class="content-wrap py-0 overflow-visible indecator-loader">
 
@@ -51,7 +121,7 @@
 
 							<!-- Product Price
 							============================================= -->
-							
+
 							<h3 class="h2 mb-5 fw-medium text-white"><del>$@Model.Price</del> $@Model.PriceAfterDiscount</h3>
 
 							<!-- Product Single - Quantity & Cart Button
@@ -153,6 +223,59 @@
 		</div>
 	</div>
 
+
+	<div class="section custom-bg mb-0 py-6" style="--custom-bg: #eeeeee;">
+		<div class="container py-lg-4">
+			<div class="row col-mb-50">
+
+				<div class="col-md-7">
+					<div class="card card-review">
+						<span class="title-review">Reviews</span>
+						<div id="reviews-users">
+							@foreach (var review in Model.Reviews)
+							{
+								<partial name="_ReviewRow" model="@review" />
+							}
+						</div>
+						<div class="text-box">
+							<partial name="_ReviewForm" model="new ReviewFormViewModel { ProductId = Model.Id }" />
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-5">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="feature-box fbox-center fbox-dark fbox-plain justify-content-center rating-container">
+								<center>
+									<div style="font-size: 80px; margin-bottom: 10px; margin-top: 10px;">@Model.RatingAverage.ToString("0.0")</div>
+									<div>
+										@for (int i = 0; i < Math.Round(Model.RatingAverage); i++)
+										{
+											<span class="fa fa-star"></span>
+										}
+									</div>
+									<div>
+										<span class="fa fa-user"></span> @Model.TotalReview au total
+									</div>
+								</center>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div id="my-graph"></div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
 	<!-- 5. Section Fetured Boxes
 	============================================= -->
 	<div class="section custom-bg mb-0 py-6" style="--custom-bg: #fdf3e7;">
@@ -205,23 +328,30 @@
 
 
 @section Scripts {
+	<script src="https://d3js.org/d3.v3.min.js"></script> <!-- Ensure D3.js is loaded -->
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<partial name="_ValidationScriptsPartial" />
 	<script src="~/lib/magnific-popup.js/jquery.magnific-popup.min.js"></script>
+
 	<script>
+
+		// Function to load graph with initial review data
+		function loadInitialGraph(reviewData) {
+			var graph = new HorizontalBarGraph('#my-graph', reviewData);
+			graph.draw();
+		}
+
 		$(document).ready(function () {
 
 			function loadShopCarts(productId, count) {
-				// Check if user is logged in
 				var isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
 
 				if (!isAuthenticated) {
-					// Redirect to login page with Identity area and return URL
 					var returnUrl = window.location.href;
 					window.location.href = '@Url.Action("Login", "Account", new { area = "Identity", ReturnUrl = "__returnUrl__" })'.replace('__returnUrl__', returnUrl);
 					return;
 				}
 
-				// User is authenticated, proceed with adding to cart
 				$.ajax({
 					url: '@Url.Action("AddToCart", "Carts", new { area = "Customer" })',
 					type: 'POST',
@@ -231,7 +361,6 @@
 						'__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
 					},
 					success: function (data) {
-						// Handle success response
 						showSuccessMessage();
 					},
 					error: function () {
@@ -240,14 +369,129 @@
 				});
 			}
 
+			
+
+
 			$('body').on('click', '.js-add-product-to-cart', function () {
 				var form = $(this).closest('.cart');
 				var productId = form.find('input[name="productId"]').data('product-id');
 				var count = form.find('input[name="count"]').val();
-
-				// Call function to add to cart
 				loadShopCarts(productId, count);
 			});
 		});
+
+
+		function HorizontalBarGraph(el, series) {
+			this.el = d3.select(el);
+			this.series = series;
+		}
+
+		HorizontalBarGraph.prototype.draw = function () {
+			var x = d3.scale.linear()
+				.domain([0, d3.max(this.series, function (d) {
+					return d.value;
+				})])
+				.range([0, 100]);
+
+			var segment = this.el
+				.selectAll(".horizontal-bar-graph-segment")
+				.data(this.series);
+
+			// Clear old segments
+			segment.exit().remove();
+
+			// Add new segments
+			var newSegment = segment.enter()
+				.append("div").classed("horizontal-bar-graph-segment", true);
+
+			newSegment.append("span").classed("fa fa-star horizontal-bar-graph-label", true)
+				.text(function (d) {
+					return d.label;
+				});
+
+			newSegment.append("div").classed("horizontal-bar-graph-value", true)
+				.append("div").classed("horizontal-bar-graph-value-bar", true)
+				.style("background-color", function (d) {
+					return d.color;
+				})
+				.text(function (d) {
+					return d.inner_label ? d.inner_label : "";
+				})
+				.transition()
+				.duration(1000)
+				.style("min-width", function (d) {
+					return x(d.value) + "%";
+				});
+		};
+
+
+		function addNewReview(){
+			var formData = $('#reviewForm').serializeArray().reduce(function (obj, item) {
+				obj[item.name] = item.value;
+				return obj;
+			}, {});
+
+			// Add CSRF token to formData
+			formData['__RequestVerificationToken'] = $('input[name="__RequestVerificationToken"]').val();
+
+
+			$.ajax({
+				type: 'POST',
+				url: '@Url.Action("SubmitReview", "Reviews", new { area = "Customer" })',
+				data: formData,
+				success: function (data) {
+					showSuccessMessage();
+					$('#reviews-users').append(data);
+					$('#reviewForm')[0].reset(); // Clear the form
+				},
+				error: function (xhr, status, error) {
+					console.error('Error submitting review:', error);
+				}
+			});
+		}
+
+
+		// Function to update graph with new review data
+		function updateGraph(newReviewData) {
+			// Clear old graph elements
+			d3.select('#my-graph').selectAll('.horizontal-bar-graph-segment').remove();
+
+			console.log(d3.select('#my-graph').selectAll('.horizontal-bar-graph-segment').remove());
+
+			var graph = new HorizontalBarGraph('#my-graph', newReviewData);
+			graph.draw();
+		}
+
+		// Function to fetch updated review data from server
+		function getReviewData(id) {
+			$.ajax({
+				url: `/Customer/Reviews/GetReviewData/${id}`,
+				type: 'GET',
+				success: function (data) {
+					var newReviewData = data.reviewData;
+					console.log(data.reviewData);
+					updateGraph(newReviewData); // Update graph with new data
+				},
+				error: function () {
+					alert('Error getting reviews.');
+				}
+			});
+		}
+
+
+		document.addEventListener('DOMContentLoaded', function () {
+
+			var initialReviewData = @Html.Raw(Json.Serialize(reviewData));
+			loadInitialGraph(initialReviewData); // Draw graph with initial data
+
+			// Your JavaScript/jQuery code here
+			$('body').on('click', '.js-add-review', function (e) {
+				e.preventDefault();
+				addNewReview(); 
+				getReviewData(@Model.Id); // Update the graph with new data after adding review
+			});
+
+		});
+
 	</script>
 }

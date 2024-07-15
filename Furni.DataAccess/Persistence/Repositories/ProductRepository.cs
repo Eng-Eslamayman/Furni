@@ -1,4 +1,5 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
+using Furni.Models.Entities;
 
 namespace Furni.DataAccess.Persistence.Repositories
 {
@@ -97,40 +98,50 @@ namespace Furni.DataAccess.Persistence.Repositories
 		}
 
 
-        public ProductDetailsViewModel? GetProduct(int id)
-        {
-            var product = _context?.Products
-                .Where(p => p.Id == id)
-                .Include(p => p.ProductImages)
-                .Select(p => new
-                {
-                    p.Title,
-                    p.Id,
-                    p.Price,
-                    p.Description,
-                    p.Quantity,
-                    p.DiscountValue,
-                    ProductImages = p.ProductImages.Select(pi => pi.ImageUrl).ToList()
-                })
-                .FirstOrDefault(); // Find Does not work with eager loading Include. but it is more efficient. than First, and Single will give an exception if there more one product and less efficient. 
+		public ProductDetailsViewModel? GetProduct(int id)
+		{
+			try
+			{
+				var product = _context?.Products
+					.Where(p => p.Id == id)
+					.Include(p => p.ProductImages)
+					.Include(p => p.Reviews) // Include reviews
+						.ThenInclude(r => r.ApplicationUser) // Include ApplicationUser for each review
+					.AsEnumerable() // Switch to client evaluation
+					.Select(p => new ProductDetailsViewModel
+					{
+						Title = p.Title,
+						Id = p.Id,
+						Price = p.Price,
+						Description = p.Description,
+						Quantity = p.Quantity,
+						DiscountValue = p.DiscountValue,
+						ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).ToList(),
+						Reviews = p.Reviews.Select(r => new ReviewViewModel
+						{
+							Rating = r.Rating,
+							Comment = r.Comment,
+							UserName = r.ApplicationUser?.FullName ?? "Unknown User", // Handle null case for ApplicationUser
+							ReviewDate = r.ReviewDate,
+							
+						}).ToList(),
+						ReviewData = p.Reviews.GroupBy(r => r.Rating)
+									 .ToDictionary(g => g.Key, g => g.Count()),
+						TotalReview = p.Reviews.Count(), // Calculate total number of reviews
+						RatingAverage = p.Reviews.Any() ? (float)p.Reviews.Average(r => r.Rating) : 0.0f // Calculate average rating
+					})
+					.FirstOrDefault();
 
-            if (product == null)
-            {
-                return null;
-            }
+				return product;
+			}
+			catch (Exception ex)
+			{
+				return null;
+			}
+		}
 
-            return new ProductDetailsViewModel
-            {
-                Title = product.Title,
-                Id = product.Id,
-                Price = product.Price,
-                Description = product.Description,
-                Quantity = product.Quantity,
-                DiscountValue = product.DiscountValue,
-                ImageUrls = product.ProductImages ?? new List<string>()
-            };
-        } 
 
-    }
+
+	}
 
 }
