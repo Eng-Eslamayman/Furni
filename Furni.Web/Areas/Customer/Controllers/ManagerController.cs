@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Shared;
 using SixLabors.ImageSharp;
+using Furni.Models.Entities;
 
 namespace Furni.Web.Areas.Customer.Controllers
 {
@@ -194,6 +195,42 @@ namespace Furni.Web.Areas.Customer.Controllers
             await _signInManager.RefreshSignInAsync(user);
 
             return Json(new { success = true, message = "Your profile has been updated." });
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            var viewModel = new ChangePasswordViewModel();
+
+            return PartialView("_ChangePasswordForm", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return BadRequest($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return Json(new { success = false, message = "Unexpected error when trying to change password." });
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            _logger.LogInformation("User changed their password successfully.");
+            return Json(new { success = true, message = "Your password has been updated." });
         }
 
 

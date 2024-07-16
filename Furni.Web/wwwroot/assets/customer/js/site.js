@@ -1,4 +1,14 @@
-﻿function showSuccessMessage(message = 'Saved successfully!') {
+﻿function disableSubmitButton(btn) {
+	$(btn).attr('disabled', 'disabled');
+}
+
+function onModalBegin() {
+	disableSubmitButton($('#Modal').find(':submit'));
+}
+
+
+
+function showSuccessMessage(message = 'Saved successfully!') {
 	Swal.fire({
 		text: message,
 		icon: "success",
@@ -22,6 +32,17 @@ function showErrorMessage(message = 'Something went wrong!') {
 	});
 }
 
+
+function onModalComplete() {
+	$('body :submit').removeAttr('disabled');
+}
+
+
+function onModalSuccess() {
+	//showSuccessMessage();
+	//$('#Modal').modal('hide');
+}
+
 $(document).ready(function () {
 	$('.js-category-Id').on('click', function (event) {
 		event.preventDefault();
@@ -37,6 +58,8 @@ $(document).ready(function () {
 		window.location.href = '/Customer/Products';
 	});
 
+
+	
 
 	function loadCarts(){
 		$.ajax({
@@ -59,14 +82,6 @@ $(document).ready(function () {
 		$('#SignOut').submit();
 		//$(this).parent().submit();
 	});
-
-
-
-
-
-
-
-
 
 
 

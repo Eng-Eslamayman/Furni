@@ -34013,3 +34013,9 @@ body.dark {
     display: block;
 }
 
+/* Solid border */
+hr.solidCustom {
+    border-top: 1px solid #193532;
+    margin-top: 5px; /* Adjust the top margin as needed */
+    margin-bottom: 5px; /* Adjust the bottom margin as needed */
+}

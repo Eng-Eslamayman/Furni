@@ -85,7 +85,14 @@
                                 <a id="custom-top" asp-controller="Manager" asp-area="Customer" asp-action="Index">
                                     <i class="bi bi-person-circle"></i> Profile
                                 </a>
-                                @* <a id="custom-middle" href="#">Merge formatting</a> *@
+
+                                <div>
+                                    <a href="javascript:;" class="js-render-modal" id="custom-middle" data-title="Change Password"
+                                       data-url="/Customer/Manager/ChangePassword" data-update="true">
+                                        Change Password
+                                    </a>
+                                </div>
+                                <hr class="solidCustom">
                                 <div id="sign-out">
                                     <form id="SignOut" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/">
                                         <a type="submit" id="custom-bottom" class="js-signout"><i class="bi bi-box-arrow-right"></i> Logout</a>
@@ -149,3 +156,4 @@
     </div>
     <div class="header-wrap-clone"></div>
 </header><!-- #header end -->
+

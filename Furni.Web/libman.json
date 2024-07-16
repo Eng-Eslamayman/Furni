@@ -3,28 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "bootstrap@5.3.3",
-      "destination": "wwwroot/lib/bootstrap/",
-      "files": [
-        "js/bootstrap.min.js",
-        "css/bootstrap-grid.css",
-        "css/bootstrap-grid.css.map",
-        "css/bootstrap-grid.min.css",
-        "css/bootstrap-grid.min.css.map",
-        "css/bootstrap.css",
-        "css/bootstrap.css.map",
-        "css/bootstrap.min.css",
-        "css/bootstrap.min.css.map",
-        "js/bootstrap.bundle.js",
-        "js/bootstrap.bundle.js.map",
-        "js/bootstrap.bundle.min.js",
-        "js/bootstrap.bundle.min.js.map",
-        "js/bootstrap.min.js.map",
-        "js/bootstrap.js.map",
-        "js/bootstrap.js"
-      ]
-    },
-    {
       "library": "bootbox.js@6.0.0",
       "destination": "wwwroot/lib/bootbox.js/",
       "files": [
@@ -72,6 +50,14 @@
     {
       "library": "d3@7.9.0",
       "destination": "wwwroot/lib/d3/"
+    },
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "js/bootstrap.min.js",
+        "js/bootstrap.bundle.min.js"
+      ]
     }
   ]
 }

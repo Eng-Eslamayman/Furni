@@ -41,7 +41,7 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Zilla+Slab:wght@400;500&display=swap" rel="stylesheet">
-
+		<link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
 		@await RenderSectionAsync("Styles", required: false)
 
 
@@ -145,17 +145,87 @@
 		</div>
 		<!-- JavaScripts -->
 		<script src="~/lib/jquery/dist/jquery.min.js"></script>
+		<partial name="_ValidationScriptsPartial" />
+		<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+		
+		<partial name="_Modal" />
+
 
 		<script src="~/assets/customer/js/plugins.min.js"></script>
 		<script src="~/assets/customer/js/functions.bundle.js"></script>
 
 
 		<script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
-		
+
 
 		<script src="~/assets/customer/js/site.js"></script>
+		
 
 		@await RenderSectionAsync("Scripts", required: false)
+		
+		<script>
+			$(document).ready(function () {
+				$('body').on('click', '.js-render-modal', function (event) {
+					event.preventDefault(); // Prevent default link behavior
+
+					var btn = $(this);
+					var modal = $('#Modal'); // Assuming you have a modal element with this ID
+
+					// Set modal title using data-title
+					modal.find('#ModalLabel').text(btn.data('title'));
+
+					// Fetch content using data-url
+					$.get(btn.data('url'), function (form) {
+						// Update modal body with fetched content
+						modal.find('.modal-body').html(form);
+
+						// Show the modal
+						modal.modal('show');
+
+						// Setup form submission handler
+						modal.find('form').submit(function (e) {
+							e.preventDefault(); // Prevent default form submission
+
+							var form = $(this);
+
+							if (form.valid()) { // Check if the form is valid using jQuery Validate
+								$.ajax({
+									url: form.attr('action'),
+									type: 'POST',
+									data: form.serialize(),
+									success: function (response) {
+										if (response.success) {
+											// If successful, close modal and show success message
+											modal.modal('hide');
+											showSuccessMessage(response.message); // Implement this function to show success message
+										} else {
+											// If not successful, update modal with error messages
+											modal.find('.modal-body').html(response);
+											setupFormSubmissionHandler(); // Re-setup form submission handler if needed
+										}
+									},
+									error: function () {
+										showErrorMessage(); // Implement this function to handle generic error
+									}
+								});
+							}
+						});
+
+						// Initialize jQuery Unobtrusive Validation
+						$.validator.unobtrusive.parse('#changePasswordForm');
+					}).fail(function () {
+						showErrorMessage(); // Implement your error handling function for modal content retrieval
+					});
+				});
+
+				$('.js-hide-modal').on('click', function () {
+					var modal = $(this).closest('.modal');
+					modal.modal('hide');
+				});
+			});
+
+
+		</script>
 	}
 	<!--end::Root-->
 	<!--end::Main-->
