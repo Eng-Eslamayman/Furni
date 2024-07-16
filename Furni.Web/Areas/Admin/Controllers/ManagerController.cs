@@ -234,6 +234,10 @@ namespace Furni.Web.Areas.Admin.Controllers
 
 
 
+       
+
+
+
         private async Task<TwoFactorViewModel> LoadSharedKeyAndQrCodeUriAsync(ApplicationUser user)
         {
 

@@ -25,5 +25,6 @@ namespace Furni.Models.Entities
 		public string? State { get; set; } 
 		public string? PostalCode { get; set; } 
 		public string? Name { get; set; } 
+		public string? About { get; set; } 
 	}
 }

@@ -33885,6 +33885,7 @@ body.dark {
     margin-right: 70px;
 }
 
+
 .star-color {
     color: gold !important;
 }
@@ -33933,4 +33934,82 @@ body.dark {
     }
 }
 
+
+
+/* Dropdown User */
+.custom-paste-button {
+    position: relative;
+    display: inline-block;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.custom-button {
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black font color */
+    padding: 0px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; /* Set the width of the button */
+    height: 48px; /* Set the height of the button */
+    overflow: hidden; /* Ensure the image doesn't overflow */
+}
+
+    .custom-button .custom-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the image covers the button area */
+        border-radius: 50%; /* Make the image circular */
+    }
+
+.custom-dropdown-content {
+    display: none;
+    font-size: 15px;
+    position: absolute;
+    z-index: 1;
+    min-width: 150px;
+    background-color: #ffffff; /* White background */
+    border: 2px solid #0b4640d6;
+    border-radius: 0 15px 15px 15px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+    .custom-dropdown-content a {
+        color: #000000; /* Black font color */
+        padding: 8px 10px;
+        text-decoration: none;
+        display: block;
+        transition: 0.1s;
+    }
+
+        .custom-dropdown-content a:hover {
+            background-color: #0b4640d6; /* Blue background on hover */
+            color: #ffffff; /* White font color on hover */
+        }
+
+        .custom-dropdown-content a:focus {
+            background-color: #212121;
+            color: #0b4640d6;
+        }
+
+    .custom-dropdown-content #custom-top:hover {
+        border-radius: 0 13px 0 0;
+    }
+
+    .custom-dropdown-content #custom-bottom:hover {
+        border-radius: 0 0 13px 13px;
+    }
+
+.custom-paste-button:hover .custom-button {
+    border-radius: 15px 15px 0 0;
+}
+
+.custom-paste-button:hover .custom-dropdown-content {
+    display: block;
+}
 

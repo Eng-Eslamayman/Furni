@@ -1,4 +1,22 @@
-﻿<!-- Header
+﻿@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebHostEnvironment
+
+@{
+    string avatarUrl = "/assets/images/avatar.png"; // Default avatar URL
+
+    if (User.Identity!.IsAuthenticated)
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var userAvatarPath = $"{WebHostEnvironment.WebRootPath}/images/users/{userId}.png";
+
+        if (System.IO.File.Exists(userAvatarPath))
+        {
+            avatarUrl = $"/images/users/{userId}.png";
+        }
+    }
+}
+
+
+<!-- Header
 ============================================= -->
 <header id="header" class="header-size-sm border-bottom-0">
     <div id="header-wrap">
@@ -57,11 +75,27 @@
                                 <span class="top-cart-number">3</span>
                             </a>
                         </div>
-                        <div id="sign-out" class="header-misc-icon">
-                            <form id="SignOut" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/">
-                                <a type="submit" class="menu-link js-signout">Sign Out</a>
-                            </form>
+
+
+                        <div class="header-misc-icon custom-paste-button">
+                            <button class="custom-button">
+                                <a asp-controller="Manager" asp-area="Customer" asp-action="Index"><img src="@avatarUrl" alt="avatar" class="custom-avatar" /></a>
+                            </button>
+                            <div class="custom-dropdown-content">
+                                <a id="custom-top" asp-controller="Manager" asp-area="Customer" asp-action="Index">
+                                    <i class="bi bi-person-circle"></i> Profile
+                                </a>
+                                @* <a id="custom-middle" href="#">Merge formatting</a> *@
+                                <div id="sign-out">
+                                    <form id="SignOut" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/">
+                                        <a type="submit" id="custom-bottom" class="js-signout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
+
+
+
                     }
                     else
                     {
