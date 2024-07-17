@@ -21,9 +21,6 @@
                 sessionStorage.setItem('currentPageNumber', pageNumber);
                 sessionStorage.setItem('searchTerm', searchTerm);
 
-                // Debug statements
-                console.log('After searching and result selectedCategoryId:', sessionStorage.getItem('selectedCategoryId'));
-                console.log('After searching and result searchTerm:', sessionStorage.getItem('searchTerm'));
             },
             error: function (xhr, status, error) {
                 $('#productsListContainer').html('<p>Error loading products. Please try again later.</p>');

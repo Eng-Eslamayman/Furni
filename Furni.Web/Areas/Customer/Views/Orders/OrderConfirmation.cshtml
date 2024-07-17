@@ -1,25 +1,61 @@
 ﻿@model int
 
-<div class="d-flex flex-column justify-content-center align-items-center bg-color" style="padding-top: 20px; padding-bottom: 20px;">
-    <div class="w-md-50">
-        <!-- Adjusted width of the container div -->
-        <div class="card">
-            <!-- Card Header with Image -->
-            <img class="card-img-top img-fluid" style="max-width: 100%; max-height: 550px;" src="~/assets/customer/images/paymentSuccess.jpg" alt="Payment Success">
-            <!-- Card Body -->
-            <div class="card-body text-center">
-                <!-- Success Message -->
-                <p class="card-text fs-4">Your order has been successfully placed!</p>
-                <p class="card-text">Order ID: @Model</p>
-                <a asp-area="Customer" asp-controller="Products" asp-action="Index" class="button button-3d">Buy More</a>
+@{
+    ViewData["Title"] = "Order Confirmed";
+}
+
+
+@section Styles {
+    <link href="~/assets/customer/css/orderconfirmed.css" rel="stylesheet" />
+}
+
+<div class="page-wrapper">
+    <div class="card">
+        <div class="content">
+            <div class="back">
+                <div class="back-content">
+                    <svg stroke="#ffffff" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" height="50px" width="50px" fill="#ffffff">
+                        <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
+                        <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 172 172" style=" fill:#26e07f;">
+                                <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                    <path d="M0,172v-172h172v172z" fill="none"></path>
+                                    <g fill="#1fb141">
+                                        <path d="M21.5,21.5v129h64.5v-32.25v-64.5v-32.25zM86,53.75c0,17.7805 14.4695,32.25 32.25,32.25c17.7805,0 32.25,-14.4695 32.25,-32.25c0,-17.7805 -14.4695,-32.25 -32.25,-32.25c-17.7805,0 -32.25,14.4695 -32.25,32.25zM118.25,86c-17.7805,0 -32.25,14.4695 -32.25,32.25c0,17.7805 14.4695,32.25 32.25,32.25c17.7805,0 32.25,-14.4695 32.25,-32.25c0,-17.7805 -14.4695,-32.25 -32.25,-32.25z"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </g>
+                    </svg>
+                    <strong>Hover Me</strong>
+                </div>
             </div>
-            <!-- Card Body -->
+            <div class="front">
+                <div class="img">
+                    <img src="~/assets/customer/images/paymentSuccess.jpg" alt="Illustration" class="image">
+                </div>
+                <div class="front-content">
+                    <small class="badge">@User.FindFirst(ClaimTypes.GivenName)!.Value</small>
+                    <div class="description">
+                        <div class="title">
+                            <p class="title">
+                                <strong style="color: white; font-size: 15px; white-space: nowrap;">Your order has been successfully placed!</strong>
+                            </p>
+                            <svg fill-rule="nonzero" height="15px" width="15px" viewBox="0,0,256,256" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+                                <g style="mix-blend-mode: normal" text-anchor="none" font-size="none" font-weight="none" font-family="none" stroke-dashoffset="0" stroke-dasharray="" stroke-miterlimit="10" stroke-linejoin="miter" stroke-linecap="butt" stroke-width="1" stroke="none" fill-rule="nonzero" fill="#20c997">
+                                    <g transform="scale(8,8)">
+                                        <path d="M25,27l-9,-6.75l-9,6.75v-23h18z"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <p class="card-footer">
+                            <strong style="color: #25d366; font-size: 15px; white-space: nowrap;">Order ID &nbsp; | &nbsp; #@Model </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<style>
-    .bg-color {
-        background-color: #4fa79d !important;
-    }
-</style>
