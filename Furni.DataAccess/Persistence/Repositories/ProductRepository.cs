@@ -62,43 +62,42 @@ namespace Furni.DataAccess.Persistence.Repositories
 				  });
 		}
 
-		public PaginatedList<CustomArrivalProductViewModel> GetShopProducts(int pageNumber, int pageSize,int? categoryId = null)
-		{
-			IQueryable<CustomArrivalProductViewModel> products;
-			if (categoryId.HasValue)
-			{
-				 products = _context.Products
-					.Include(p => p.Category)
-					.Include(p => p.ProductImages)
-					.Where(p => p.CategoryId == categoryId)
-					 .Select(p => new CustomArrivalProductViewModel
-					 {
-						 Title = p.Title,
-						 Id = p.Id,
-						 Price = p.Price,
-						 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList(),
-					 });
-			}
-			else
-			{
-				products = _context.Products
-					 .Include(p => p.Category)
-					 .Include(p => p.ProductImages)
-					 .Select(p => new CustomArrivalProductViewModel
-					 {
-						 Title = p.Title,
-						 Id = p.Id,
-						 Price = p.Price,
-						 ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Skip(0).Take(2).ToList(),
-					 });
-			}
-				
+        public PaginatedList<CustomArrivalProductViewModel> GetShopProducts(int pageNumber, int pageSize, int? categoryId = null, string? searchTerm = null)
+        {
+            IQueryable<Product> productQuery = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages);
 
-			return PaginatedList<CustomArrivalProductViewModel>.Create(products, pageNumber, pageSize);
-		}
+            if (categoryId.HasValue)
+            {
+                productQuery = productQuery.Where(p => p.CategoryId == categoryId);
+            }
+
+            // Filter by search term if specified
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var lowerSearchTerm = searchTerm.ToLower();
+                productQuery = productQuery.Where(p =>
+                    p.Title.ToLower().Contains(lowerSearchTerm) ||
+                    (p.Description ?? string.Empty).ToLower().Contains(lowerSearchTerm) ||
+                    p.Category.Name.ToLower().Contains(lowerSearchTerm)); 
+            }
+
+            var products = productQuery.Select(p => new CustomArrivalProductViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Price = p.Price,
+                ImageUrls = p.ProductImages.Select(pi => pi.ImageUrl).Take(2).ToList()
+            });
+
+            return PaginatedList<CustomArrivalProductViewModel>.Create(products, pageNumber, pageSize);
+        }
 
 
-		public ProductDetailsViewModel? GetProduct(int id)
+
+
+        public ProductDetailsViewModel? GetProduct(int id)
 		{
 			try
 			{

@@ -165,6 +165,35 @@
 		
 		<script>
 			$(document).ready(function () {
+
+				$('.js-category-Id').on('click', function (event) {
+					event.preventDefault();
+					const categoryId = $(this).data('category-id');
+					sessionStorage.setItem('selectedCategoryId', categoryId);
+					sessionStorage.removeItem('searchTerm'); // Clear search term when selecting a category
+
+					window.location.href = '/Customer/Products';
+				});
+
+				$('.js-header-all-products').on('click', function (event) {
+					event.preventDefault();
+					sessionStorage.setItem('selectedCategoryId', null);
+					sessionStorage.setItem('currentPageNumber', 1);
+					sessionStorage.removeItem('searchTerm'); // Clear search term when viewing all products
+
+					window.location.href = '/Customer/Products';
+				});
+
+
+				$('.top-search-form').on('submit', function (event) {
+					sessionStorage.setItem('selectedCategoryId', null);
+					const searchTerm = $('#searchTermInput').val();
+					sessionStorage.setItem('searchTerm', searchTerm);
+					sessionStorage.setItem('currentPageNumber', 1);
+					window.location.href = '/Customer/Products';
+				});
+
+
 				$('body').on('click', '.js-render-modal', function (event) {
 					event.preventDefault(); // Prevent default link behavior
 

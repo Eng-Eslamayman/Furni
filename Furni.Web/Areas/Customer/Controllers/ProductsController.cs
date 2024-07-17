@@ -35,36 +35,35 @@ namespace Furni.Web.Areas.Customer.Controllers
 			return View(viewModel);
 		}
 
-		[AjaxOnly]
-		[HttpGet]
-		public IActionResult GetProducts(int? categoryId, int? pageNumber)
-		{
-			var products = _unitOfWork.Products.GetShopProducts(pageNumber ?? 1, (int)ReportsConfigurations.PageSize, categoryId);
-			//var viewModel = new PaginatedList<CustomArrivalProductViewModel>(pageNumber ?? 0, (int)ReportsConfigurations.PageSize, categoryId);
-
-			return PartialView("_ShopProducts", products);
-		}
+        [AjaxOnly]
+        [HttpGet]
+        public IActionResult GetProducts(int? categoryId, int? pageNumber, string? searchTerm)
+        {
+            var products = _unitOfWork.Products.GetShopProducts(pageNumber ?? 1, (int)ReportsConfigurations.PageSize, categoryId, searchTerm);
+            return PartialView("_ShopProducts", products);
+        }
 
 
 
-		//[HttpGet]
-		//public IActionResult GetProducts(int? categoryId, int? pageNumber)
-		//{
-		//    var viewModel = new ShopProductViewModel
-		//    {
-		//    };
 
-		//    if (pageNumber is not null)
-		//        viewModel.Products = _unitOfWork.Products
-		//                    .GetShopProducts(pageNumber ?? 0, (int)ReportsConfigurations.PageSize, categoryId);
-		//    else
-		//        viewModel.Products = _unitOfWork.Products
-		//                    .GetShopProducts(1, (int)ReportsConfigurations.PageSize, categoryId);
+        //[HttpGet]
+        //public IActionResult GetProducts(int? categoryId, int? pageNumber)
+        //{
+        //    var viewModel = new ShopProductViewModel
+        //    {
+        //    };
 
-		//    return PartialView("_ShopProducts", viewModel.Products);
-		//}
+        //    if (pageNumber is not null)
+        //        viewModel.Products = _unitOfWork.Products
+        //                    .GetShopProducts(pageNumber ?? 0, (int)ReportsConfigurations.PageSize, categoryId);
+        //    else
+        //        viewModel.Products = _unitOfWork.Products
+        //                    .GetShopProducts(1, (int)ReportsConfigurations.PageSize, categoryId);
 
-		public IActionResult Details(int id)
+        //    return PartialView("_ShopProducts", viewModel.Products);
+        //}
+
+        public IActionResult Details(int id)
 		{
 			if (User.Identity!.IsAuthenticated && User.IsInRole(AppRoles.Admin))
 				return RedirectToAction(nameof(Index), controllerName: "Dashboard", new { area = AppRoles.Admin });
