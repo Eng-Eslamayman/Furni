@@ -44,12 +44,6 @@ function onModalSuccess() {
 }
 
 $(document).ready(function () {
-	
-
-
-
-	
-
 	function loadCarts(){
 		$.ajax({
 			url: '/Customer/Carts/GetCards',

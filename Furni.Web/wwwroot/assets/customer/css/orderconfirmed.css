@@ -5,7 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('https://img.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg?t=st=1721232694~exp=1721236294~hmac=a672143f12e1bb8979ead686fcaee6f80d4294b47715cd5cadf314a2720eafd2&w=2000');
+    background-image: url('/assets/customer/images/atmosphere-background.jpg');
     background-size: cover;
     background-position: center;
 }

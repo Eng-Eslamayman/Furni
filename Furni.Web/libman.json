@@ -58,6 +58,13 @@
         "js/bootstrap.min.js",
         "js/bootstrap.bundle.min.js"
       ]
+    },
+    {
+      "library": "typeahead.js@0.11.1",
+      "destination": "wwwroot/lib/typeahead.js/",
+      "files": [
+        "typeahead.bundle.min.js"
+      ]
     }
   ]
 }

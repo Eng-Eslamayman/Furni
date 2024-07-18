@@ -61,6 +61,9 @@
 		<link rel="stylesheet" href="~/assets/customer/css/custom.css">
 
 		@await RenderSectionAsync("Styles", required: false)
+
+		<link rel="stylesheet" href="~/css/typeahead.css" />
+
 		
 	}
 </head>
@@ -149,24 +152,100 @@
 		<script src="~/lib/jquery/dist/jquery.min.js"></script>
 		<partial name="_ValidationScriptsPartial" />
 		<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-		
+		if (ViewBag.ControllerName != "Products")
+		{
+			<script src="~/lib/typeahead.js/typeahead.bundle.js"></script>
+		}
+
 		<partial name="_Modal" />
 
 
 		<script src="~/assets/customer/js/plugins.min.js"></script>
 		<script src="~/assets/customer/js/functions.bundle.js"></script>
-
-
 		<script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
 
 
 		<script src="~/assets/customer/js/site.js"></script>
-		
+		<script src="~/assets/customer/js/search.js" asp-append-version="true"></script>
 
-		@await RenderSectionAsync("Scripts", required: false)
+
 		
+		@await RenderSectionAsync("Scripts", required: false)
+		if (ViewBag.ControllerName == "Products")
+		{
+			<script src="~/lib/typeahead.js/typeahead.bundle.js"></script>
+		}
 		<script>
 			$(document).ready(function () {
+
+				// Use Typeahead
+				// Initialize Bloodhound suggestion engine
+				var products = new Bloodhound({
+					datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+					queryTokenizer: Bloodhound.tokenizers.whitespace,
+					remote: {
+						url: '/Customer/Products/GetCategoriesAndProducts?query=%QUERY',
+						wildcard: '%QUERY',
+						transform: function (response) {
+							return $.map(response, function (item) {
+								return {
+									value: item.value,
+									type: item.type,
+									id: item.id || null, // Ensure id is null if not provided
+									thumbnailUrl: item.thumbnailUrl || null // Ensure thumbnailUrl is null if not provided
+								};
+							});
+						}
+					}
+				});
+
+				// Initialize Typeahead
+				$('#searchTermInput').typeahead(
+					{
+						hint: true,
+						highlight: true,
+						minLength: 1
+					},
+					{
+						name: 'categories-products',
+						display: 'value',
+						source: products,
+						templates: {
+							suggestion: function (data) {
+								if (data.type === "category") {
+									return '<div>' + data.value + '</div>';
+								} else if (data.type === "product") {
+									return '<div><img src="' + data.thumbnailUrl + '" style="max-width: 50px; max-height: 50px; border-radius: 10%;" > ' + data.value + '</div>';
+									
+								}
+							}
+						}
+					}
+				).on('typeahead:select', function (event, suggestion) {
+					// Handle selection
+
+					if (suggestion.type === "product" && suggestion.id) {
+						var productId = suggestion.id;
+						window.location.href = '/Customer/Products/Details/' + productId;
+					} else {
+						var searchTerm = suggestion.value;
+						sessionStorage.setItem('searchTerm', searchTerm);
+						sessionStorage.setItem('currentPageNumber', 1);
+						sessionStorage.setItem('selectedCategoryId', null);
+						window.location.href = '/Customer/Products'; // Redirect to search results page
+					}
+				});
+
+
+				// Handle form submission
+				$('#top-search-form').on('submit', function (event) {
+					event.preventDefault(); // Prevent form from submitting the default way
+					const searchTerm = $('#searchTermInput').val();
+					sessionStorage.setItem('searchTerm', searchTerm);
+					sessionStorage.setItem('currentPageNumber', 1);
+					sessionStorage.setItem('selectedCategoryId', null);
+					window.location.href = '/Customer/Products';
+				});
 
 				$('.js-category-Id').on('click', function (event) {
 					event.preventDefault();
@@ -187,13 +266,13 @@
 				});
 
 
-				$('.top-search-form').on('submit', function (event) {
-					sessionStorage.setItem('selectedCategoryId', null);
-					const searchTerm = $('#searchTermInput').val();
-					sessionStorage.setItem('searchTerm', searchTerm);
-					sessionStorage.setItem('currentPageNumber', 1);
-					window.location.href = '/Customer/Products';
-				});
+				// $('.top-search-form').on('submit', function (event) {
+				// 	sessionStorage.setItem('selectedCategoryId', null);
+				// 	const searchTerm = $('#searchTermInput').val();
+				// 	sessionStorage.setItem('searchTerm', searchTerm);
+				// 	sessionStorage.setItem('currentPageNumber', 1);
+				// 	window.location.href = '/Customer/Products';
+				// });
 
 
 				$('body').on('click', '.js-render-modal', function (event) {

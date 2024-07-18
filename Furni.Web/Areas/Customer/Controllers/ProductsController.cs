@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Furni.DataAccess.Persistence.Repositories.IRepositories;
 using Furni.Models.Enums;
 using Furni.Utility.Models;
 using Furni.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Furni.Web.Areas.Customer.Controllers
 {
@@ -31,15 +33,37 @@ namespace Furni.Web.Areas.Customer.Controllers
 				Categories = _mapper.Map<IEnumerable<SelectListItem>>(categories),
 				//Products = _unitOfWork.Products.GetShopProducts(pageNumber ?? 1, (int)ReportsConfigurations.PageSize, categoryId)
 			};
-
+			ActionName();
 			return View(viewModel);
 		}
 
-        [AjaxOnly]
+
+		[HttpGet]
+		public IActionResult GetCategoriesAndProducts(string query)
+		{
+			var categories = _unitOfWork.Categories.GetCategoryNames(query, 3)
+								.Select(c => new { value = c.Name, type = c.Type });
+
+			var products = _unitOfWork.Products.GetProductsSearch(query, 3)
+								.Select(p => new { value = p.Name, type = p.Type, id = p.Id, thumbnailUrl = p.MainImageThumbnailUrl });
+
+			// Ensure both categories and products have compatible anonymous types
+			var suggestions = categories
+								.Select(c => new { c.value, c.type, id = (int?)null, thumbnailUrl = (string)null }) // Adjusting categories to include id and thumbnailUrl
+								.Concat(products)
+								.ToList();
+
+			return Json(suggestions);
+		}
+
+
+
+		[AjaxOnly]
         [HttpGet]
-        public IActionResult GetProducts(int? categoryId, int? pageNumber, string? searchTerm)
+        public IActionResult GetProducts(int? categoryId, int? pageNumber, string? searchTerm, string sortCriteria = "default")
         {
-            var products = _unitOfWork.Products.GetShopProducts(pageNumber ?? 1, (int)ReportsConfigurations.PageSize, categoryId, searchTerm);
+			ActionName();
+			var products = _unitOfWork.Products.GetShopProducts(pageNumber ?? 1, (int)ReportsConfigurations.PageSize, categoryId, searchTerm, sortCriteria: sortCriteria);
             return PartialView("_ShopProducts", products);
         }
 
@@ -69,7 +93,7 @@ namespace Furni.Web.Areas.Customer.Controllers
 				return RedirectToAction(nameof(Index), controllerName: "Dashboard", new { area = AppRoles.Admin });
 
 			var viewModel = _unitOfWork.Products.GetProduct(id);
-
+			ActionName();
 			//TempData["ReviewData"] = new[]
 			//{
 			//	new { label = "5", inner_label = viewModel.ReviewData.ContainsKey(5) ? viewModel.ReviewData[5].ToString() : "0", value = viewModel.ReviewData.ContainsKey(5) ? viewModel.ReviewData[5] : 0, color = "#88b131" },
@@ -80,6 +104,12 @@ namespace Furni.Web.Areas.Customer.Controllers
 			//};
 
 			return View(viewModel);
+		}
+
+
+		private void ActionName()
+		{
+			ViewBag.ControllerName = RouteData.Values["controller"]!.ToString();
 		}
 
 	}

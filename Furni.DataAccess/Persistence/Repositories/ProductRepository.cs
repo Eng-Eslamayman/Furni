@@ -62,15 +62,27 @@ namespace Furni.DataAccess.Persistence.Repositories
 				  });
 		}
 
-        public PaginatedList<CustomArrivalProductViewModel> GetShopProducts(int pageNumber, int pageSize, int? categoryId = null, string? searchTerm = null)
+
+		public IEnumerable<ProductsAndCategoriesSearchViewModel> GetProductsSearch(string query, int skipCount)
+		{
+			return _context.Products
+				.Where(p => p.Title.Contains(query))
+				.Skip(skipCount)
+				.Select(p => new ProductsAndCategoriesSearchViewModel { Id = p.Id, Name = p.Title, MainImageThumbnailUrl = p.MainImageThumbnailUrl, Type = "product" })
+				.ToList();
+		}
+
+
+
+		public PaginatedList<CustomArrivalProductViewModel> GetShopProducts(int pageNumber, int pageSize, int? categoryId = null, string? searchTerm = null, string ? sortCriteria = null)
         {
             IQueryable<Product> productQuery = _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductImages);
 
-            if (categoryId.HasValue)
+            if (categoryId.HasValue && categoryId.Value != 0)
             {
-                productQuery = productQuery.Where(p => p.CategoryId == categoryId);
+                productQuery = productQuery.Where(p => p.CategoryId == categoryId.Value);
             }
 
             // Filter by search term if specified
@@ -81,6 +93,26 @@ namespace Furni.DataAccess.Persistence.Repositories
                     p.Title.ToLower().Contains(lowerSearchTerm) ||
                     (p.Description ?? string.Empty).ToLower().Contains(lowerSearchTerm) ||
                     p.Category.Name.ToLower().Contains(lowerSearchTerm)); 
+            }
+
+            // Apply sorting based on sortCriteria
+            switch (sortCriteria?.ToLower())
+            {
+                case "featured":
+                    productQuery = productQuery.OrderByDescending(p => p.Id); // Using Id as a placeholder for Featured
+                    break;
+                case "popular":
+                    productQuery = productQuery.OrderByDescending(p => p.CreatedOn); // Using DateAdded as a proxy for Popular
+                    break;
+                case "priceasc":
+                    productQuery = productQuery.OrderBy(p => p.Price);
+                    break;
+                case "pricedesc":
+                    productQuery = productQuery.OrderByDescending(p => p.Price);
+                    break;
+                default:
+                    productQuery = productQuery.OrderBy(p => p.Title); // Default sorting
+                    break;
             }
 
             var products = productQuery.Select(p => new CustomArrivalProductViewModel

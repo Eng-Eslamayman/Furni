@@ -4,5 +4,7 @@
     {
         IEnumerable<Category> GetActiveCategories();
         List<CustomCategoryViewModel> GetCustomCategories();
-    }
+        IEnumerable<ProductsAndCategoriesSearchViewModel> GetCategoryNames(string query, int count);
+
+	}
 }

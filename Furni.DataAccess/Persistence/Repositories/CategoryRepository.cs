@@ -20,7 +20,17 @@ namespace Furni.DataAccess.Persistence.Repositories
             })
             .ToList();
 
-        public List<CustomCategoryViewModel> GetCustomCategories() => _context.Categories
+		public IEnumerable<ProductsAndCategoriesSearchViewModel> GetCategoryNames(string query, int count)
+		{
+			return _context.Categories
+				.Where(c => c.Name.Contains(query))
+                .Select(c => new ProductsAndCategoriesSearchViewModel { Name = c.Name, Type = "category" })
+				.Take(count)
+				.ToList();
+		}
+
+
+		public List<CustomCategoryViewModel> GetCustomCategories() => _context.Categories
                 .Select(c => new CustomCategoryViewModel
                 {
                     Id = c.Id,
