@@ -190,10 +190,6 @@
 
 
 @section scripts {
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <partial name="_ValidationScriptsPartial" />
-
-    
 
     <script>
 
@@ -216,7 +212,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            // Your JavaScript/jQuery code here
             $('body').on('click', '.js-update-shiping-address', function (e) {
                 e.preventDefault();
                 updateShinppingAddress();

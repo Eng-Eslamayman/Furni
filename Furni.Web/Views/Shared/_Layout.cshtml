@@ -149,10 +149,15 @@
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FFF" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polygon points="48 208 128 128 208 208 48 208" opacity="0.2"></polygon><polygon points="48 208 128 128 208 208 48 208" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polygon><polyline points="48 128 128 48 208 128" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline></svg>
 		</div>
 		<!-- JavaScripts -->
+
+		<script src="~/assets/customer/js/plugins.min.js"></script>
+		<script src="~/assets/customer/js/functions.bundle.js"></script>
+
+
 		<script src="~/lib/jquery/dist/jquery.min.js"></script>
 		<partial name="_ValidationScriptsPartial" />
 		<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-		if (ViewBag.ControllerName != "Products")
+		if (ViewBag.ControllerName != "Products" && ViewBag.ControllerName != "Manager")
 		{
 			<script src="~/lib/typeahead.js/typeahead.bundle.js"></script>
 		}
@@ -160,8 +165,6 @@
 		<partial name="_Modal" />
 
 
-		<script src="~/assets/customer/js/plugins.min.js"></script>
-		<script src="~/assets/customer/js/functions.bundle.js"></script>
 		<script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
 
 
@@ -171,12 +174,17 @@
 
 		
 		@await RenderSectionAsync("Scripts", required: false)
-		if (ViewBag.ControllerName == "Products")
+
+		<partial name="_ValidationScriptsPartial" />
+		<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+		if (ViewBag.ControllerName == "Products" || ViewBag.ControllerName == "Manager")
 		{
 			<script src="~/lib/typeahead.js/typeahead.bundle.js"></script>
 		}
 		<script>
 			$(document).ready(function () {
+
+				
 
 				// Use Typeahead
 				// Initialize Bloodhound suggestion engine
@@ -311,7 +319,7 @@
 										} else {
 											// If not successful, update modal with error messages
 											modal.find('.modal-body').html(response);
-											setupFormSubmissionHandler(); // Re-setup form submission handler if needed
+											$.validator.unobtrusive.parse('#changePasswordForm'); // Re-setup form submission handler if needed
 										}
 									},
 									error: function () {

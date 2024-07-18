@@ -46,7 +46,8 @@ namespace Furni.Web.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
+			ActionName();
+			var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -82,8 +83,8 @@ namespace Furni.Web.Areas.Customer.Controllers
             {
                 return Json(new { success = false, message = $"Unable to load user with ID '{_userManager.GetUserId(User)}'." });
             }
-
-            if (!ModelState.IsValid)
+			ActionName();
+			if (!ModelState.IsValid)
             {
                 var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
                 var managerView = new ManagerUserViewModel
@@ -197,10 +198,11 @@ namespace Furni.Web.Areas.Customer.Controllers
             return Json(new { success = true, message = "Your profile has been updated." });
         }
 
+        [AjaxOnly]
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            var viewModel = new ChangePasswordViewModel();
+			var viewModel = new ChangePasswordViewModel();
 
             return PartialView("_ChangePasswordForm", viewModel);
         }
@@ -228,7 +230,7 @@ namespace Furni.Web.Areas.Customer.Controllers
                 return Json(new { success = false, message = "Unexpected error when trying to change password." });
             }
 
-            await _signInManager.RefreshSignInAsync(user);
+			await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
             return Json(new { success = true, message = "Your password has been updated." });
         }
@@ -237,14 +239,16 @@ namespace Furni.Web.Areas.Customer.Controllers
 
         public async Task<IActionResult> AllowUserName(ManagerUserViewModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.UserName);
+			ActionName();
+			var user = await _userManager.FindByNameAsync(model.UserName);
             var isAllowed = user is null || user.Id.Equals(model.Id);
             return Json(isAllowed);
         }
 
         public async Task<IActionResult> AllowEmail(ManagerUserViewModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+			ActionName();
+			var user = await _userManager.FindByEmailAsync(model.Email);
             var isAllowed = user == null || user.Id.Equals(model.Id);
             return Json(isAllowed);
         }
@@ -406,5 +410,10 @@ namespace Furni.Web.Areas.Customer.Controllers
 			return qrCode.GetGraphic(20);
 		}
 
+
+		private void ActionName()
+		{
+			ViewBag.ControllerName = RouteData.Values["controller"]!.ToString();
+		}
 	}
 }

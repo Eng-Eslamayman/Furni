@@ -266,8 +266,8 @@
 </div>
 
 @section Scripts {
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <partial name="_ValidationScriptsPartial" />
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <partial name="_ValidationScriptsPartial" /> *@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Function to handle avatar removal
@@ -294,43 +294,57 @@
             $('.js-remove-avatar').on('click', function () {
                 $('#ImageRemoved').val(true);
             });
+            // Initialize unobtrusive validation for the form
+            $.validator.unobtrusive.parse('#manager-form');
 
-            const submitButton = document.getElementById("submit-button");
-            submitButton.addEventListener("click", function (event) {
+            const submitButton = $("#submit-button");
+
+            // Attach click event to the submit button
+            submitButton.on("click", function (event) {
                 event.preventDefault(); // Prevent default form submission
-                // Disable button to prevent accidental double click
-                submitButton.disabled = true;
 
-                // Use AJAX to submit the form
-                var formData = new FormData(document.getElementById("manager-form"));
-                // Get the avatar file input element
-                var avatarFile = $("#avatar-upload")[0].files[0];
-                // console.log(avatarFile)
-                // Check if a file is selected
-                if (avatarFile) {
-                    formData.append("Avatar", avatarFile);
-                }
+                // Get the form
+                var form = $("#manager-form");
 
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("Index", "Manager", new { area = "Customer" })",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        if (response.success) {
-                            showSuccessMessage(response.message);
-                        } else {
-                            showErrorMessage(response.message);
-                        }
-                        submitButton.disabled = false;
-                    },
-                    error: function (xhr, status, error) {
-                        showErrorMessage("An error occurred: " + error);
-                        submitButton.disabled = false;
+                // Check if the form is valid using jQuery validation
+                if (form.valid()) {
+                    // Disable button to prevent accidental double click
+                    submitButton.prop("disabled", true);
+
+                    // Prepare form data
+                    var formData = new FormData(form[0]);
+
+                    // Get the avatar file input element
+                    var avatarFile = $("#avatar-upload")[0].files[0];
+
+                    // Check if a file is selected
+                    if (avatarFile) {
+                        formData.append("Avatar", avatarFile);
                     }
-                });
+
+                    // Submit form via AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("Index", "Manager", new { area = "Customer" })",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            if (response.success) {
+                                showSuccessMessage(response.message);
+                            } else {
+                                showErrorMessage(response.message);
+                            }
+                            submitButton.prop("disabled", false);
+                        },
+                        error: function (xhr, status, error) {
+                            showErrorMessage("An error occurred: " + error);
+                            submitButton.prop("disabled", false);
+                        }
+                    });
+                }
             });
+            
 
 
         });
