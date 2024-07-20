@@ -15,7 +15,7 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 		IOrderDetailsRepository OrderDetails { get; }
 		IReviewRepository Reviews { get; }
 		IProductImageRepository ProductImages {  get; }
-		IBaseRepository<ApplicationUser> ApplicationUsers { get; }
+        IApplicationUserRepository ApplicationUsers { get; }
 
 		int Complete();
     }

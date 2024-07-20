@@ -23,5 +23,9 @@ namespace Furni.Models.Entities
 		public Category? Category { get; set; }
 		public ICollection<ProductImage>? ProductImages { get; set; }
 		public ICollection<Review>? Reviews { get; set; }
-	}
+
+        // Store the cost price of the product
+        public float CostPrice { get; set; }
+
+    }
 }

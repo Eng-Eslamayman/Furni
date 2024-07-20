@@ -44,6 +44,7 @@
                 }
             },
             { "data": "quantity", "name": "Quantity" },
+            { "data": "costPrice", "name": "CostPrice" },
             { "data": "price", "name": "Price" },
             { "data": "category", "name": "Category" },
             {

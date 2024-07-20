@@ -1,1 +1,622 @@
-﻿
+﻿@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@*
+<p>AverageOrdersPerDay : @Model.AverageOrdersPerDay</p>
+<p>TotalCustomersThisMonth : @Model.TotalCustomersThisMonth</p>
+<p>TotalOrdersThisMonth : @Model.TotalOrdersThisMonth</p>
+<p>AverageDailySales : @Model.AverageDailySales</p> *@
+
+
+<div class="page-title d-flex flex-column me-3">
+    <!--begin::Title-->
+    <h1 class="d-flex text-gray-900 fw-bold my-1 fs-3">Furnihuture Dashboard</h1>
+    <!--end::Title-->
+</div>
+<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
+    <!--begin::Post-->
+    <div class="content flex-row-fluid" id="kt_content">
+        <!--begin::Row-->
+        <div class="row g-5 g-xl-10 mb-xl-10">
+            <!--begin::Col-->
+            <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+
+                <!--begin::Card widget 7-->
+                <div class="card card-flush h-md-50 mb-xl-10">
+                    <!--begin::Header-->
+                    <div class="card-header pt-5">
+                        <!--begin::Title-->
+                        <div class="card-title d-flex flex-column">
+                            <!--begin::Amount-->
+                            <span class="fs-2hx fw-bold text-gray-900 me-2 lh-1 ls-n2">@Model.TotalCustomersThisMonth</span>
+                            <!--end::Amount-->
+                            <!--begin::Subtitle-->
+                            <span class="text-gray-500 pt-1 fw-semibold fs-6">New Customers This Month</span>
+                            <!--end::Subtitle-->
+                        </div>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Header-->
+                </div>
+                <!--end::Card widget 7-->
+                <!--begin::Card widget 5-->
+                <div class="card card-flush h-md-50 mb-xl-10">
+                    <!--begin::Header-->
+                    <div class="card-header pt-5">
+                        <!--begin::Title-->
+                        <div class="card-title d-flex flex-column">
+                            <!--begin::Info-->
+                            <div class="d-flex align-items-center">
+                                <!--begin::Amount-->
+                                <span class="fs-2hx fw-bold text-gray-900 me-2 lh-1 ls-n2">@Model.TotalOrdersThisMonth</span>
+                                <!--end::Amount-->
+                            </div>
+                            <!--end::Info-->
+                            <!--begin::Subtitle-->
+                            <span class="text-gray-500 pt-1 fw-semibold fs-6">Orders This Month</span>
+                            <!--end::Subtitle-->
+                        </div>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Header-->
+                </div>
+                <!--end::Card widget 5-->
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+                <!--begin::Card widget 6-->
+                <div class="card card-flush h-md-50 mb-5 mb-xl-10">
+                    <!--begin::Header-->
+                    <div class="card-header pt-5">
+                        <!--begin::Title-->
+                        <div class="card-title d-flex flex-column">
+                            <!--begin::Info-->
+                            <div class="d-flex align-items-center">
+                                <!--begin::Currency-->
+                                <span class="fs-4 fw-semibold text-gray-500 me-1 align-self-start">$</span>
+                                <!--end::Currency-->
+                                <!--begin::Amount-->
+                                <span class="fs-2hx fw-bold text-gray-900 me-2 lh-1 ls-n2">@Model.AverageDailySales.ToString("0.00")</span>
+                                <!--end::Amount-->
+                            </div>
+                            <!--end::Info-->
+                            <!--begin::Subtitle-->
+                            <span class="text-gray-500 pt-1 fw-semibold fs-6">Average Daily Sales</span>
+                            <!--end::Subtitle-->
+                        </div>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Header-->
+                </div>
+                <!--end::Card widget 6-->
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-lg-12 col-xl-12 col-xxl-6 mb-5 mb-xl-0">
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+        <div>
+
+            <!--begin::Row-->
+            <div class="row gy-5 g-xl-10">
+                <!--begin::Col-->
+                <div class="col-xl-6 mb-xl-10">
+                    <!--begin::Table widget 2-->
+                    <div class="card h-md-100">
+                        <!--begin::Header-->
+                        <div class="card-header align-items-center border-0">
+                            <!--begin::Title-->
+                            <h3 class="fw-bold text-gray-900 m-0">Recent Orders</h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--begin::Body-->
+                        <div class="card-body pt-2">
+                            <!--begin::Tab Content-->
+                            <div class="tab-content">
+                                <!--begin::Tap pane-->
+                                <div class="tab-pane fade show active">
+                                    <!--begin::Table container-->
+                                    <div class="table-responsive">
+                                        <!--begin::Table-->
+                                        <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
+                                            <!--begin::Table head-->
+                                            <thead>
+                                                <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                                    <th class="ps-0 w-50px">ITEM</th>
+                                                    <th class="min-w-125px"></th>
+                                                    <th class="text-end min-w-100px">QTY</th>
+                                                    <th class="pe-0 text-end min-w-100px">PRICE</th>
+                                                    <th class="pe-0 text-end min-w-100px">TOTAL PRICE</th>
+                                                </tr>
+                                            </thead>
+                                            <!--end::Table head-->
+                                            <!--begin::Table body-->
+                                            <tbody>
+                                                @foreach (var item in Model.RecentOrders)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <img src="@item.MainImageThumbnailUrl" class="w-50px ms-n1" alt="@item.Title" />
+                                                        </td>
+                                                        <td class="ps-0">
+                                                            <a asp-action="Details" asp-controller="Products" asp-route-id="@item.ProductId" asp-area="Admin" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6 text-start pe-0">@item.Title</a>
+                                                            <span class="text-gray-500 fw-semibold fs-7 d-block text-start ps-0">Item: #@item.ProductId</span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="text-gray-800 fw-bold d-block fs-6 ps-0 text-end">x @item.Quantity</span>
+                                                        </td>
+                                                        <td class="text-end pe-0">
+                                                            <span class="text-gray-800 fw-bold d-block fs-6">$@item.Price</span>
+                                                        </td>
+                                                        <td class="text-end pe-0">
+                                                            <span class="text-gray-800 fw-bold d-block fs-6">$@item.TotalPrice</span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                            <!--end::Table body-->
+                                        </table>
+                                        <!--end::Table-->
+                                    </div>
+                                    <!--end::Table container-->
+                                </div>
+                                <!--end::Tap pane-->
+                            </div>
+                            <!--end::Tab Content-->
+                        </div>
+                        <!--end: Card Body-->
+                    </div>
+                    <!--end::Table widget 2-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-6 mb-5 mb-xl-10">
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Row-->
+        </div>
+
+        <div>
+            <!--begin::Row-->
+            <div class="row gy-5 g-xl-10">
+                <!--begin::Col-->
+                <div class="col-xl-12 mb-5 mb-xl-10">
+                    <!--begin::Table Widget 4-->
+                    <div class="card card-flush h-xl-100">
+                        <!--begin::Card header-->
+                        <div class="card-header pt-7">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-800">Product Orders</span>
+                                <span class="text-gray-500 mt-1 fw-semibold fs-6">Avg. @Model.AverageOrdersPerDay orders per day</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body pt-2">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-dashed fs-6 gy-3" id="kt_table_widget_4_table">
+                                <!--begin::Table head-->
+                                <thead>
+                                    <!--begin::Table row-->
+                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="min-w-100px">Order ID</th>
+                                        <th class="text-end min-w-100px">Created</th>
+                                        <th class="text-end min-w-125px">Customer</th>
+                                        <th class="text-end min-w-100px">Total</th>
+                                        <th class="text-end min-w-100px">Profit</th>
+                                        <th class="text-end min-w-50px">Status</th>
+                                        <th class="text-end"></th>
+                                    </tr>
+                                    <!--end::Table row-->
+                                </thead>
+                                <!--end::Table head-->
+                                <!--begin::Table body-->
+                                <tbody class="fw-bold text-gray-600">
+                                    @foreach (var item in Model.ProductOrders)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="#" class="text-gray-800 text-hover-primary">#@item.OrderId</a>
+                                            </td>
+                                            <td class="text-end">@item.TimeAgo</td>
+                                            <td class="text-end">
+                                                <a href="#" class="text-gray-600 text-hover-primary">@item.CustomerName</a>
+                                            </td>
+                                            <td class="text-end">$@item.TotalPrice</td>
+                                            <td class="text-end">
+                                                <span class="text-gray-800 fw-bolder">$@item.TotalProfit.ToString("0.00")</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <span class="badge py-3 px-4 fs-7 @(item.Status == "Pending" ? "badge badge-light-warning" :
+                                                     item.Status == "Delivering" ? "badge badge-light-primary" :
+                                                     item.Status == "Denied" ? "badge badge-light-danger" :
+                                                     item.Status == "approved" ? "badge badge-light-success" :
+                                                     "badge badge-light-secondary")">@item.Status</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <!--end::Table body-->
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Table Widget 4-->
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Row-->
+        </div>
+
+        <div>
+            <!--begin::Row-->
+            <div class="row gy-5 g-xl-10">
+                <!--begin::Col-->
+                <div class="col-xl-12">
+                    <!--begin::Table Widget 5-->
+                    <div class="card card-flush h-xl-100">
+                        <!--begin::Card header-->
+                        <div class="card-header pt-7">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-900">Stock Report</span>
+                                <span class="text-gray-500 mt-1 fw-semibold fs-6">Total @Model.TotalItemsInStock Items in the Stock</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-dashed fs-6 gy-3" id="kt_table_widget_5_table">
+                                <!--begin::Table head-->
+                                <thead>
+                                    <!--begin::Table row-->
+                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="min-w-150px">Item</th>
+                                        <th class="text-end pe-3 min-w-100px">Product ID</th>
+                                        <th class="text-end pe-3 min-w-150px">Date Added</th>
+                                        <th class="text-end pe-3 min-w-100px">Price</th>
+                                        <th class="text-end pe-3 min-w-100px">Status</th>
+                                        <th class="text-end pe-0 min-w-75px">Qty</th>
+                                    </tr>
+                                    <!--end::Table row-->
+                                </thead>
+                                <!--end::Table head-->
+                                <!--begin::Table body-->
+                                <tbody class="fw-bold text-gray-600">
+                                    @foreach (var item in Model.StockReport)
+                                    {
+                                        <tr>
+                                            <!--begin::Item-->
+                                            <td>
+                                                <a asp-action="Details" asp-controller="Products" asp-route-id="@item.ProductId" asp-area="Admin" class="text-gray-900 text-hover-primary">@item.ProductTitle</a>
+                                            </td>
+                                            <!--end::Item-->
+                                            <!--begin::Product ID-->
+                                            <td class="text-end">#@item.ProductId</td>
+                                            <!--end::Product ID-->
+                                            <!--begin::Date added-->
+                                            <td class="text-end">@item.CreatedOn.ToString("dd MMM, yyyy")</td>
+                                            <!--end::Date added-->
+                                            <!--begin::Price-->
+                                            <td class="text-end">$@item.Price</td>
+                                            <!--end::Price-->
+                                            <!--begin::Status-->
+                                            <td class="text-end">
+                                                <span class="badge py-3 px-4 fs-7 @item.StatusBadgeClass">@item.Status</span>
+                                            </td>
+                                            <!--end::Status-->
+                                            <!--begin::Qty-->
+                                            <td class="text-end" data-order="58">
+                                                <span class="text-gray-900 fw-bold">@item.Quantity PCS</span>
+                                            </td>
+                                            <!--end::Qty-->
+                                        </tr>
+                                    }
+                                </tbody>
+                                <!--end::Table body-->
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Table Widget 5-->
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Row-->
+        </div>
+
+        <div class="pt-10">
+            <!--begin::Row-->
+            <div class="row g-5 g-xl-10">
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                    <!--begin::Table widget 13-->
+                    <div class="card card-flush h-xl-100">
+                        <!--begin::Header-->
+                        <div class="card-header pt-7">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-800">First 4 Top Rating</span>
+                                <span class="card-label fw-bold text-gray-800">Last 4 Bad Rating</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-3 pb-4">
+                            <!--begin::Table container-->
+                            <div class="table-responsive">
+                                <!--begin::Table-->
+                                <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
+                                    <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                            <th class="p-0 min-w-200px"></th>
+                                            <th class="p-0 min-w-125px"></th>
+                                            <th class="p-0 min-w-125px"></th>
+                                        </tr>
+                                    </thead>
+                                    <!--end::Table head-->
+                                    <!--begin::Table body-->
+                                    <tbody>
+                                        @foreach (var item in Model.HighAndLowProductsRated)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="symbol symbol-circle symbol-40px me-3">
+                                                            <img src="@item.MainImageThumbnailUrl" class="" alt="@item.Title" />
+                                                        </div>
+                                                        <div class="d-flex justify-content-start flex-column">
+                                                            <a asp-action="Details" asp-controller="Products" asp-route-id="@item.Id" asp-area="Admin" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">@item.Title</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">$@item.ProfitOrLoss</a>
+                                                    <span class="text-gray-500 fw-semibold d-block fs-7">Earnings</span>
+                                                </td>
+                                                <td class="float-end text-end border-0">
+                                                    <div class="rating">
+                                                        @for (int j = 0; j < item.TotalRate; j++)
+                                                        {
+                                                            <div class="rating-label checked">
+                                                                <i class="ki-duotone ki-star fs-6"></i>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <span class="text-gray-500 fw-semibold d-block fs-7 mt-1">Rating</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <!--end::Table body-->
+                                </table>
+                            </div>
+                            <!--end::Table container-->
+                        </div>
+                        <!--end: Card Body-->
+                    </div>
+                    <!--end::Table widget 13-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                    <!--begin::Table widget 13-->
+                    <div class="card card-flush h-xl-100">
+                        <!--begin::Header-->
+                        <div class="card-header pt-7">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-800">Most Buying Products</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-3 pb-4">
+                            <!--begin::Table container-->
+                            <div class="table-responsive">
+                                <!--begin::Table-->
+                                <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
+                                    <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                            <th class="p-0 min-w-200px"></th>
+                                            <th class="p-0 min-w-125px"></th>
+                                            <th class="p-0 min-w-125px"></th>
+                                        </tr>
+                                    </thead>
+                                    <!--end::Table head-->
+                                    <!--begin::Table body-->
+                                    <tbody>
+                                        @foreach (var item in Model.MostBuyingProducts)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="symbol symbol-circle symbol-40px me-3">
+                                                            <img src="@item.MainImageThumbnailUrl" class="" alt="@item.Title" />
+                                                        </div>
+                                                        <div class="d-flex justify-content-start flex-column">
+                                                            <a asp-action="Details" asp-controller="Products" asp-route-id="@item.Id" asp-area="Admin" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">@item.Title</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">$@item.ProfitOrLoss</a>
+                                                    <span class="text-gray-500 fw-semibold d-block fs-7">Earnings</span>
+                                                </td>
+                                                <td class="float-end text-end border-0">
+                                                    <div class="rating">
+                                                        @for (int j = 0; j < item.TotalRate; j++)
+                                                        {
+                                                            <div class="rating-label checked">
+                                                                <i class="ki-duotone ki-star fs-6"></i>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <span class="text-gray-500 fw-semibold d-block fs-7 mt-1">Rating</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <!--end::Table body-->
+                                </table>
+                            </div>
+                            <!--end::Table container-->
+                        </div>
+                        <!--end: Card Body-->
+                    </div>
+                    <!--end::Table widget 13-->
+                </div>
+                <!--end::Col-->
+            </div>
+        </div>
+
+
+        <div class="pt-10">
+            <!--begin::Row-->
+            <div class="row g-5 g-xl-10">
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                    <!--begin::Table widget 13-->
+                    <div class="card card-flush h-xl-100">
+                        <!--begin::Header-->
+                        <div class="card-header pt-7">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-800">Highest Spending Customers</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-3 pb-4">
+                            <!--begin::Table container-->
+                            <div class="table-responsive">
+                                <!--begin::Table-->
+                                <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
+                                    <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                            <th class="p-0">Full Name</th>
+                                            <th class="p-0">Total Buying Price</th>
+                                            <th class="p-0">Number Of Orders</th>
+                                        </tr>
+                                    </thead>
+                                    <!--end::Table head-->
+                                    <!--begin::Table body-->
+                                    <tbody>
+                                        @foreach (var item in Model.HighestSpendingCustomers)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="symbol symbol-circle symbol-40px me-3">
+                                                            <img src="@(string.IsNullOrEmpty(item.ImageThumbnailUrl) ? "/assets/images/avatar-blank.svg" : item.ImageThumbnailUrl)" class="" alt="@item.FullName" />
+                                                        </div>
+                                                        <div class="d-flex justify-content-start flex-column">
+                                                            <a href="#" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">@item.FullName</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="">
+                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">$@item.TotalBuyingPrice</a>
+                                                </td>
+                                                <td class="border-0">
+                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">@item.NumberOfOrders</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <!--end::Table body-->
+                                </table>
+                            </div>
+                            <!--end::Table container-->
+                        </div>
+                        <!--end: Card Body-->
+                    </div>
+                    <!--end::Table widget 13-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                    <!--begin::Table widget 13-->
+                    <div class="card card-flush h-xl-100">
+                        <!--begin::Header-->
+                        <div class="card-header pt-7">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-800">Most Purchasing Customers</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-3 pb-4">
+                            <!--begin::Table container-->
+                            <div class="table-responsive">
+                                <!--begin::Table-->
+                                <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
+                                    <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                            <th class="p-0">Full Name</th>
+                                            <th class="p-0">Total Buying Price</th>
+                                            <th class="p-0">Number Of Orders</th>
+                                        </tr>
+                                    </thead>
+                                    <!--end::Table head-->
+                                    <!--begin::Table body-->
+                                    <tbody>
+                                        @foreach (var item in Model.MostPurchasingCustomers)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="symbol symbol-circle symbol-40px me-3">
+                                                            <img src="@(string.IsNullOrEmpty(item.ImageThumbnailUrl) ? "/assets/images/avatar-blank.svg" : item.ImageThumbnailUrl)" class="" alt="@item.FullName" />
+                                                        </div>
+                                                        <div class="d-flex justify-content-start flex-column">
+                                                            <a href="#" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">@item.FullName</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="">
+                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">$@item.TotalBuyingPrice</a>
+                                                </td>
+                                                <td class="border-0">
+                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">@item.NumberOfOrders</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <!--end::Table body-->
+                                </table>
+                            </div>
+                            <!--end::Table container-->
+                        </div>
+                        <!--end: Card Body-->
+                    </div>
+                    <!--end::Table widget 13-->
+                </div>
+                <!--end::Col-->
+            </div>
+        </div>
+
+    </div>
+</div>

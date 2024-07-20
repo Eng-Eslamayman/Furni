@@ -12,7 +12,7 @@ namespace Furni.DataAccess.Persistence.Repositories
 		}
 
 
-		public IBaseRepository<ApplicationUser> ApplicationUsers => new BaseRepository<ApplicationUser>(_context);
+		public IApplicationUserRepository ApplicationUsers => new ApplicationUserRepository(_context);
 		public ICategoryRepository Categories => new CategoryRepository(_context);
 		public IOrderRepository Orders => new OrderRepository(_context);
 		public IOrderDetailsRepository OrderDetails => new OrderDetailsRepository(_context);

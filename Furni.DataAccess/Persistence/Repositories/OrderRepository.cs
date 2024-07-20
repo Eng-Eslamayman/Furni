@@ -1,4 +1,5 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
+using Furni.Utility.Dashboard;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -214,6 +215,62 @@ namespace Furni.DataAccess.Persistence.Repositories
                 .FirstOrDefaultAsync();
 
             return order ?? new OrderDetailsViewModel(); // Handle the case when order is not found
+        }
+
+
+
+        // Dashboard
+        public async Task<int> GetAverageOrdersPerDayAsync()
+        {
+            // Define the time frame for the last month
+            var endDate = DateTime.Now;
+            var startDate = endDate.AddDays(-30);
+
+            // Get the total number of orders in the last month
+            var totalOrders = await _context.Orders
+                .Where(o => o.CreatedOn >= startDate && o.CreatedOn <= endDate)
+                .CountAsync();
+
+            // Calculate the number of days in the time frame
+            var totalDays = (endDate - startDate).TotalDays;
+
+            // Ensure totalDays is not zero to avoid division by zero
+            if (totalDays <= 0)
+            {
+                return 0; // or handle this case appropriately
+            }
+
+            // Calculate average orders per day
+            var averageOrdersPerDay = (float)totalOrders / (float)totalDays;
+
+            // Use Math.Ceiling to round up to the next whole number if there's any order
+            return totalOrders > 0 ? (int)Math.Ceiling(averageOrdersPerDay) : 0;
+        }
+
+
+
+
+        public async Task<int> GetTotalOrdersThisMonthAsync()
+        {
+            return await _context.Orders
+                .CountAsync(o => o.CreatedOn.Month == DateTime.Now.Month && o.CreatedOn.Year == DateTime.Now.Year);
+        }
+
+        public async Task<IEnumerable<RecentOrdersViewModel>> GetRecentOrdersAsync()
+        {
+            return await _context.Orders
+                .OrderByDescending(o => o.CreatedOn)
+                .Take(5)
+                .Select(o => new RecentOrdersViewModel
+                {
+                    ProductId = o.OrderDetails.FirstOrDefault().ProductId,
+                    Title = _context.Products.Where(p => p.Id == o.OrderDetails.FirstOrDefault().ProductId).Select(p => p.Title).FirstOrDefault(),
+                    MainImageThumbnailUrl = _context.Products.Where(p => p.Id == o.OrderDetails.FirstOrDefault().ProductId).Select(p => p.MainImageThumbnailUrl).FirstOrDefault(),
+                    Quantity = o.OrderDetails.FirstOrDefault().Count,
+                    Price = o.OrderDetails.FirstOrDefault().Price,
+                    TotalPrice = o.OrderDetails.FirstOrDefault().Count * o.OrderDetails.FirstOrDefault().Price
+                })
+                .ToListAsync();
         }
     }
 }

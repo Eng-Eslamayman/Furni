@@ -1,4 +1,6 @@
-﻿namespace Furni.DataAccess.Persistence.Repositories.IRepositories
+﻿using Furni.Utility.Dashboard;
+
+namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 {
     public interface IProductRepository : IBaseRepository<Product>
     {
@@ -10,6 +12,11 @@
         List<CustomProductViewModel> GetCustomProducts();
         ProductDetailsViewModel GetProduct(int id);
 
+        // Dashboard
+        Task<IEnumerable<HighAndLowProductsRatedViewModel>> GetHighAndLowRatedProductsAsync();
+        Task<IEnumerable<MostBuyingProductsViewModel>> GetMostBuyingProductsAsync(int count);
+        Task<IEnumerable<StockReportViewModel>> GetStockReportAsync(int count);
+		Task<int> GetTotalItemsInStockAsync();
 	}
 
 }

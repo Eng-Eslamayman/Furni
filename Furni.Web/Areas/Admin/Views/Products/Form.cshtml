@@ -296,6 +296,24 @@
                     <!--end::Card header-->
                     <!--begin::Card body-->
                     <div class="card-body pt-0">
+
+                        <!--begin::Input group-->
+                        <div class="mb-10 fv-row">
+                            <div class="form-floating mb-2">
+                                <!--begin::Input-->
+                                <input type="number" class="required form-control form-control-solid mb-2" asp-for="CostPrice" placeholder="Cost Price" />
+                                <!--end::Input-->
+                                <!--begin::Label-->
+                                <label asp-for="CostPrice"></label>
+                                <!--end::Label-->
+                                <!--begin::Description-->
+                                <div class="text-muted fs-7">Set the cost of price.</div>
+                                <!--end::Description-->
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger d-block"></span>
+                        </div>
+                        <!--end::Input group-->
+
                         <!--begin::Input group-->
                         <div class="mb-10 fv-row">
                             <div class="form-floating mb-2">

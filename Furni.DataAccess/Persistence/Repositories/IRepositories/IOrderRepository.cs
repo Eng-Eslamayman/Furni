@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Furni.Utility.Dashboard;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,11 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 		// Admin Side
 		(IQueryable<CustomerListingViewModel> orders, int count) GetFiltered(GetFilteredDto dto);
 		Task<OrderDetailsViewModel> GetDetails(int id);
+
+		// Dashboard 
+		Task<int> GetAverageOrdersPerDayAsync();
+		Task<int> GetTotalOrdersThisMonthAsync();
+		Task<IEnumerable<RecentOrdersViewModel>> GetRecentOrdersAsync();
 
     }
 }

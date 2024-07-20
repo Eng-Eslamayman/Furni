@@ -1,5 +1,6 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
 using Furni.Models.Entities;
+using Furni.Utility.Dashboard;
 
 namespace Furni.DataAccess.Persistence.Repositories
 {
@@ -171,8 +172,157 @@ namespace Furni.DataAccess.Persistence.Repositories
 			}
 		}
 
+        // Dashboard
+
+        public async Task<IEnumerable<HighAndLowProductsRatedViewModel>> GetHighAndLowRatedProductsAsync()
+        {
+            // Fetch high-rated products
+            var highRatedProducts = await _context.Products
+                .Select(p => new
+                {
+                    Product = p,
+                    AverageRating = p.Reviews.Any() ? p.Reviews.Average(r => (float)r.Rating) : 0
+                })
+                .OrderByDescending(x => x.AverageRating)
+                .Take(4)
+                .ToListAsync();
+
+            // Fetch low-rated products with rating 1 or more
+            var lowRatedProducts = await _context.Products
+                .Select(p => new
+                {
+                    Product = p,
+                    AverageRating = p.Reviews.Any() ? p.Reviews.Average(r => (float)r.Rating) : 0
+                })
+                .Where(x => x.AverageRating >= 1)
+                .OrderBy(x => x.AverageRating)
+                .Take(4)
+                .ToListAsync();
+
+            // Combine results
+            var combinedProducts = highRatedProducts.Concat(lowRatedProducts).ToList();
+
+            // Prepare the result list
+            var highAndLowRatedProducts = new List<HighAndLowProductsRatedViewModel>();
+
+            // Calculate ProfitOrLoss for each product asynchronously
+            foreach (var product in combinedProducts)
+            {
+                var profitOrLoss = await CalculateProfitOrLossAsync(product.Product.Id);
+
+                highAndLowRatedProducts.Add(new HighAndLowProductsRatedViewModel
+                {
+                    Id = product.Product.Id,
+                    Title = product.Product.Title,
+                    MainImageThumbnailUrl = product.Product.MainImageThumbnailUrl,
+                    TotalRate = product.AverageRating,
+                    ProfitOrLoss = profitOrLoss
+                });
+            }
+
+            return highAndLowRatedProducts;
+        }
 
 
-	}
+
+
+
+        public async Task<IEnumerable<MostBuyingProductsViewModel>> GetMostBuyingProductsAsync(int count)
+        {
+            // Fetch products ordered by the total quantity sold
+            var products = await _context.Products
+                .Select(p => new
+                {
+                    Product = p,
+                    TotalSoldQuantity = _context.OrderDetails
+                        .Where(od => od.ProductId == p.Id)
+                        .Sum(od => od.Count),
+                    AverageRating = p.Reviews != null && p.Reviews.Any()
+                        ? p.Reviews.Average(r => (float)r.Rating)
+                        : 0 // Default to 0 if Reviews is null or empty
+                })
+                .OrderByDescending(p => p.TotalSoldQuantity)
+                .Take(count)
+                .ToListAsync();
+
+            var viewModels = new List<MostBuyingProductsViewModel>();
+
+            foreach (var product in products)
+            {
+                viewModels.Add(new MostBuyingProductsViewModel
+                {
+                    Id = product.Product.Id,
+                    Title = product.Product.Title,
+                    MainImageThumbnailUrl = product.Product.MainImageThumbnailUrl,
+                    TotalRate = product.AverageRating,
+                    ProfitOrLoss = await CalculateProfitOrLossAsync(product.Product.Id)
+                });
+            }
+
+            return viewModels;
+        }
+
+
+
+
+        public async Task<IEnumerable<StockReportViewModel>> GetStockReportAsync(int count)
+        {
+            return await _context.Products
+                .Select(p => new StockReportViewModel
+                {
+                    ProductTitle = p.Title,
+                    ProductId = p.Id,
+                    CreatedOn = p.CreatedOn,
+                    Price = p.Price,
+                    Status = p.Quantity > 3 ? "In Stock" : p.Quantity == 0 ? "Out of Stock" : "Low Stock",
+                    Quantity = p.Quantity
+                })
+                //.OrderBy(p => p.Status)
+                .Take(count)
+                .ToListAsync();
+        }
+
+		public async Task<int> GetTotalItemsInStockAsync()
+		{
+			return await _context.Products.SumAsync(p => p.Quantity);
+		}
+
+		private async Task<float> CalculateProfitOrLossAsync(int productId)
+        {
+            // Fetch the product to get the cost price
+            var product = await _context.Products
+                .Where(p => p.Id == productId)
+                .Select(p => new
+                {
+                    p.CostPrice  // Cost price of the product
+                })
+                .FirstOrDefaultAsync();
+
+            if (product == null)
+            {
+                // Handle the case where the product does not exist
+                throw new InvalidOperationException("Product not found");
+            }
+
+            // Fetch all order details for the specified product
+            var orderDetails = await _context.OrderDetails
+                .Where(od => od.ProductId == productId)
+                .ToListAsync();
+
+            // Calculate total cost using CostPrice from the product table
+            float totalCost = orderDetails.Sum(od => od.Count * product.CostPrice);
+
+            // Calculate total selling price using Price from OrderDetails
+            float totalSellingPrice = orderDetails.Sum(od => od.Count * od.Price);
+
+            // Calculate profit or loss
+            float profitOrLoss = totalSellingPrice - totalCost;
+
+            return profitOrLoss;
+        }
+
+
+
+    }
 
 }
