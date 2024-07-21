@@ -1,4 +1,5 @@
 ﻿using Furni.Utility.Dashboard;
+using Furni.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,18 +19,18 @@ namespace Furni.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             // Fetch data from repositories
-            var averageDailySales = await _unitOfWork.OrderDetails.GetAverageDailySalesAsync();
-            var totalOrdersThisMonth = await _unitOfWork.Orders.GetTotalOrdersThisMonthAsync();
-            var totalCustomersThisMonth = await _unitOfWork.ApplicationUsers.GetTotalCustomersThisMonthAsync();
-			var totalItemsInStock = await _unitOfWork.Products.GetTotalItemsInStockAsync();
-			var averageOrdersPerDay = await _unitOfWork.Orders.GetAverageOrdersPerDayAsync();
+            var averageDailySales = await _unitOfWork.OrderDetails.GetAverageDailySalesAsync(); // 
+            var totalOrdersThisMonth = await _unitOfWork.Orders.GetTotalOrdersThisMonthAsync(); // 
+            var totalCustomersThisMonth = await _unitOfWork.ApplicationUsers.GetTotalCustomersThisMonthAsync(); // 
+			var totalItemsInStock = await _unitOfWork.Products.GetTotalItemsInStockAsync(); // 
+			var averageOrdersPerDay = await _unitOfWork.Orders.GetAverageOrdersPerDayAsync(); // 
             var recentOrders = await _unitOfWork.Orders.GetRecentOrdersAsync(); // 
             var productOrders = await _unitOfWork.OrderDetails.GetProductOrdersAsync(); //
             var stockReport = await _unitOfWork.Products.GetStockReportAsync(8); // 
             var highAndLowRatedProducts = await _unitOfWork.Products.GetHighAndLowRatedProductsAsync(); // 
-            var mostBuyingProducts = await _unitOfWork.Products.GetMostBuyingProductsAsync(8);
-            var mostPurchasingCustomers = await _unitOfWork.ApplicationUsers.GetMostPurchasingCustomersAsync();
-            var highestSpendingCustomers = await _unitOfWork.ApplicationUsers.GetHighestSpendingCustomersAsync();
+            var mostBuyingProducts = await _unitOfWork.Products.GetMostBuyingProductsAsync(8); // 
+            var mostPurchasingCustomers = await _unitOfWork.ApplicationUsers.GetMostPurchasingCustomersAsync(); // 
+            var highestSpendingCustomers = await _unitOfWork.ApplicationUsers.GetHighestSpendingCustomersAsync(); // 
 
             // Create the dashboard view model
             var dashboardViewModel = new DashboardViewModel
@@ -51,5 +52,19 @@ namespace Furni.Web.Areas.Admin.Controllers
             // Return the view with the view model
             return View(dashboardViewModel);
         }
-    }
+
+        [AjaxOnly]
+        public async Task<IActionResult> GetMonthlyFinancialReportsAsync()
+        {
+            var financial = await _unitOfWork.OrderDetails.GetMonthlyFinancialReportsAsync();
+            return Ok(financial);
+        }
+
+        [AjaxOnly]
+        public async Task<IActionResult> GetSalesThisMonthAsync()
+        {
+            var data = await _unitOfWork.OrderDetails.GetSalesThisMonthAsync();
+            return Ok(data);
+        }
+    } 
 }

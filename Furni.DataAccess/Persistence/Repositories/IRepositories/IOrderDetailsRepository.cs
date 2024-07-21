@@ -11,5 +11,7 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
     {
         Task<IEnumerable<ProductOrdersViewModel>> GetProductOrdersAsync();
         Task<float> GetAverageDailySalesAsync();
+        Task<IList<MonthlyFinancialReportViewModel>> GetMonthlyFinancialReportsAsync();
+        Task<IList<SalesThisMonthViewModel>> GetSalesThisMonthAsync();
     }
 }

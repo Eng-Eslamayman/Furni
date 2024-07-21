@@ -97,6 +97,25 @@
             <!--end::Col-->
             <!--begin::Col-->
             <div class="col-lg-12 col-xl-12 col-xxl-6 mb-5 mb-xl-0">
+                <!--begin::Chart widget 3-->
+                <div class="card card-flush overflow-hidden h-md-100">
+                    <!--begin::Header-->
+                    <div class="card-header py-5">
+                        <!--begin::Title-->
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label fw-bold text-gray-900">Monthly Financial Report</span>
+                            <span class="text-gray-500 mt-1 fw-semibold fs-6">From one year ago</span>
+                        </h3>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Card body-->
+                    <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
+                        <div id="MonthlyFinancialReport" style="height: 250px;"></div>
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Chart widget 3-->
             </div>
             <!--end::Col-->
         </div>
@@ -177,6 +196,26 @@
                 <!--end::Col-->
                 <!--begin::Col-->
                 <div class="col-xl-6 mb-5 mb-xl-10">
+                    <!--begin::Chart widget 4-->
+                    <div class="card card-flush overflow-hidden h-md-100">
+                        <!--begin::Header-->
+                        <div class="card-header py-5">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-900">Sales This Month</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Card body-->
+                        <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
+                            <!--begin::Chart-->
+                            <div id="SalesThisMonth" class="min-h-auto ps-4 pe-6" style="height: 300px"></div>
+                            <!--end::Chart-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Chart widget 4-->
                 </div>
                 <!--end::Col-->
             </div>
@@ -364,9 +403,9 @@
                                     <!--begin::Table head-->
                                     <thead>
                                         <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                                            <th class="p-0 min-w-200px"></th>
-                                            <th class="p-0 min-w-125px"></th>
-                                            <th class="p-0 min-w-125px"></th>
+                                            <th class="p-0 min-w-200px">Name</th>
+                                            <th class="p-0 min-w-125px">Total Profit/Loss</th>
+                                            <th class="p-0">Rate</th>
                                         </tr>
                                     </thead>
                                     <!--end::Table head-->
@@ -386,10 +425,10 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-end">
-                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">$@item.ProfitOrLoss</a>
+                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">$@item.ProfitOrLoss.ToString("0.00")</a>
                                                     <span class="text-gray-500 fw-semibold d-block fs-7">Earnings</span>
                                                 </td>
-                                                <td class="float-end text-end border-0">
+                                                <td class="border-0">
                                                     <div class="rating">
                                                         @for (int j = 0; j < item.TotalRate; j++)
                                                         {
@@ -435,9 +474,9 @@
                                     <!--begin::Table head-->
                                     <thead>
                                         <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                                            <th class="p-0 min-w-200px"></th>
-                                            <th class="p-0 min-w-125px"></th>
-                                            <th class="p-0 min-w-125px"></th>
+                                            <th class="p-0 min-w-200px">Name</th>
+                                            <th class="p-0 min-w-125px">Total Profit/Loss</th>
+                                            <th class="p-0">Rate</th>
                                         </tr>
                                     </thead>
                                     <!--end::Table head-->
@@ -457,10 +496,10 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-end">
-                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">$@item.ProfitOrLoss</a>
+                                                    <a href="#" class="text-gray-800 fw-bold text-hover-primary d-block mb-1 fs-6">$@item.ProfitOrLoss.ToString("0.00")</a>
                                                     <span class="text-gray-500 fw-semibold d-block fs-7">Earnings</span>
                                                 </td>
-                                                <td class="float-end text-end border-0">
+                                                <td class="border-0">
                                                     <div class="rating">
                                                         @for (int j = 0; j < item.TotalRate; j++)
                                                         {
@@ -620,3 +659,7 @@
 
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/dashboard.js" asp-append-version="true"></script>
+}

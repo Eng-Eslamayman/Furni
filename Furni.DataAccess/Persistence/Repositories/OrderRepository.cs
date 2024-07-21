@@ -260,7 +260,7 @@ namespace Furni.DataAccess.Persistence.Repositories
         {
             return await _context.Orders
                 .OrderByDescending(o => o.CreatedOn)
-                .Take(5)
+                .Take(3)
                 .Select(o => new RecentOrdersViewModel
                 {
                     ProductId = o.OrderDetails.FirstOrDefault().ProductId,
