@@ -1,12 +1,13 @@
 using Furni.Web.Core.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Diagnostics;
 
 namespace Furni.Web.Areas.Customers.Controllers
 {
     [Area(AppRoles.Customer)]
-    //[Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Customer}")]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +21,8 @@ namespace Furni.Web.Areas.Customers.Controllers
 
         public IActionResult Index()
         {
-			if (User.Identity!.IsAuthenticated && User.IsInRole(AppRoles.Admin))
+            throw new Exception("My Exception");
+            if (User.Identity!.IsAuthenticated && User.IsInRole(AppRoles.Admin))
 				return RedirectToAction(nameof(Index), controllerName: "Dashboard", new { area = AppRoles.Admin });
 
 			var viewModel = new CustomerHomeViewModel
@@ -39,11 +41,10 @@ namespace Furni.Web.Areas.Customers.Controllers
             return View(viewModel);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int id = 500)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { ErrorCode = id, ErrorDescription = ReasonPhrases.GetReasonPhrase(id) });
         }
 
-	}
+    }
 }

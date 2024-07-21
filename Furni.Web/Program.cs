@@ -3,6 +3,7 @@ using Furni.DataAccess.Persistence;
 using Furni.DataAccess.Persistence.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Stripe;
 namespace Furni.Web
 {
@@ -17,7 +18,13 @@ namespace Furni.Web
 			builder.Services.AddDataAccessServices(builder.Configuration)
 				.AddWebServices(builder);
 
-			var app = builder.Build();
+
+            // Add Serilog
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
+            builder.Host.UseSerilog();
+
+
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
@@ -26,12 +33,16 @@ namespace Furni.Web
 			}
 			else
 			{
-				app.UseExceptionHandler("/Home/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
+                app.UseExceptionHandler("/Customer/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
+            
+
+
+
+            app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
 			// Stripe Configuration
@@ -41,8 +52,9 @@ namespace Furni.Web
 
 			app.UseAuthentication();
 			app.UseAuthorization();
+            app.UseStatusCodePagesWithReExecute("/Customer/Home/Error", "?id={0}");
 
-			var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+            var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 
 			using var scope = scopeFactory.CreateScope();
 
