@@ -21,7 +21,7 @@ namespace Furni.Web.Areas.Customers.Controllers
 
         public IActionResult Index()
         {
-            throw new Exception("My Exception");
+            //throw new Exception("My Exception");
             if (User.Identity!.IsAuthenticated && User.IsInRole(AppRoles.Admin))
 				return RedirectToAction(nameof(Index), controllerName: "Dashboard", new { area = AppRoles.Admin });
 
