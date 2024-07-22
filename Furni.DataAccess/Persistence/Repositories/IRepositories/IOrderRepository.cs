@@ -1,4 +1,5 @@
 ﻿using Furni.Utility.Dashboard;
+using Furni.Utility.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,10 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 		Task<int> GetTotalOrdersThisMonthAsync();
 		Task<IEnumerable<RecentOrdersViewModel>> GetRecentOrdersAsync();
 
-    }
+
+		// Reports
+		PaginatedList<OrderReportViewModel> GetOrdersReport(DateTime startDate, DateTime endDate, int pageSize, string? status, int? pageNumber = null);
+
+
+	}
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using UoN.ExpressiveAnnotations.NetCore.DependencyInjection;
+using ViewToHTML.Extensions;
 
 namespace Furni.Web
 {
@@ -51,6 +52,8 @@ namespace Furni.Web
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             // Register TwoFactorNoticeViewComponent
             services.AddScoped<TwoFactorNoticeViewComponent>();
+            // Add View To HTML to Reports
+            services.AddViewToHTML();
 
 
             // Settings

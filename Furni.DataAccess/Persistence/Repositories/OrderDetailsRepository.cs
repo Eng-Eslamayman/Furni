@@ -1,5 +1,6 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
 using Furni.Utility.Dashboard;
+using Furni.Utility.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -157,10 +158,57 @@ namespace Furni.DataAccess.Persistence.Repositories
 
 
 
+		// Reports
+		public FinancialsReportViewModel GetFinancialReports(DateTime startDate, DateTime endDate, int pageSize, int? pageNumber = null)
+		{
+			// Adjust endDate to include the end of the day if necessary
+			endDate = endDate.Date.AddDays(1).AddTicks(-1);
+
+			// Query to filter order details within the date range
+			IQueryable<OrderDetail> query = _context.OrderDetails
+				.Where(od => od.Order.CreatedOn >= startDate && od.Order.CreatedOn <= endDate);
+
+			// Perform the grouping and projection
+			var financialsQuery = query
+				.GroupBy(od => new { od.Order.CreatedOn.Day, od.Order.CreatedOn.Month, od.Order.CreatedOn.Year })
+				.Select(g => new FinancialReportViewModel
+				{
+					Day = g.Key.Day,
+					Month = g.Key.Month,
+					Year = g.Key.Year,
+					TotalCost = (float)Math.Round(g.Sum(od => (od.Product != null ? od.Product.CostPrice : 0) * od.Count), 2),
+					TotalRevenue = (float)Math.Round(g.Sum(od => od.Count * od.Price), 2),
+					TotalProfit = (float)Math.Round(g.Sum(od => od.Count * od.Price) - g.Sum(od => (od.Product != null ? od.Product.CostPrice : 0) * od.Count), 2)
+				});
+
+			// Aggregate calculations
+			var totalSales = query.Count();
+			var totalRevenue = query.Sum(od => od.Count * od.Price);
+			var totalCost = query.Sum(od => (od.Product != null ? od.Product.CostPrice : 0) * od.Count);
+			var totalProfit = totalRevenue - totalCost;
+
+			var financials = PaginatedList<FinancialReportViewModel>.Create(financialsQuery, pageNumber ?? 1, pageSize);
+
+			// Create the view model
+			var viewModel = new FinancialsReportViewModel
+			{
+				TotalSales = totalSales,
+				TotalRevenue = (float)Math.Round(totalRevenue, 2),
+				TotalCost = (float)Math.Round(totalCost, 2),
+				TotalProfit = (float)Math.Round(totalProfit, 2),
+				Financials = financials
+			};
+
+			return viewModel;
+		}
 
 
 
 
 
-    }
+
+
+
+
+	}
 }

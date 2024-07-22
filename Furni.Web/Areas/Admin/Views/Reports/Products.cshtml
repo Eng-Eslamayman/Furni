@@ -1,0 +1,131 @@
+﻿@model ProductsReportsWithCategoriesViewModel
+
+@{
+    ViewData["Title"] = "Products Report";
+}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-controller="Reports" method="get" id="Filters" class="js-excluded-validation">
+            <input type="hidden" id="PageNumber" name="PageNumber" value="1" />
+            <div class="row">
+                <div class="col">
+                    <div class="mb-5">
+                        <div class="form-floating mb-2">
+                            <select asp-for="Stock" name="Stock" id="Stock" class="form-select form-select-solid js-select2 js-stock-status" data-placeholder="Select Stock Status">
+                                <option value="">All</option>
+                                @foreach (var status in Enum.GetValues(typeof(Furni.Models.Enums.StockStatus)))
+                                {
+                                    <option value="@status">@status</option>
+                                }
+                            </select>
+                            <label asp-for="Stock"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="mb-5">
+                        <div class="form-floating mb-2">
+                            <select class="form-select form-select-solid js-select2 js-selected-categories" data-placeholder="Select Categories" asp-for="SelectedCategories" asp-items="@Model.Categories">
+                                <option value="">Select Categories</option>
+                            </select>
+                            <label asp-for="SelectedCategories"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Show Report</button>
+        </form>
+    </div>
+</div>
+
+@if (Model?.Products is not null)
+{
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">
+                <span>Products</span>
+            </div>
+            @if (Model.Products.Any())
+            {
+                <div class="card-toolbar gap-3">
+                    <a class="btn btn-light-success"
+                       asp-action="ExportProductsToExcel"
+                       asp-route-categories="@Context.Request.Query["SelectedCategories"]"
+                       asp-route-stock="@Context.Request.Query["Stock"]">
+                        <i class="bi bi-file-earmark-excel-fill"></i>
+                        Export to Excel
+                    </a>
+
+                    <a class="btn btn-light-danger"
+                       asp-action="ExportProductsToPDF"
+                       asp-route-categories="@Context.Request.Query["SelectedCategories"]"
+                       asp-route-stock="@Context.Request.Query["Stock"]">
+                        <i class="bi bi-filetype-pdf"></i>
+                        Export to PDF
+                    </a>
+
+
+                </div>
+            }
+        </div>
+        <div class="card-body">
+            @if (Model.Products.TotalPages > 1)
+            {
+                <partial name="_Pagination" model="new PaginationViewModel{ PageNumber = Model.Products.PageNumber, TotalPages = Model.Products.TotalPages }" />
+            }
+            @if (Model.Products.Any())
+            {
+                <div class="table-responsive">
+                    <table id="Products" class="table table-row-dashed table-row-gray-300 gy-2 align-middle">
+                        <thead>
+                            <tr class="fw-bold fs-6 text-white bg-black">
+                                <th class="ps-2">Title</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Discount Value</th>
+                                <th>Category Name</th>
+                                <th>Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="symbol symbol-circle symbol-40px me-3">
+                                                <img src="@(product.MainImageThumbnailUrl)" class="" alt="@product.Title" />
+                                            </div>
+                                            <div class="d-flex justify-content-start flex-column">
+                                                <a href="#" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">@product.Title</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>@product.Quantity</td>
+                                    <td>@product.Price</td>
+                                    <td>@product.DiscountValue</td>
+                                    <td>@product.CategoryName</td>
+                                    <td>@product.CostPrice</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <h5>No Products were found!</h5>
+            }
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    <script src="~/js/reports.js" asp-append-version="true"></script>
+}

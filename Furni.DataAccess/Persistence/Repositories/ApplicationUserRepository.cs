@@ -1,5 +1,6 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
 using Furni.Utility.Dashboard;
+using Furni.Utility.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,41 @@ namespace Furni.DataAccess.Persistence.Repositories
                 .Take(5)
                 .ToListAsync();
         }
+
+
+        public PaginatedList<CustomerReportViewModel> GetCustomersReport(int pageSize, int? pageNumber = null)
+        {
+            var orderDetails = _context.Orders
+                .SelectMany(o => o.OrderDetails, (o, od) => new { o.ApplicationUserId, od.Count, od.Price, od.Product.CostPrice, o.Id });
+
+            var customerReports = _context.Users
+                .Join(_context.UserRoles,
+                      u => u.Id,
+                      ur => ur.UserId,
+                      (u, ur) => new { u, ur.RoleId })
+                .Join(_context.Roles,
+                      ur => ur.RoleId,
+                      r => r.Id,
+                      (ur, r) => new { ur.u, r.Name })
+                .Where(ur => ur.Name == "Customer")
+                .GroupBy(ur => ur.u.Id)
+                .Select(g => new CustomerReportViewModel
+                {
+                    FullName = g.FirstOrDefault().u.FullName,
+                    TotalBuyingPrice = orderDetails
+                        .Where(od => od.ApplicationUserId == g.Key)
+                        .Sum(od => od.Count * od.Price), // Total money spent
+                    NumberOfOrders = orderDetails
+                        .Where(od => od.ApplicationUserId == g.Key)
+                        .Select(od => od.Id) // Use Order ID to count distinct orders
+                        .Distinct() // Ensure unique order IDs
+                        .Count() // Count distinct orders
+                })
+                .OrderByDescending(c => c.TotalBuyingPrice);
+
+            return PaginatedList<CustomerReportViewModel>.Create(customerReports, pageNumber ?? 1, pageSize);
+        }
+
 
     }
 }

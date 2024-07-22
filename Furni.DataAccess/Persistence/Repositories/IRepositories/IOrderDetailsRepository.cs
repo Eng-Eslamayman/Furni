@@ -1,4 +1,5 @@
 ﻿using Furni.Utility.Dashboard;
+using Furni.Utility.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,8 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
         Task<float> GetAverageDailySalesAsync();
         Task<IList<MonthlyFinancialReportViewModel>> GetMonthlyFinancialReportsAsync();
         Task<IList<SalesThisMonthViewModel>> GetSalesThisMonthAsync();
-    }
+        // Reports
+        FinancialsReportViewModel GetFinancialReports(DateTime startDate, DateTime endDate, int pageSize, int? pageNumber = null);
+
+	}
 }

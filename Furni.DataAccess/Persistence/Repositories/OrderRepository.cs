@@ -1,5 +1,6 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
 using Furni.Utility.Dashboard;
+using Furni.Utility.Reports;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -256,7 +257,35 @@ namespace Furni.DataAccess.Persistence.Repositories
                 .CountAsync(o => o.CreatedOn.Month == DateTime.Now.Month && o.CreatedOn.Year == DateTime.Now.Year);
         }
 
-        public async Task<IEnumerable<RecentOrdersViewModel>> GetRecentOrdersAsync()
+		// Reports
+		public PaginatedList<OrderReportViewModel> GetOrdersReport(DateTime startDate, DateTime endDate, int pageSize, string? status, int? pageNumber = null)
+		{
+
+			IQueryable<Order> query = _context.Orders
+				.Where(o => o.CreatedOn >= startDate && o.CreatedOn <= endDate);
+
+			if (!string.IsNullOrEmpty(status))
+			{
+				query = query.Where(o => o.OrderStatus == status);
+			}
+
+			var orders = query
+				.Select(o => new OrderReportViewModel
+				{
+					OrderId = o.Id,
+					CreatedOn = o.CreatedOn,
+					CustomerName = o.ApplicationUser.FullName,
+					TotalPrice = o.OrderDetails.Sum(od => od.Count * od.Price),
+					TotalProfit = o.OrderDetails.Sum(od => (od.Price - (od.Product != null ? od.Product.CostPrice : 0)) * od.Count),
+					Status = o.OrderStatus
+				});
+
+			return PaginatedList<OrderReportViewModel>.Create(orders, pageNumber ?? 1, pageSize);
+		}
+
+
+
+		public async Task<IEnumerable<RecentOrdersViewModel>> GetRecentOrdersAsync()
         {
             return await _context.Orders
                 .OrderByDescending(o => o.CreatedOn)

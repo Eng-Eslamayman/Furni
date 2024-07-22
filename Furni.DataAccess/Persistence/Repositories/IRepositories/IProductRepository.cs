@@ -1,4 +1,5 @@
 ﻿using Furni.Utility.Dashboard;
+using Furni.Utility.Reports;
 
 namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 {
@@ -17,6 +18,9 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
         Task<IEnumerable<MostBuyingProductsViewModel>> GetMostBuyingProductsAsync(int count);
         Task<IEnumerable<StockReportViewModel>> GetStockReportAsync(int count);
 		Task<int> GetTotalItemsInStockAsync();
+
+        // Reports
+        Task<PaginatedList<ProductReportViewModel>> GetProductsReportAsync(IList<int>? selectedCategories, int pageSize, string? stock, int? pageNumber = null);
 	}
 
 }

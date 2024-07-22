@@ -1,0 +1,68 @@
+﻿@model IEnumerable<OrderReportViewModel>
+@{
+    Layout = "_ReportsLayout";
+}
+
+<style>
+
+    #order {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 50px;
+    }
+
+        #order td, #order th {
+            border: 1px solid #ddd;
+            padding: 12px;
+            min-height: 20px;
+            min-width: 60px;
+            box-sizing: border-box;
+        }
+
+        #order tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #order th {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-align: left;
+            background-color: #000;
+            color: white;
+        }
+
+</style>
+
+<table id="order">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Created On</th>
+            <th>Customer Name</th>
+            <th>Total Price</th>
+            <th>Total Profit</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model)
+        {
+            <tr>
+                <td>@report.OrderId</td>
+                <td>@report.CreatedOn.ToString("d MMM yyyy")</td>
+                <td>@report.CustomerName</td>
+                <td>@report.TotalPrice.ToString("C")</td>
+                <td>@report.TotalProfit.ToString("C")</td>
+                <td>@report.Status</td>
+            </tr>
+        }
+        <tr class="fw-bold fs-6">
+            <td colspan="3">Totals:</td>
+            <td>@Model.Sum(o => o.TotalPrice).ToString("C")</td>
+            <td>@Model.Sum(o => o.TotalProfit).ToString("C")</td>
+            <td></td> <!-- No summary for status -->
+        </tr>
+    </tbody>
+</table>
+

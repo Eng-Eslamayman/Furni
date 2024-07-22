@@ -1,0 +1,68 @@
+﻿@model FinancialsReportViewModel
+@{
+    Layout = "_ReportsLayout";
+}
+
+<style>
+
+    #financial {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 50px;
+    }
+
+    #financial td, #financial th {
+            border: 1px solid #ddd;
+            padding: 12px;
+            min-height: 20px;
+            min-width: 60px;
+            box-sizing: border-box;
+        }
+
+    #financial tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+    #financial th {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-align: left;
+            background-color: #000;
+            color: white;
+        }
+
+</style>
+
+<table id="financial">
+    <thead>
+        <tr>
+            <th>Day</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Total Cost</th>
+            <th>Total Revenue</th>
+            <th>Total Profit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.Financials)
+        {
+            <tr>
+                <td>@report.Day</td>
+                <td>@report.Month</td>
+                <td>@report.Year</td>
+                <td>@report.TotalCost</td>
+                <td>@report.TotalRevenue</td>
+                <td>@report.TotalProfit</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="3">Totals:</td>
+            <td>@Model.TotalCost</td>
+            <td>@Model.TotalRevenue</td>
+            <td>@Model.TotalProfit</td>
+        </tr>
+    </tbody>
+</table>
+

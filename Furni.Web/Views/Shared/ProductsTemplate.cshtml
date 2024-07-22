@@ -1,0 +1,115 @@
+﻿@model IEnumerable<ProductReportViewModel>
+
+@using System.Drawing;
+@using System.IO;
+@inject IWebHostEnvironment _webHostEnvironment;
+
+@{
+    Layout = "_ReportsLayout";
+}
+
+<style>
+    .small-image {
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover; 
+        border-radius: 5px; 
+    }
+
+    .stock-status {
+        padding: 8px;
+        border-radius: 4px;
+        color: #fff;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .stock-in {
+        background-color: #28a745; 
+    }
+
+    .stock-low {
+        background-color: #ffc107;
+    }
+
+    .stock-out {
+        background-color: #dc3545; 
+    }
+
+    #product {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 50px;
+    }
+
+    #product td, #product th {
+        border: 1px solid #ddd;
+        padding: 12px; 
+        min-height: 20px; 
+        min-width: 60px; 
+        box-sizing: border-box;
+    }
+
+    #product tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #product th {
+        padding-top: 15px; 
+        padding-bottom: 15px;
+        text-align: left;
+        background-color: #000;
+        color: white;
+    }
+</style>
+
+<table id="product">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Category Name</th>
+            <th>Price</th>
+            <th>Cost Price</th>
+            <th>Stock Status</th>
+            <th>Discount Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                @{
+                    string imgSrc = string.Empty;
+                    using Image image = Image.FromFile($"{_webHostEnvironment.WebRootPath}{product.MainImageThumbnailUrl}");
+                    using MemoryStream memoryStream = new MemoryStream();
+                    image.Save(memoryStream, image.RawFormat);
+                    imgSrc = Convert.ToBase64String(memoryStream.ToArray());
+                }
+                <td>
+                    <img src="data:image/png;base64,@imgSrc" class="small-image" alt="Product Image">
+                </td>
+                <td>@product.Title</td>
+                <td>@product.CategoryName</td>
+                <td>@product.Price</td>
+                <td>@product.CostPrice</td>
+                <td>
+                    @if (product.Quantity > 3)
+                    {
+                        <span class="stock-status stock-in">InStock</span>
+                    }
+                    else if (product.Quantity > 0 && product.Quantity <= 3)
+                    {
+                        <span class="stock-status stock-low">LowStock</span>
+                    }
+                    else
+                    {
+                        <span class="stock-status stock-out">OutOfStock</span>
+                    }
+                </td>
+                <td>@product.DiscountValue</td>
+            </tr>
+        }
+    </tbody>
+</table>

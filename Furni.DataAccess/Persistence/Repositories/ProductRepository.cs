@@ -1,6 +1,7 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
 using Furni.Models.Entities;
 using Furni.Utility.Dashboard;
+using Furni.Utility.Reports;
 
 namespace Furni.DataAccess.Persistence.Repositories
 {
@@ -322,7 +323,48 @@ namespace Furni.DataAccess.Persistence.Repositories
         }
 
 
+        // Reports
+        public async Task<PaginatedList<ProductReportViewModel>> GetProductsReportAsync(IList<int>? selectedCategories, int pageSize, string? stock, int? pageNumber = null)
+		{
+			IQueryable<Product> query = _context.Products
+				.Include(p => p.Category);
 
-    }
+			if (selectedCategories != null && selectedCategories.Any())
+			{
+				query = query.Where(p => selectedCategories.Contains(p.CategoryId));
+			}
+
+			if (stock == "OutOfStock")
+			{
+				query = query.Where(p => p.Quantity == 0);
+			}
+			else if (stock == "LowStock")
+			{
+				query = query.Where(p => p.Quantity > 0 && p.Quantity <= 3);
+			}
+			else if (stock == "InStock")
+			{
+				query = query.Where(p => p.Quantity > 3);
+			}
+
+			var products = query
+				.Select(p => new ProductReportViewModel
+				{
+					Id = p.Id,
+					Title = p.Title,
+					Quantity = p.Quantity,
+					Price = p.Price,
+					DiscountValue = p.DiscountValue,
+					MainImageThumbnailUrl = p.MainImageThumbnailUrl,
+					CategoryName = p.Category.Name,
+					CostPrice = p.CostPrice
+				});
+
+			return PaginatedList<ProductReportViewModel>.Create(products, pageNumber ?? 1, pageSize);
+		}
+
+
+
+	}
 
 }
