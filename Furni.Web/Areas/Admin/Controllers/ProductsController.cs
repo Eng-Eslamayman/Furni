@@ -12,7 +12,7 @@ using SixLabors.ImageSharp;
 namespace Furni.Web.Areas.Admin.Controllers
 {
 	[Area(AppRoles.Admin)]
-	[Authorize(Roles = AppRoles.Admin)]
+    [Authorize(Policy = "ExtendedAccessPolicy")]
     public class ProductsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

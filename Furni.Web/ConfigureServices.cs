@@ -1,8 +1,11 @@
 ﻿using Furni.DataAccess.Persistence;
 using Furni.Models.Common;
 using Furni.Web.Areas.Admin.Components;
+using Furni.Web.Authorization;
 using Furni.Web.Helpers;
 using Furni.Web.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
@@ -39,6 +42,9 @@ namespace Furni.Web
                 //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
                 //options.Lockout.MaxFailedAccessAttempts = 3;
             });
+
+            
+
 
             // Add AutoMapper
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
@@ -86,6 +92,34 @@ namespace Furni.Web
             services.AddMvc(options =>
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
             );
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login"; // Default path for login
+                options.LogoutPath = "/Identity/Account/Logout"; // Default path for logout
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied"; // Default path for access denied
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("InitialAccessPolicy",
+                    policy => policy.RequireRole(AppRoles.Admin)
+                                    .RequireClaim("Access", "Initial"));
+
+                options.AddPolicy("ExtendedAccessPolicy",
+                    policy => policy.RequireRole(AppRoles.Admin)
+                                    .RequireClaim("Access", "Extended")
+                                    .Requirements.Add(new AdminProbationRequirement(3)));
+
+                options.AddPolicy("ManagerOnly",
+                    policy => policy.RequireRole(AppRoles.Admin)
+                                    .RequireClaim("Access", "Manager"));
+            });
+
+
+
+            services.AddSingleton<IAuthorizationHandler, AdminProbationRequirementHandler>();
 
 
             return services;

@@ -12,7 +12,7 @@ using System.Drawing;
 namespace Furni.Web.Areas.Admin.Controllers
 {
     [Area(AppRoles.Admin)]
-	[Authorize(Roles = AppRoles.Admin)]
+    [Authorize(Policy = "InitialAccessPolicy")]
     public class CategoriesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

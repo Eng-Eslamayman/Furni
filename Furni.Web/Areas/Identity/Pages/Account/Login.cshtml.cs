@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Furni.Web.Areas.Identity.Pages.Account
 {
@@ -142,14 +143,35 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    //_logger.LogInformation("User logged in.");
 
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    //if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    //{
+                    //    return LocalRedirect(returnUrl);
+                    //}
+
+
+
+                    if (await _userManager.IsInRoleAsync(user, AppRoles.Admin)) // Check admin role first
                     {
-                        return LocalRedirect(returnUrl);
-                    }
+                        var claims = await _userManager.GetClaimsAsync(user);
 
-                    if (await _userManager.IsInRoleAsync(user, AppRoles.Customer))
+                        _logger.LogInformation("Claims during authorization: {Claims}", string.Join(", ", claims.Select(c => $"{c.Type}: {c.Value}")));
+
+                        if (claims.Any(c => c.Type == "Access" && c.Value == "Extended"))
+                        {
+                            return RedirectToAction("Index", "Dashboard", new { area = AppRoles.Admin });
+                        }
+                        else if (claims.Any(c => c.Type == "Access" && c.Value == "Initial"))
+                        {
+                            return RedirectToAction("Index", "Categories", new { area = AppRoles.Admin });
+                        }
+                        else // Default to Categories for Admin users without specific claims
+                        {
+                            return RedirectToAction("Index", "Categories", new { area = AppRoles.Admin });
+                        }
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, AppRoles.Customer))
                     {
                         if (returnUrl is not null)
                         {
@@ -158,10 +180,6 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 							return Redirect(pathAndQuery);
 						}
 						return RedirectToAction("Index", "Home", new { area = AppRoles.Customer });
-                    }
-                    else if (await _userManager.IsInRoleAsync(user, AppRoles.Admin))
-                    {
-                        return RedirectToAction("Index", "Dashboard", new { area = AppRoles.Admin });
                     }
                 }
                 if (result.RequiresTwoFactor)

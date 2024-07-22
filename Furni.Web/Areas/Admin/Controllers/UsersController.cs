@@ -14,7 +14,7 @@ using System.Text.Encodings.Web;
 namespace Furni.Web.Areas.Admin.Controllers
 {
 	[Area(AppRoles.Admin)]
-	[Authorize(Roles = $"{AppRoles.Admin}")]
+    [Authorize(Policy = "ManagerOnly")]
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -43,6 +43,21 @@ namespace Furni.Web.Areas.Admin.Controllers
         // Show List of Users that have Admin Role
         public async Task<IActionResult> Index()
         {
+            // Retrieve the current user
+            var user = await _userManager.GetUserAsync(User);
+
+            if(user is null)
+                return NotFound();
+
+            // Retrieve the user's claims
+            var claims = await _userManager.GetClaimsAsync(user);
+
+            // Check if the user has the 'NoAccess' claim with the value 'UsersController'
+            if (claims.Any(c => c.Type == "NoAccess" && c.Value == "UsersController"))
+            {
+                return Forbid(); // Deny access if the claim exists
+            }
+
             // Return users that have Admin Role
             var users = await _userManager.GetUsersInRoleAsync(roleName: AppRoles.Admin);
             var viewModel = _mapper.Map<IEnumerable<UserViewModel>>(users);
@@ -80,13 +95,24 @@ namespace Furni.Web.Areas.Admin.Controllers
                 FullName = model.FullName,
                 UserName = model.UserName,
                 Email = model.Email,
-                CreatedById = User.GetUserId()
+                CreatedById = User.GetUserId(),
+                CreatedOn = DateTime.UtcNow // Set admin date
             };
             var identityResult = await _userManager.CreateAsync(user, model.Password!);
 
             if (identityResult.Succeeded)
             {
                 await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+
+
+                // Add default claims based on role or other criteria
+                if (model.SelectedRoles.Contains(AppRoles.Admin))
+                {
+                    // Assuming new admins should have "Initial" access
+                    await _userManager.AddClaimAsync(user, new Claim("Access", "Initial"));
+                    await _userManager.AddClaimAsync(user, new Claim("CreatedDate", user.CreatedOn.ToString("o"))); // Add created date for probation check
+                }
+
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

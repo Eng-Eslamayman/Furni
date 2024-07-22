@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Furni.Web.Areas.Admin.Controllers
 {
     [Area(AppRoles.Admin)]
-    [Authorize(Roles = AppRoles.Admin)]
+    [Authorize(Policy = "InitialAccessPolicy")]
     public class OrdersController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -16,8 +16,8 @@ namespace Furni.Web.Areas.Admin.Controllers
 {
 
 	[Area(AppRoles.Admin)]
-	[Authorize(Roles = AppRoles.Admin)]
-	public class ReportsController : Controller
+    [Authorize(Policy = "ExtendedAccessPolicy")]
+    public class ReportsController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IWebHostEnvironment _webHostEnvironment;

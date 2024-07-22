@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Furni.Web.Areas.Admin.Controllers
 {
     [Area(AppRoles.Admin)]
-    [Authorize(Roles = AppRoles.Admin)]
+    [Authorize(Policy = "ExtendedAccessPolicy")]
     public class OrderDetailsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
