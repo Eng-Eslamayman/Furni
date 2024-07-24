@@ -11,6 +11,7 @@ using Stripe;
 using System.Security.Claims;
 using Furni.Web.Filters;
 using Furni.Web.Background_Tasks;
+using DocumentFormat.OpenXml.InkML;
 namespace Furni.Web
 {
 	public class Program
@@ -99,34 +100,24 @@ namespace Furni.Web
             app.MapRazorPages();
 
             // Initialize Hangfire tasks
-            InitializeHangfireTasks(app);
+            var webHostEnvironment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            var emailBodyBuilder = scope.ServiceProvider.GetRequiredService<IEmailBodyBuilder>();
+            var emailSender = scope.ServiceProvider.GetRequiredService<IEmailSender>();
+            var hangfireTasks = new HangfireTasks(webHostEnvironment, emailBodyBuilder, emailSender,unitOfWork);
+            // Schedule CleanupIncompleteOrders to run hourly
+            RecurringJob.AddOrUpdate(
+                "CleanupIncompleteOrders",
+                () => hangfireTasks.CleanupIncompleteOrders(),
+                Cron.Minutely);
+
+            // Schedule ProcessCartAdjustmentsAsync to run hourly
+            RecurringJob.AddOrUpdate(
+                "ProcessCartAdjustmentsAsync",
+                () => hangfireTasks.ProcessCartAdjustmentsAsync(),
+                Cron.Minutely);
 
             app.Run();
 		}
-
-
-        private static void InitializeHangfireTasks(WebApplication app)
-        {
-            using (var scope = app.Services.CreateScope())
-            {
-                var hangfireTasks = new HangfireTasks(
-                    scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>(),
-                    scope.ServiceProvider.GetRequiredService<IEmailBodyBuilder>(),
-                    scope.ServiceProvider.GetRequiredService<IEmailSender>(),
-                    scope.ServiceProvider.GetRequiredService<IUnitOfWork>());
-
-                // Schedule CleanupIncompleteOrders to run hourly
-                RecurringJob.AddOrUpdate(
-                    "CleanupIncompleteOrders",
-                    () => hangfireTasks.CleanupIncompleteOrders(),
-                    Cron.Minutely);
-
-                // Schedule ProcessCartAdjustmentsAsync to run hourly
-                RecurringJob.AddOrUpdate(
-                    "ProcessCartAdjustmentsAsync",
-                    () => hangfireTasks.ProcessCartAdjustmentsAsync(),
-                    Cron.Minutely);
-            }
-        }
     }
 }

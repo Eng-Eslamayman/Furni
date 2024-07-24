@@ -19,7 +19,6 @@ namespace Furni.Web.Background_Tasks
             _emailBodyBuilder = emailBodyBuilder;
             _emailSender = emailSender;
             _unitOfWork = unitOfWork;
-            _context = context;
         }
 
 
@@ -47,9 +46,13 @@ namespace Furni.Web.Background_Tasks
 
                     var body = _emailBodyBuilder.GetEmailBody("notification", placeholders);
 
+
+                    
                     await _emailSender.SendEmailAsync(
                     user.Email!,
                     "Furnihuture Updating Shopping Cart", body);
+                    
+
                 }
                 else
                 {
@@ -62,10 +65,10 @@ namespace Furni.Web.Background_Tasks
 
                     var body = _emailBodyBuilder.GetEmailBody("notification", placeholders);
 
-
                     await _emailSender.SendEmailAsync(
                     user.Email!,
                     "Furnihuture Updating Shopping Cart", body);
+                    
                 }
             }
         }
