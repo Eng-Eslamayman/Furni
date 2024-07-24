@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -96,11 +97,10 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 				};
 
 			var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
-
-			await _emailSender.SendEmailAsync(
+			BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(
 				user.Email,
 				"Confirm your email",
-				body);
+				body));
 
 			ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
 			return Page();

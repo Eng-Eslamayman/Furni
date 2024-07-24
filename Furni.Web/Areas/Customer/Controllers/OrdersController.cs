@@ -1,6 +1,7 @@
 ﻿using Furni.Models.Entities;
 using Furni.Utility.Models;
 using Furni.Web.Extensions;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
@@ -166,9 +167,10 @@ namespace Furni.Web.Areas.Customer.Controllers
 
 			// Email Body
 			var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
-
+			
 			// Send the email
-			await _emailSender.SendEmailAsync(order.Email, "Furnihuture", body);
+			BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(order.Email, "Furnihuture", body));
+
 
 			// Remove items from Shopping Cart 
 			await ClearShoppingCartAsync(order.ApplicationUserId);

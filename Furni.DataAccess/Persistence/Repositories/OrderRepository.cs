@@ -1,4 +1,5 @@
 ﻿using Furni.DataAccess.Persistence.Repositories.IRepositories;
+using Furni.Models.Enums;
 using Furni.Utility.Dashboard;
 using Furni.Utility.Reports;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -300,6 +301,31 @@ namespace Furni.DataAccess.Persistence.Repositories
                     TotalPrice = o.OrderDetails.FirstOrDefault().Count * o.OrderDetails.FirstOrDefault().Price
                 })
                 .ToListAsync();
+        }
+
+
+        // Background Jobs
+        public async Task CleanupIncompleteOrders()
+        {
+            //var thresholdTime = DateTime.UtcNow.AddDays(-1); // Cleanup orders older than 1 day
+            var thresholdTime = DateTime.UtcNow.AddMinutes(-1); // Cleanup carts older than 1 minute
+            var incompleteOrders = await _context.Orders
+                .Where(o => o.OrderStatus == OrderStatus.Pending.ToString() && o.CreatedOn < thresholdTime)
+                .ToListAsync();
+
+            foreach (var order in incompleteOrders)
+            {
+                // Remove related OrderDetails first
+                var orderDetails = _context.OrderDetails
+                    .Where(od => od.OrderId == order.Id);
+
+                _context.OrderDetails.RemoveRange(orderDetails);
+
+                // Remove the order
+                _context.Orders.Remove(order);
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

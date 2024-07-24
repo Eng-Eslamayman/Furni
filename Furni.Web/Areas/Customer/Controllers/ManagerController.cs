@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Shared;
 using SixLabors.ImageSharp;
 using Furni.Models.Entities;
+using Hangfire;
 
 namespace Furni.Web.Areas.Customer.Controllers
 {
@@ -135,7 +136,7 @@ namespace Furni.Web.Areas.Customer.Controllers
 
                 var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
 
-                await _emailSender.SendEmailAsync(model.Email, "Profile Updated", body);
+                BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(model.Email, "Profile Updated", body));
             }
 
             if (model.UserName != user.UserName)

@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -86,7 +87,8 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 				var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
 
 				// Send the email
-				await _emailSender.SendEmailAsync(Input.Email, "Reset Password", body);
+				BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(Input.Email, "Reset Password", body));
+
 
 				return RedirectToPage("./ForgotPasswordConfirmation");
             }

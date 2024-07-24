@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using Furni.Web.Extensions;
 using System.Text.Encodings.Web;
+using Hangfire;
 
 namespace Furni.Web.Areas.Admin.Controllers
 {
@@ -136,7 +137,8 @@ namespace Furni.Web.Areas.Admin.Controllers
                 var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
 
                 // Send the email
-                await _emailSender.SendEmailAsync(user.Email, "Confirm your email", body);
+                BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(user.Email, "Confirm your email", body));
+				
 
                 var viewModel = _mapper.Map<UserViewModel>(user);
                 return PartialView("_UserRow", viewModel);

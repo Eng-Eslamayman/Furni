@@ -108,5 +108,40 @@ namespace Furni.DataAccess.Persistence.Repositories
 				await _context.SaveChangesAsync();
 			}
 		}
+
+
+        // Background Tasks
+        public async Task<List<CartAdjustmentInfo>> AdjustCartItemCountsAsync()
+        {
+            var cartItems = await _context.ShoppingCarts
+                .Include(sc => sc.Product)
+                .Where(sc => sc.Count > sc.Product.Quantity || sc.Count == 0)
+                .ToListAsync();
+
+            var affectedUsers = new List<CartAdjustmentInfo>();
+
+            foreach (var item in cartItems)
+            {
+                if (item.Count > item.Product.Quantity)
+                {
+                    item.Count = item.Product.Quantity;
+                    affectedUsers.Add(new CartAdjustmentInfo
+                    {
+                        UserId = item.ApplicationUserId,
+                        ProductName = item.Product.Title,
+                        Count = item.Product.Quantity // Update quantity to till user
+                    });
+
+                    if (item.Count == 0)
+                    {
+                        _context.ShoppingCarts.Remove(item);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return affectedUsers;
+        }
     }
 }

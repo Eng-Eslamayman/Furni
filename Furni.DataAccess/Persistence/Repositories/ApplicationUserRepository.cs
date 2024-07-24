@@ -94,5 +94,11 @@ namespace Furni.DataAccess.Persistence.Repositories
         }
 
 
+        public async Task<ApplicationUser> GetByIdAsync(string userId)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+        }
+
     }
 }

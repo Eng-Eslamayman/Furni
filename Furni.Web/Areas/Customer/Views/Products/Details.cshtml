@@ -2,9 +2,9 @@
 
 @{
 	ViewData["Title"] = "Product Details";
-	var productNumber = Model.Quantity == 1 ? "Last product" :
-												Model.Quantity <= 3 ? $"Only {Model.Quantity} Stocks Available" :
-															$"{Model.Quantity} Stocks Available";
+	var productNumber = Model?.Quantity == 1 ? "Last product" :
+												Model?.Quantity <= 3 ? $"Only {Model?.Quantity} Stocks Available" :
+															$"{Model?.Quantity} Stocks Available";
 
 
 

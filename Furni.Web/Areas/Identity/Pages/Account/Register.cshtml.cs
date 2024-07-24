@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -165,8 +166,9 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                     // Email Body
                     var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
 
-                    // Send the email
-                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email", body);
+					// Send the email
+					BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(user.Email, "Confirm your email", body));
+
 
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

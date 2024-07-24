@@ -4,6 +4,7 @@ using Furni.Web.Areas.Admin.Components;
 using Furni.Web.Authorization;
 using Furni.Web.Helpers;
 using Furni.Web.Services;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -56,6 +57,7 @@ namespace Furni.Web
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IEmailBodyBuilder, EmailBodyBuilder>();
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+            services.AddSingleton<IAuthorizationHandler, AdminProbationRequirementHandler>();
             // Register TwoFactorNoticeViewComponent
             services.AddScoped<TwoFactorNoticeViewComponent>();
             // Add View To HTML to Reports
@@ -84,8 +86,12 @@ namespace Furni.Web
             });
 
             // Add Log Out User when needed 
-            //services.Configure<SecurityStampValidatorOptions>(options => 
-            //                            options.ValidationInterval = TimeSpan.Zero);
+            services.Configure<SecurityStampValidatorOptions>(options =>
+                                        options.ValidationInterval = TimeSpan.Zero);
+
+            // Hangfire
+            services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+            services.AddHangfireServer();
 
 
             // Auto Validate to AntiForgeryToken
@@ -104,22 +110,32 @@ namespace Furni.Web
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("InitialAccessPolicy",
-                    policy => policy.RequireRole(AppRoles.Admin)
-                                    .RequireClaim("Access", "Initial"));
+                    policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireRole(AppRoles.Admin)
+                                        .RequireClaim("Access", "Initial");
+                    });
 
                 options.AddPolicy("ExtendedAccessPolicy",
-                    policy => policy.RequireRole(AppRoles.Admin)
-                                    .RequireClaim("Access", "Extended")
-                                    .Requirements.Add(new AdminProbationRequirement(3)));
+                    policy => {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireRole(AppRoles.Admin)
+                                        .RequireClaim("Access", "Extended")
+                                        .Requirements.Add(new AdminProbationRequirement(3));
+                              });
 
                 options.AddPolicy("ManagerOnly",
-                    policy => policy.RequireRole(AppRoles.Admin)
-                                    .RequireClaim("Access", "Manager"));
+                    policy => {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireRole(AppRoles.Admin)
+                                .RequireClaim("Access", "Manager");
+                    });
             });
 
 
 
-            services.AddSingleton<IAuthorizationHandler, AdminProbationRequirementHandler>();
+            
 
 
             return services;

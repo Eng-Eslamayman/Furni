@@ -6,5 +6,8 @@
         Task<IList<ProductCardViewModel>> GetCartItemsAsync(string userId);
         Task RemoveCardAsync(int productId);
         Task ClearCartAsync(string userId);
+
+        // Background Tasks
+        Task<List<CartAdjustmentInfo>> AdjustCartItemCountsAsync();
     }
 }

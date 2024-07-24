@@ -13,7 +13,7 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
         Task<int> GetTotalCustomersThisMonthAsync();
         Task<IEnumerable<HighestSpendingCustomersViewModel>> GetHighestSpendingCustomersAsync();
         Task<IEnumerable<MostPurchasingCustomersViewModel>> GetMostPurchasingCustomersAsync();
-
+        Task<ApplicationUser> GetByIdAsync(string userId);
 
         // Reports
         PaginatedList<CustomerReportViewModel> GetCustomersReport(int pageSize, int? pageNumber = null);

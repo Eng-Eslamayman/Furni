@@ -145,10 +145,10 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                 {
                     //_logger.LogInformation("User logged in.");
 
-                    //if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    //{
-                    //    return LocalRedirect(returnUrl);
-                    //}
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
 
 
 

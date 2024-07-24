@@ -33,5 +33,9 @@ namespace Furni.DataAccess.Persistence.Repositories.IRepositories
 		PaginatedList<OrderReportViewModel> GetOrdersReport(DateTime startDate, DateTime endDate, int pageSize, string? status, int? pageNumber = null);
 
 
-	}
+        // Background Tasks
+        Task CleanupIncompleteOrders();
+
+
+    }
 }

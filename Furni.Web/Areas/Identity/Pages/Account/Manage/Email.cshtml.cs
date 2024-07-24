@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -140,8 +141,8 @@ namespace Furni.Web.Areas.Identity.Pages.Account.Manage
                 // Email Body
                 var body = _emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeHolders);
 
-                // Send the email
-                await _emailSender.SendEmailAsync(Input.NewEmail, "Confirm your email", body);
+				// Send the email
+				BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(Input.NewEmail, "Confirm your email", body));
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
                 return RedirectToPage();

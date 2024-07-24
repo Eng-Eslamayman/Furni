@@ -1,10 +1,16 @@
 using Furni.DataAccess;
 using Furni.DataAccess.Persistence;
 using Furni.DataAccess.Persistence.Seeds;
+using Hangfire.Dashboard;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Context;
 using Stripe;
+using System.Security.Claims;
+using Furni.Web.Filters;
+using Furni.Web.Background_Tasks;
 namespace Furni.Web
 {
 	public class Program
@@ -53,19 +59,74 @@ namespace Furni.Web
 
 			using var scope = scopeFactory.CreateScope();
 
-			var roleManger = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-			var userManger = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+			var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-			await DefaultRoles.SeedAsync(roleManger);
-			await DefaultUsers.SeedAdminUserAsync(userManger);
+			await DefaultRoles.SeedAsync(roleManager);
+			await DefaultUsers.SeedAdminUserAsync(userManager);
 
-			app.MapControllerRoute(
+
+
+            // Hangfire 
+            app.UseHangfireDashboard(
+                "/Admin/hangfire"
+                , new DashboardOptions
+                {
+                    DashboardTitle = "Furnihutre Dashboard",
+                    IsReadOnlyFunc = (DashboardContext context) => true,
+                    Authorization = new IDashboardAuthorizationFilter[]
+                                        {
+                                           new HangfireAuthorizationFilter("ManagerOnly")
+                                        }
+                }
+                );
+
+            
+
+            // Serilog
+            app.Use(async (context, next) =>
+            {
+                LogContext.PushProperty("UserID", context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                LogContext.PushProperty("UserName", context.User.FindFirst(ClaimTypes.Name)?.Value);
+
+                await next();
+            });
+
+            app.MapControllerRoute(
 				name: "default",
 				pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
 
-			app.Run();
+            // Initialize Hangfire tasks
+            InitializeHangfireTasks(app);
+
+            app.Run();
 		}
-	}
+
+
+        private static void InitializeHangfireTasks(WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var hangfireTasks = new HangfireTasks(
+                    scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>(),
+                    scope.ServiceProvider.GetRequiredService<IEmailBodyBuilder>(),
+                    scope.ServiceProvider.GetRequiredService<IEmailSender>(),
+                    scope.ServiceProvider.GetRequiredService<IUnitOfWork>());
+
+                // Schedule CleanupIncompleteOrders to run hourly
+                RecurringJob.AddOrUpdate(
+                    "CleanupIncompleteOrders",
+                    () => hangfireTasks.CleanupIncompleteOrders(),
+                    Cron.Minutely);
+
+                // Schedule ProcessCartAdjustmentsAsync to run hourly
+                RecurringJob.AddOrUpdate(
+                    "ProcessCartAdjustmentsAsync",
+                    () => hangfireTasks.ProcessCartAdjustmentsAsync(),
+                    Cron.Minutely);
+            }
+        }
+    }
 }
