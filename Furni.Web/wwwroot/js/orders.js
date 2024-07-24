@@ -49,7 +49,7 @@
             { "data": "priceWithDollarSign", "name": "PriceWithDollarSign" },
             {
                 "name": "createdOn", "render": function (data, type, row) {
-                    return moment(row.publishingDate).format('YYYY MMMM, DD');
+                    return moment(row.createdOn).format('YYYY MMMM, DD');
                 }
             },
             {

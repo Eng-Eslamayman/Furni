@@ -49,27 +49,66 @@
     <script src="~/lib/expressive-annotations-validate/expressive.annotations.validate.min.js"></script>
 
     <script>
-        $(document).on('shown.bs.modal', '#Modal', function () {
-            var imageInput = document.getElementById('image-input');
-            var imagePreview = document.getElementById('image-preview');
+        $(document).ready(function () {
+            // Function to set up image preview
+            function setupImagePreview(modal) {
+                var imageInput = modal.querySelector('#image-input');
+                var imagePreviewWrapper = modal.querySelector('.image-input-wrapper');
 
-            if (imageInput && imagePreview) {
-                var imagePreviewWrapper = imagePreview.querySelector('.image-input-wrapper');
-
-                if (imagePreviewWrapper) {
-                    imageInput.addEventListener('change', function (event) {
+                if (imageInput && imagePreviewWrapper) {
+                    // Function to handle image change
+                    function handleImageChange(event) {
                         var input = event.target;
                         if (input.files && input.files[0]) {
                             var reader = new FileReader();
                             reader.onload = function (e) {
+                                // Ensure background image is cleared before setting the new one
+                                imagePreviewWrapper.style.backgroundImage = ''; // Clear existing image
+                                imagePreviewWrapper.classList.remove('image-input-placeholder'); // Remove placeholder class
+
+                                // Set the new image as a background image
                                 imagePreviewWrapper.style.backgroundImage = 'url(' + e.target.result + ')';
                             };
                             reader.readAsDataURL(input.files[0]);
                         }
-                    });
+                    }
+
+                    // Attach event listeners
+                    imageInput.addEventListener('change', handleImageChange);
+
+                    // Store handlers for cleanup
+                    modal.imageInputHandler = handleImageChange;
                 }
             }
+
+            // Function to clean up image preview and event listeners
+            function cleanupImagePreview(modal) {
+                var imageInput = modal.querySelector('#image-input');
+                var imagePreviewWrapper = modal.querySelector('.image-input-wrapper');
+
+                if (imageInput && modal.imageInputHandler) {
+                    imageInput.removeEventListener('change', modal.imageInputHandler);
+                }
+
+                if (imagePreviewWrapper) {
+                    imagePreviewWrapper.style.backgroundImage = '';
+                }
+            }
+
+            // Initialize the image preview on modal show
+            $(document).on('shown.bs.modal', '#Modal', function () {
+                // Adding a slight delay to ensure elements are loaded
+                setTimeout(() => {
+                    setupImagePreview(this);
+                }, 1000); // Adjust the delay as needed
+            });
+
+            // Cleanup the image preview on modal hide
+            $(document).on('hidden.bs.modal', '#Modal', function () {
+                cleanupImagePreview(this);
+            });
         });
     </script>
+
 
 }
