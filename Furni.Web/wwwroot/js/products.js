@@ -44,8 +44,22 @@
                 }
             },
             { "data": "quantity", "name": "Quantity" },
-            { "data": "costPrice", "name": "CostPrice" },
-            { "data": "price", "name": "Price" },
+            {
+                "name": "CostPrice",
+                "render": function (data, type, row) {
+                    return `<span>
+                                    $${(row.costPrice)}
+                            </span>`;
+                }
+            },
+            {
+                "name": "Price",
+                "render": function (data, type, row) {
+                    return `<span>
+                                    $${(row.price)}
+                            </span>`;
+                }
+            },
             { "data": "category", "name": "Category" },
             {
                 "name": "createdOn", "render": function (data, type, row) {

@@ -1,5 +1,17 @@
 ﻿$(document).ready(function () {
 
+
+    function formatPrice(price) {
+        return `$${price.toFixed(2)}`;
+    }
+
+    function processData(data) {
+        data.forEach(item => {
+            item.Price = formatPrice(item.Price);
+        });
+        return data;
+    }
+
     $('[data-kt-filter="search"]').on('keyup', function () {
         var input = $(this);
         datatable.search(input.val()).draw();
@@ -46,18 +58,47 @@
                 }
             },
             { "data": "email", "name": "Email" },
-            { "data": "priceWithDollarSign", "name": "PriceWithDollarSign" },
+            {
+                "name": "Price",
+                "render": function (data, type, row) {
+                    return `<span>
+                                    $${(row.price)}
+                            </span>`;
+                }
+            }
+            ,
             {
                 "name": "createdOn", "render": function (data, type, row) {
                     return moment(row.createdOn).format('YYYY MMMM, DD');
                 }
             },
             {
-                "name": "IsDeleted",
+                "name": "OrderStatus",
                 "render": function (data, type, row) {
-                    return `<span class="badge badge-light-${(row.isDeleted ? 'danger' : 'success')} js-status">
-                                    ${(row.isDeleted ? 'InActicve' : 'Active')}
-                            </span>`;
+                    let badgeClass;
+
+                    switch (row.orderStatus) {
+                        case 'pending':
+                            badgeClass = 'badge badge-light-warning js-status';  // Yellow or amber color
+                            break;
+                        case 'approved':
+                            badgeClass = 'badge badge-light-info js-status';  // Blue color (or adjust as needed)
+                            break;
+                        case 'delivering':
+                            badgeClass = 'badge badge-light-primary js-status';  // Blue color
+                            break;
+                        case 'completed':
+                            badgeClass = 'badge badge-light-success js-status';  // Green color
+                            break;
+                        case 'denied':
+                            badgeClass = 'badge badge-light-danger js-status';  // Red color
+                            break;
+                        default:
+                            badgeClass = 'badge badge-light-secondary js-status';  // Gray or default color
+                            break;
+                    }
+
+                    return `<span class="${badgeClass} js-status">${row.orderStatus}</span>`;
                 }
             },
             {
@@ -80,7 +121,7 @@
                                 
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="javascript:;" class="menu-link flex-stack px-3 js-toggle-status" data-url="/Admin/Orders/ToggleStatus/${row.id}">
+                                    <a href="javascript:;" class="menu-link flex-stack px-3 js-toggle-order-status"  data-url="/Admin/Orders/ToggleStatus/${row.id}" data-id="${row.id}">
                                         Toggle Status
                                     </a>
                                 </div>

@@ -91,10 +91,11 @@
                                     <td>@report.TotalPrice.ToString("C")</td>
                                     <td>@report.TotalProfit.ToString("C")</td>
                                     <td>
-                                        <span class="badge py-3 px-4 fs-7 @(report.Status == "Pending" ? "badge badge-light-warning" :
-                                                             report.Status == "Delivering" ? "badge badge-light-primary" :
-                                                             report.Status == "Denied" ? "badge badge-light-danger" :
-                                                             report.Status == "Approved" ? "badge badge-light-success" :
+                                        <span class="badge py-3 px-4 fs-7 @(report.Status == "pending" ? "badge badge-light-warning" :
+                                                             report.Status == "delivering" ? "badge badge-light-primary" :
+                                                             report.Status == "approved" ? "badge badge-light-info" :
+                                                             report.Status == "denied" ? "badge badge-light-danger" :
+                                                             report.Status == "approved" ? "badge badge-light-success" :
                                                              "badge badge-light-secondary")">
                                             @report.Status
                                         </span>

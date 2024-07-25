@@ -237,9 +237,12 @@
 								<partial name="_ReviewRow" model="@review" />
 							}
 						</div>
-						<div class="text-box">
-							<partial name="_ReviewForm" model="new ReviewFormViewModel { ProductId = Model.Id }" />
-						</div>
+						@if (User.Identity!.IsAuthenticated)
+						{
+							<div class="text-box">
+								<partial name="_ReviewForm" model="new ReviewFormViewModel { ProductId = Model.Id }" />
+							</div>
+						}
 					</div>
 				</div>
 

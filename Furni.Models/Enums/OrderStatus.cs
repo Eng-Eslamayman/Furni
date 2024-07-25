@@ -9,10 +9,9 @@ namespace Furni.Models.Enums
 	public enum OrderStatus
 	{
 		Pending,
-		Processing,
-		Shipped,
-		Delivered,
-		Cancelled,
-		Returned
+		Approved,
+		Delivering,
+        Completed,
+		Denied
 	}
 }

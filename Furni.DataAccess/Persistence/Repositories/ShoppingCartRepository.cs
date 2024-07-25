@@ -129,7 +129,7 @@ namespace Furni.DataAccess.Persistence.Repositories
                     {
                         UserId = item.ApplicationUserId,
                         ProductName = item.Product.Title,
-                        Count = item.Product.Quantity // Update quantity to till user
+                        Count = item.Product.Quantity // Update quantity to tell user
                     });
 
                     if (item.Count == 0)

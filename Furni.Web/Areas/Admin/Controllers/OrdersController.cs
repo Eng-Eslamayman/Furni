@@ -51,6 +51,54 @@ namespace Furni.Web.Areas.Admin.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ToggleStatus(int id, string status)
+        {
+            if(status is null)
+                return NotFound();
+
+
+            var order = _unitOfWork.Orders.GetById(id);
+            if (order is null)
+            {
+                return NotFound();
+            }
+
+            // Convert status to uppercase
+            var statusUpper = status.ToUpper();
+
+            // Define a list of valid statuses in uppercase
+            var validStatuses = new HashSet<string>
+                        {
+                            "PENDING",
+                            "APPROVED",
+                            "DELIVERING",
+                            "COMPLETED",
+                            "DENIED"
+                        };
+
+            // Check if the provided status is valid
+            if (!validStatuses.Contains(statusUpper))
+            {
+                return NotFound();
+            }
+
+            // Update order status
+            order.OrderStatus = status;
+            order.LastUpdatedOn = DateTime.Now;
+
+            _unitOfWork.Complete();
+
+            return Ok(status);
+        }
+
+
+        [HttpGet]
+        public IActionResult LoadStatusOptionsPartial()
+        {
+            return PartialView("_StatusOptions");
+        }
 
 
         private void ActionName()

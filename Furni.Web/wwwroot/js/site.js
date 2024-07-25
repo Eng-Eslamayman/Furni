@@ -324,6 +324,86 @@ $(document).ready(function () {
     });
 
 
+    // Handle Order Toggle Status
+    // Handle Toggle Status button click
+    $('body').on('click', '.js-toggle-order-status', function () {
+        var btn = $(this);
+        var url = btn.data('url');
+        var orderId = btn.data('id'); // Get the order ID from the data attribute
+
+        // Store the URL and order ID in the modal
+        $('#Modal').data('url', url);
+        $('#Modal').data('id', orderId);
+
+        // Load the partial view content into the modal
+        $.get({
+            url: '/Admin/Orders/LoadStatusOptionsPartial', // Action to load partial view
+            success: function (partialView) {
+                $('#Modal .modal-body').html(partialView); // Insert content into the modal body
+                $('#Modal').modal('show');
+            },
+            error: function () {
+                showErrorMessage();
+            }
+        });
+    });
+
+
+    // Handle Save changes button click
+    $('body').on('click', '.js-confirm-order-status', function () {
+        var selectedStatus = $('input[name="statusOption"]:checked').val();
+        var url = $('#Modal').data('url');
+        var orderId = $('#Modal').data('id'); // Get the order ID from the modal
+
+        if (!selectedStatus) {
+            alert('Please select a status.');
+            return;
+        }
+
+        $.post({
+            url: url,
+            data: {
+                '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val(),
+                orderId: orderId, // Include the order ID in the request data
+                status: selectedStatus
+            },
+            success: function (data) {
+                // Find the row for the specific order ID
+                var row = $('a.js-toggle-order-status[data-id="' + orderId + '"]').closest('tr');
+                var status = row.find('.js-status');
+                var statusClass = '';
+
+                switch (data) {
+                    case 'pending':
+                        statusClass = 'badge-light-warning';
+                        break;
+                    case 'approved':
+                        statusClass = 'badge-light-info';
+                        break;
+                    case 'delivering':
+                        statusClass = 'badge-light-primary';
+                        break;
+                    case 'completed':
+                        statusClass = 'badge-light-success';
+                        break;
+                    case 'denied':
+                        statusClass = 'badge-light-danger';
+                        break;
+                }
+
+                status.text(data).removeClass().addClass(`badge ${statusClass} js-status`);
+                //row.find('.js-updated-on').html(lastUpdatedOn);
+                row.addClass('animate__animated animate__flash');
+
+                $('#Modal').modal('hide');
+                showSuccessMessage();
+            },
+            error: function () {
+                showErrorMessage();
+            }
+        });
+    });
+
 
     // Handle Unlock
     $('body').delegate('.js-confirm', 'click', function () {

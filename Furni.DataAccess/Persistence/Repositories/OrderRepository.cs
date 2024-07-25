@@ -159,28 +159,34 @@ namespace Furni.DataAccess.Persistence.Repositories
         // Admin Side
         public (IQueryable<CustomerListingViewModel> orders, int count) GetFiltered(GetFilteredDto dto)
         {
-            IQueryable<CustomerListingViewModel> orders = 
-                _context.Orders.Include(o => o.ApplicationUser)
+            // Fetch data from database
+            IQueryable<CustomerListingViewModel> ordersQuery = _context.Orders
+                .Include(o => o.ApplicationUser)
                 .Select(order => new CustomerListingViewModel
                 {
                     Id = order.Id,
                     FullName = order.ApplicationUser!.FullName!,
                     Email = order.Email!,
-                    ImageThumbnailUrl = order.ApplicationUser!.ImageThumbnailUrl,
-                    IsDeleted = order.ApplicationUser!.IsDeleted,
+                    ImageThumbnailUrl = order.ApplicationUser!.ImageUrl,
+                    OrderStatus = order.OrderStatus!,
                     CreatedOn = order.CreatedOn,
                     Price = order.OrderTotal,
                 });
 
+            // Apply filtering
             if (!string.IsNullOrEmpty(dto.SearchValue))
-                orders = orders.Where(b => b.FullName!.Contains(dto.SearchValue!) || b.Email!.Contains(dto.SearchValue!));
+            {
+                ordersQuery = ordersQuery.Where(b => b.FullName!.Contains(dto.SearchValue!) || b.Email!.Contains(dto.SearchValue!));
+            }
 
-            orders = orders.OrderBy($"{dto.SortColumn} {dto.SortColumnDirection}");
+            ordersQuery = ordersQuery.OrderBy($"{dto.SortColumn} {dto.SortColumnDirection}");
 
-            var recordsTotal = _context.Products.Count(); // All Records in Database
+            var recordsTotal = _context.Orders.Count(); // All Records in Database
 
-            return (orders, recordsTotal);
+            // Return the query for further processing in the controller
+            return (ordersQuery, recordsTotal);
         }
+
 
         public async Task<OrderDetailsViewModel> GetDetails(int id)
         {

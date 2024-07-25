@@ -1,0 +1,55 @@
+﻿@* This is the partial view for status options *@
+<div class="row mw-500px mb-5">
+    <div class="col-4">
+        <label class="form-check-image">
+            <div class="form-check form-check-custom form-check-solid me-10">
+                <input class="form-check-input" type="radio" value="pending" name="statusOption" />
+                <div class="form-check-label">Pending</div>
+            </div>
+        </label>
+    </div>
+    <div class="col-4">
+        <label class="form-check-image">
+            <div class="form-check form-check-custom form-check-solid me-10">
+                <input class="form-check-input" type="radio" value="approved" name="statusOption" />
+                <div class="form-check-label">Approved</div>
+            </div>
+        </label>
+    </div>
+    <div class="col-4">
+        <label class="form-check-image">
+            <div class="form-check form-check-custom form-check-solid me-10">
+                <input class="form-check-input" type="radio" value="delivering" name="statusOption" />
+                <div class="form-check-label">Delivering</div>
+            </div>
+        </label>
+    </div>
+    <div class="col-4">
+        <label class="form-check-image">
+            <div class="form-check form-check-custom form-check-solid me-10">
+                <input class="form-check-input" type="radio" value="completed" name="statusOption" />
+                <div class="form-check-label">Completed</div>
+            </div>
+        </label>
+    </div>
+    <div class="col-4">
+        <label class="form-check-image">
+            <div class="form-check form-check-custom form-check-solid me-10">
+                <input class="form-check-input" type="radio" value="denied" name="statusOption" />
+                <div class="form-check-label">Denied</div>
+            </div>
+        </label>
+    </div>
+</div>
+
+<div class="modal-footer px-0">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary js-confirm-order-status">
+        <span class="indicator-label">
+            Save
+        </span>
+        <span class="indicator-progress">
+            Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+        </span>
+    </button>
+</div>

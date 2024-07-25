@@ -68,10 +68,11 @@
                     <!--begin::Details item-->
                     <div class="fw-bold mt-5">Order Status</div>
                     <div class="text-gray-600">
-                        <div class="@(Model.OrderStatus == "Pending" ? "badge badge-light-warning" :
-                             Model.OrderStatus == "Delivering" ? "badge badge-light-primary" :
-                             Model.OrderStatus == "Denied" ? "badge badge-light-danger" :
-                             Model.OrderStatus == "Completed" ? "badge badge-light-success" :
+                        <div class="@(Model.OrderStatus == "pending" ? "badge badge-light-warning" :
+                             Model.OrderStatus == "delivering" ? "badge badge-light-primary" :
+                             Model.OrderStatus == "approved" ? "badge badge-light-info" :
+                             Model.OrderStatus == "denied" ? "badge badge-light-danger" :
+                             Model.OrderStatus == "completed" ? "badge badge-light-success" :
                              "badge badge-light-secondary")">
                              @Model.OrderStatus
                          </div>
