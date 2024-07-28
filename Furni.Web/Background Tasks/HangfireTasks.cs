@@ -4,18 +4,15 @@ namespace Furni.Web.Background_Tasks
 {
     public class HangfireTasks
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IEmailBodyBuilder _emailBodyBuilder;
         private readonly IEmailSender _emailSender;
         private readonly IUnitOfWork _unitOfWork;
 
         public HangfireTasks(
-            IWebHostEnvironment webHostEnvironment,
             IEmailBodyBuilder emailBodyBuilder,
             IEmailSender emailSender,
             IUnitOfWork unitOfWork)
         {
-            _webHostEnvironment = webHostEnvironment;
             _emailBodyBuilder = emailBodyBuilder;
             _emailSender = emailSender;
             _unitOfWork = unitOfWork;

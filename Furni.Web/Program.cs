@@ -100,22 +100,21 @@ namespace Furni.Web
             app.MapRazorPages();
 
             // Initialize Hangfire tasks
-            var webHostEnvironment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
             var emailBodyBuilder = scope.ServiceProvider.GetRequiredService<IEmailBodyBuilder>();
             var emailSender = scope.ServiceProvider.GetRequiredService<IEmailSender>();
-            var hangfireTasks = new HangfireTasks(webHostEnvironment, emailBodyBuilder, emailSender,unitOfWork);
+            var hangfireTasks = new HangfireTasks(emailBodyBuilder, emailSender,unitOfWork);
             // Schedule CleanupIncompleteOrders to run hourly
             RecurringJob.AddOrUpdate(
                 "CleanupIncompleteOrders",
                 () => hangfireTasks.CleanupIncompleteOrders(),
-                Cron.Minutely);
+                Cron.Daily);
 
             // Schedule ProcessCartAdjustmentsAsync to run hourly
             RecurringJob.AddOrUpdate(
                 "ProcessCartAdjustmentsAsync",
                 () => hangfireTasks.ProcessCartAdjustmentsAsync(),
-                Cron.Minutely);
+                Cron.Daily);
 
             app.Run();
 		}

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Furni.Web.Extensions;
+using Furni.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -95,6 +96,7 @@ namespace Furni.Web.Areas.Admin.Controllers
 
 
         [HttpGet]
+        [AjaxOnly]
         public IActionResult LoadStatusOptionsPartial()
         {
             return PartialView("_StatusOptions");

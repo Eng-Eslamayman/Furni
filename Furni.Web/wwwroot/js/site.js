@@ -307,7 +307,7 @@ $(document).ready(function () {
                         success: function (lastUpdatedOn) {
                             var row = btn.parents('tr');
                             var status = row.find('.js-status');
-                            var newStatus = status.text().trim() === 'InActive' ? 'Published' : 'InActive';
+                            var newStatus = status.text().trim() === 'Deleted' ? 'Available' : 'Deleted';
                             status.text(newStatus).toggleClass('badge-light-success badge-light-danger');
                             row.find('.js-updated-on').html(lastUpdatedOn);
                             row.addClass('animate__animated animate__flash');
@@ -335,6 +335,9 @@ $(document).ready(function () {
         $('#Modal').data('url', url);
         $('#Modal').data('id', orderId);
 
+
+        $('#Modal').find('#ModalLabel').text(btn.data('title'));
+
         // Load the partial view content into the modal
         $.get({
             url: '/Admin/Orders/LoadStatusOptionsPartial', // Action to load partial view
@@ -354,6 +357,7 @@ $(document).ready(function () {
         var selectedStatus = $('input[name="statusOption"]:checked').val();
         var url = $('#Modal').data('url');
         var orderId = $('#Modal').data('id'); // Get the order ID from the modal
+
 
         if (!selectedStatus) {
             alert('Please select a status.');

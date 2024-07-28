@@ -65,13 +65,13 @@ namespace Furni.DataAccess.Persistence.Repositories
 		}
 
 
-		public IEnumerable<ProductsAndCategoriesSearchViewModel> GetProductsSearch(string query, int skipCount)
+		public IEnumerable<ProductsAndCategoriesSearchViewModel> GetProductsSearch(string query, int count)
 		{
 			return _context.Products
 				.Where(p => p.Title.Contains(query))
-				.Skip(skipCount)
 				.Select(p => new ProductsAndCategoriesSearchViewModel { Id = p.Id, Name = p.Title, MainImageThumbnailUrl = p.MainImageThumbnailUrl, Type = "product" })
-				.ToList();
+                .Take(count)
+                .ToList();
 		}
 
 

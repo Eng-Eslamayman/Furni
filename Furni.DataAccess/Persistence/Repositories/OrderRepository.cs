@@ -61,8 +61,8 @@ namespace Furni.DataAccess.Persistence.Repositories
                 ApplicationUserId = userId,
                 OrderDate = DateTime.Now,
                 ShippingDate = DateTime.Now.AddDays(5), // Example shipping date, adjust as necessary
-                OrderStatus = "Pending",
-                PaymentStatus = "Pending",
+                OrderStatus = OrderStatus.Pending.ToString(),
+                PaymentStatus = OrderStatus.Pending.ToString(),
                 PhoneNumber = model.PhoneNumber!,
                 Address = model.Address!,
                 City = model.City!,
@@ -313,10 +313,10 @@ namespace Furni.DataAccess.Persistence.Repositories
         // Background Jobs
         public async Task CleanupIncompleteOrders()
         {
-            //var thresholdTime = DateTime.UtcNow.AddDays(-1); // Cleanup orders older than 1 day
-            var thresholdTime = DateTime.UtcNow.AddMinutes(-1); // Cleanup carts older than 1 minute
+            var thresholdTime = DateTime.Now.AddDays(-1); // Cleanup orders older than 1 day
+            //var thresholdTime = DateTime.Now.AddMinutes(-1); // Cleanup carts older than 1 minute
             var incompleteOrders = await _context.Orders
-                .Where(o => o.OrderStatus == OrderStatus.Pending.ToString() && o.CreatedOn < thresholdTime)
+                .Where(o => o.OrderStatus == OrderStatus.Pending.ToString())
                 .ToListAsync();
 
             foreach (var order in incompleteOrders)

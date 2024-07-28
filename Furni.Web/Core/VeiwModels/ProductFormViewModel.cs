@@ -14,9 +14,9 @@ namespace Furni.Web.Core.VeiwModels
         public string Description { get; set; } = null!;
         [MaxLength(250, ErrorMessage = Errors.MaxLength)]
         public string Summary { get; set; } = null!;
-        public int Quantity { get; set; }
-        public float Price { get; set; } 
-        public float CostPrice { get; set; } 
+        public int? Quantity { get; set; } = null;
+        public float? Price { get; set; } = null;
+        public float? CostPrice { get; set; } = null;
         [Range(1, 1000, ErrorMessage = Errors.MaxRange)]
         public float? DiscountValue { get; set; } = null;
         [Display(Name = "Publishing Date")]

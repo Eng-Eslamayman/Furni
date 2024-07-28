@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Furni.Web.Areas.Identity.Pages.Account
 {
@@ -143,7 +145,15 @@ namespace Furni.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    //_logger.LogInformation("User logged in.");
+                    var claims = await _userManager.GetClaimsAsync(user);
+                    var adminClaims = await _userManager.GetClaimsAsync(user);
+
+                    if (user.CreatedOn <= DateTime.Now.AddMonths(-3) && !adminClaims.Any(c => c.Type == "Access" && c.Value == "Extended"))
+                    {
+                        // If the admin was created more than 3 months ago, add the 'Access: Extended' claim
+                        await _userManager.AddClaimAsync(user, new Claim("Access", "Extended"));
+                    }
+
 
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
@@ -154,10 +164,7 @@ namespace Furni.Web.Areas.Identity.Pages.Account
 
                     if (await _userManager.IsInRoleAsync(user, AppRoles.Admin)) // Check admin role first
                     {
-                        var claims = await _userManager.GetClaimsAsync(user);
-
-                        _logger.LogInformation("Claims during authorization: {Claims}", string.Join(", ", claims.Select(c => $"{c.Type}: {c.Value}")));
-
+                        
                         if (claims.Any(c => c.Type == "Access" && c.Value == "Extended"))
                         {
                             return RedirectToAction("Index", "Dashboard", new { area = AppRoles.Admin });

@@ -86,8 +86,8 @@ namespace Furni.Web
             });
 
             // Add Log Out User when needed 
-            services.Configure<SecurityStampValidatorOptions>(options =>
-                                        options.ValidationInterval = TimeSpan.Zero);
+            //services.Configure<SecurityStampValidatorOptions>(options =>
+            //                            options.ValidationInterval = TimeSpan.Zero);
 
             // Hangfire
             services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));

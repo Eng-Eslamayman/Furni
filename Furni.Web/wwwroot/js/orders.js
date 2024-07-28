@@ -1,17 +1,5 @@
 ﻿$(document).ready(function () {
 
-
-    function formatPrice(price) {
-        return `$${price.toFixed(2)}`;
-    }
-
-    function processData(data) {
-        data.forEach(item => {
-            item.Price = formatPrice(item.Price);
-        });
-        return data;
-    }
-
     $('[data-kt-filter="search"]').on('keyup', function () {
         var input = $(this);
         datatable.search(input.val()).draw();
@@ -121,7 +109,7 @@
                                 
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="javascript:;" class="menu-link flex-stack px-3 js-toggle-order-status"  data-url="/Admin/Orders/ToggleStatus/${row.id}" data-id="${row.id}">
+                                    <a href="javascript:;" class="menu-link flex-stack px-3 js-toggle-order-status"  data-url="/Admin/Orders/ToggleStatus/${row.id}" data-title="Manage Status of Order" data-id="${row.id}">
                                         Toggle Status
                                     </a>
                                 </div>
